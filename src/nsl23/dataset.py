@@ -79,6 +79,57 @@ class CachedClipDataset(Dataset[dict[str, Any]]):
         }
 
 
+def resolve_cache_path(stored: str, sample_id: str, fallback_dir: Path) -> Path:
+    path = Path(stored)
+    if path.is_file():
+        return path
+    fallback = fallback_dir / f"{sample_id}.npy"
+    if fallback.is_file():
+        return fallback
+    raise FileNotFoundError(f"Missing cache for {sample_id}: tried {path} and {fallback}")
+    def __init__(
+        self,
+        rows: list[dict[str, str]],
+        labels: list[str],
+        training: bool,
+        noise_std: float = 0.0,
+    ) -> None:
+        self.rows = rows
+        self.label_to_index = {label: index for index, label in enumerate(labels)}
+        self.training = training
+        self.noise_std = noise_std
+        missing = sorted({row["canonical_label"] for row in rows} - set(labels))
+        if missing:
+            raise ValueError(f"Unknown labels in sample manifest: {missing}")
+        for row in rows:
+            if not row.get("landmark_cache_path"):
+                raise ValueError("Sample manifest does not contain landmark_cache_path")
+
+    def __len__(self) -> int:
+        return len(self.rows)
+
+    def __getitem__(self, index: int) -> dict[str, Any]:
+        row = self.rows[index]
+        array = np.load(
+            resolve_cache_path(row["landmark_cache_path"], row["sample_id"], Path("data/landmark_cache_primary")),
+            allow_pickle=False,
+        )
+        if array.ndim != 2:
+            raise RuntimeError(f"Invalid landmark cache {row['landmark_cache_path']}: {array.shape}")
+        features = torch.from_numpy(np.array(array, dtype=np.float32, copy=True))
+        if self.training and self.noise_std > 0:
+            noise = torch.randn_like(features)
+            noise[:, -1] = 0.0
+            features = features + noise * self.noise_std
+            detected = features[:, -1] > 0.5
+            features[:, -1] = detected.float()
+        return {
+            "frames": features,
+            "label": self.label_to_index[row["canonical_label"]],
+            "sample_id": row["sample_id"],
+        }
+
+
 def make_loaders(
     manifest: Path,
     labels_path: Path,
@@ -122,6 +173,49 @@ def make_loaders(
     if grouped["validation"]:
         loaders["validation"] = DataLoader(
             CachedClipDataset(grouped["validation"], labels, training=False),
+            batch_size=int(training["batch_size"]),
+            shuffle=False,
+            num_workers=num_workers,
+            pin_memory=False,
+        )
+    return loaders, labels, grouped
+
+
+def make_landmark_loaders(
+    manifest: Path,
+    labels_path: Path,
+    experiment_config: dict[str, Any],
+    seed: int,
+    num_workers: int = 0,
+) -> tuple[dict[str, DataLoader[dict[str, Any]]], list[str], dict[str, list[dict[str, str]]]]:
+    rows = read_rows(manifest)
+    labels = load_labels(labels_path)
+    grouped = {split: [row for row in rows if row["split"] == split] for split in ("train", "validation", "test")}
+    if not grouped["train"] or not grouped["test"]:
+        raise ValueError({split: len(value) for split, value in grouped.items()})
+    training = experiment_config["training"]
+    noise_std = float(training.get("landmark_noise_std", 0.0))
+    generator = torch.Generator().manual_seed(seed)
+    loaders = {
+        "train": DataLoader(
+            LandmarkClipDataset(grouped["train"], labels, training=True, noise_std=noise_std),
+            batch_size=int(training["batch_size"]),
+            shuffle=True,
+            num_workers=num_workers,
+            generator=generator,
+            pin_memory=False,
+        ),
+        "test": DataLoader(
+            LandmarkClipDataset(grouped["test"], labels, training=False),
+            batch_size=int(training["batch_size"]),
+            shuffle=False,
+            num_workers=num_workers,
+            pin_memory=False,
+        ),
+    }
+    if grouped["validation"]:
+        loaders["validation"] = DataLoader(
+            LandmarkClipDataset(grouped["validation"], labels, training=False),
             batch_size=int(training["batch_size"]),
             shuffle=False,
             num_workers=num_workers,

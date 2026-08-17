@@ -31,6 +31,15 @@
       "positional_embedding": "learned",
       "temporal_pooling": "mean",
       "norm_first": false
+    },
+    "landmark_mlp": {
+      "hidden_dim": 256,
+      "dropout": 0.3
+    },
+    "landmark_bilstm": {
+      "hidden_dim": 64,
+      "layers": 1,
+      "dropout": 0.3
     }
   },
   "training": {
@@ -49,6 +58,7 @@
     "brightness_delta": 0.08,
     "contrast_probability": 0.5,
     "contrast_range": [0.9, 1.1],
+    "landmark_noise_std": 0.02,
     "horizontal_flip": false
   },
   "evaluation": {

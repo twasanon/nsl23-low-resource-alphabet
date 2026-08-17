@@ -126,6 +126,52 @@ class CNNTransformer(nn.Module):
         return self.head(self.dropout(pooled))
 
 
+class LandmarkMLP(nn.Module):
+    def __init__(self, num_classes: int, input_dim: int, hidden_dim: int = 256, dropout: float = 0.3) -> None:
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Flatten(),
+            nn.Linear(input_dim, hidden_dim),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(hidden_dim, hidden_dim // 2),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(hidden_dim // 2, num_classes),
+        )
+
+    def forward(self, clips: torch.Tensor) -> torch.Tensor:
+        return self.net(clips)
+
+
+class LandmarkBiLSTM(nn.Module):
+    def __init__(
+        self,
+        num_classes: int,
+        input_dim: int,
+        hidden_dim: int = 64,
+        layers: int = 1,
+        dropout: float = 0.3,
+    ) -> None:
+        super().__init__()
+        self.lstm = nn.LSTM(
+            input_size=input_dim,
+            hidden_size=hidden_dim,
+            num_layers=layers,
+            batch_first=True,
+            bidirectional=True,
+            dropout=dropout if layers > 1 else 0.0,
+        )
+        self.norm = nn.LayerNorm(hidden_dim * 2)
+        self.dropout = nn.Dropout(dropout)
+        self.head = nn.Linear(hidden_dim * 2, num_classes)
+
+    def forward(self, clips: torch.Tensor) -> torch.Tensor:
+        sequence, _ = self.lstm(clips)
+        pooled = self.norm(sequence).mean(dim=1)
+        return self.head(self.dropout(pooled))
+
+
 def build_model(name: str, config: dict[str, Any], num_classes: int, num_frames: int) -> nn.Module:
     model_config = config["models"][name]
     if name == "single_frame_cnn":
@@ -149,6 +195,25 @@ def build_model(name: str, config: dict[str, Any], num_classes: int, num_frames:
             encoder_dropout=model_config["encoder_dropout"],
             head_dropout=model_config["head_dropout"],
             norm_first=model_config["norm_first"],
+        )
+    if name == "landmark_mlp":
+        from .landmarks import LANDMARK_DIM
+
+        return LandmarkMLP(
+            num_classes=num_classes,
+            input_dim=LANDMARK_DIM * num_frames,
+            hidden_dim=model_config["hidden_dim"],
+            dropout=model_config["dropout"],
+        )
+    if name == "landmark_bilstm":
+        from .landmarks import LANDMARK_DIM
+
+        return LandmarkBiLSTM(
+            num_classes=num_classes,
+            input_dim=LANDMARK_DIM,
+            hidden_dim=model_config["hidden_dim"],
+            layers=model_config["layers"],
+            dropout=model_config["dropout"],
         )
     raise KeyError(name)
 

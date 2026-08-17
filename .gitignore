@@ -6,6 +6,24 @@ __pycache__/
 .DS_Store
 .python-version
 
+# Unused MediaPipe task files (Hands API uses the pip package).
+third_party/
+
+# NSL23 media is obtained from Zenodo (CC BY 4.0). Do not commit archives or extracted videos.
+data/extracted/
+data/raw_archives/
+data/frame_cache_primary/
+*.mov
+*.MOV
+*.mp4
+
+# Local caches and editor files
+.cache/
+.mypy_cache/
+.ruff_cache/
+.idea/
+.vscode/
+
 # NSL23 media is obtained from Zenodo (CC BY 4.0). Do not commit archives or extracted videos.
 data/extracted/
 data/raw_archives/

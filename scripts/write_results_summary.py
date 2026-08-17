@@ -9,11 +9,13 @@ from pathlib import Path
 import pandas as pd
 
 
-ORDER = ("single_frame_cnn", "cnn_bilstm", "cnn_transformer")
+ORDER = ("single_frame_cnn", "cnn_bilstm", "cnn_transformer", "landmark_mlp", "landmark_bilstm")
 LABEL = {
     "single_frame_cnn": "Single-frame CNN",
     "cnn_bilstm": "CNN–BiLSTM",
     "cnn_transformer": "CNN–Transformer",
+    "landmark_mlp": "Landmark MLP",
+    "landmark_bilstm": "Landmark BiLSTM",
 }
 
 
@@ -36,14 +38,14 @@ def main() -> None:
     sign_type = pd.read_csv(args.results_dir / "sign_type_summary.csv").set_index(["model", "sign_type"])
     paired = pd.read_csv(args.results_dir / "paired_differences_summary.csv").set_index(["comparison", "metric"])
     confusions = pd.read_csv(
-        args.results_dir / "top_confusions_cnn_transformer.csv", keep_default_na=False
+        args.results_dir / "top_confusions_landmark_bilstm.csv", keep_default_na=False
     ).head(10)
     runtime = pd.read_csv(args.runtime).set_index("model")
 
     lines = [
         "# NSL23 frozen primary results",
         "",
-        "All values below are generated from the complete 18-run matrix. Each seed pools the two held-out folds (196 unique clips), and architecture summaries report the mean and sample SD over seeds.",
+        "All values below are generated from the complete 30-run matrix (five models, two folds, three seeds). Each seed pools the two held-out folds (196 unique clips), and architecture summaries report the mean and sample SD over seeds.",
         "",
         "## Primary performance",
         "",
@@ -77,6 +79,9 @@ def main() -> None:
         ("cnn_transformer_minus_single_frame_cnn", "CNN–Transformer minus single-frame CNN"),
         ("cnn_transformer_minus_cnn_bilstm", "CNN–Transformer minus CNN–BiLSTM"),
         ("cnn_bilstm_minus_single_frame_cnn", "CNN–BiLSTM minus single-frame CNN"),
+        ("landmark_bilstm_minus_single_frame_cnn", "Landmark BiLSTM minus single-frame CNN"),
+        ("landmark_bilstm_minus_cnn_transformer", "Landmark BiLSTM minus CNN–Transformer"),
+        ("landmark_bilstm_minus_landmark_mlp", "Landmark BiLSTM minus landmark MLP"),
     ):
         acc = paired.loc[(comparison, "accuracy")]
         f1 = paired.loc[(comparison, "macro_f1")]
@@ -125,7 +130,7 @@ def main() -> None:
             f"{pm(vowel.macro_f1_supported_classes_mean, vowel.macro_f1_supported_classes_sd)} |"
         )
 
-    lines.extend(["", "## Most frequent CNN–Transformer off-diagonal predictions", "", "| True label | Predicted label | Count across folds and seeds | Repeated true-class predictions |", "|---|---|---:|---:|"])
+    lines.extend(["", "## Most frequent Landmark BiLSTM off-diagonal predictions", "", "| True label | Predicted label | Count across folds and seeds | Repeated true-class predictions |", "|---|---|---:|---:|"])
     for row in confusions.itertuples():
         lines.append(
             f"| {row.true_label} | {row.predicted_label} | {int(row.count_across_seeds_and_folds)} | "
@@ -134,6 +139,8 @@ def main() -> None:
 
     lines.extend(["", "## Batch-one runtime", "", "| Model | Model-only median (p95), ms | End-to-end median (p95), ms | End-to-end clips/s |", "|---|---:|---:|---:|"])
     for name in ORDER:
+        if name not in runtime.index:
+            continue
         row = runtime.loc[name]
         lines.append(
             f"| {LABEL[name]} | {row.model_only_median_ms:.1f} ({row.model_only_p95_ms:.1f}) | "

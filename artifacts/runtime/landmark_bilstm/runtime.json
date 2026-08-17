@@ -1,0 +1,17 @@
+{
+  "model": "landmark_bilstm",
+  "device": "cpu",
+  "model_only": {
+    "median_ms_per_clip": 0.2735000161919743,
+    "p95_ms_per_clip": 0.5370420112740248,
+    "clips_per_second_from_median": 3656.306913335183
+  },
+  "end_to_end": {
+    "definition": "MediaPipe Hands on 16 cached frames plus landmark-model softmax",
+    "median_ms_per_clip": 345.6562500214204,
+    "p95_ms_per_clip": 441.1826659925282,
+    "clips_per_second_from_median": 2.8930476446991187,
+    "n_clips": 30
+  },
+  "parameters_trainable": 73137
+}

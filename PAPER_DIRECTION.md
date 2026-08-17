@@ -1,7 +1,7 @@
 # Paper direction: what this project is for, and what to do next
 
-**Status:** written 17 August 2026 after the RGB CNN–Transformer matrix finished.  
-**This file is the current research plan.** It does not replace `context_nsl.md` (original handoff) or `PROTOCOL.md` (frozen RGB experiment). It records the shift those results force.
+**Status:** manuscript, landmark matrix, and webcam timing completed 17 August 2026.  
+**This file is the current research plan.** It does not replace `context_nsl.md` (original handoff) or `PROTOCOL.md` (frozen experiment). It records the shift the RGB results forced.
 
 ---
 

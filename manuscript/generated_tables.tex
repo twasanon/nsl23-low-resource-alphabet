@@ -1,0 +1,90 @@
+% Auto-generated from artifacts/results. Do not edit by hand.
+\begin{table}[t]
+\centering
+\caption{Pooled unseen-signer performance (196 clips/seed; mean $\pm$ SD over three seeds). Chance accuracy for 49 classes is $2.0\%$.}
+\label{tab:primary}
+\small
+\begin{tabular}{lcccc}
+\toprule
+Model & Acc. (\%) & Macro-P (\%) & Macro-R (\%) & Macro-F1 (\%) \\
+\midrule
+Single-frame CNN & 5.8 $\pm$ 0.8 & 3.6 $\pm$ 0.6 & 5.8 $\pm$ 0.8 & 3.5 $\pm$ 0.2 \\
+CNN--BiLSTM & 7.0 $\pm$ 2.1 & 5.2 $\pm$ 5.0 & 7.0 $\pm$ 2.1 & 4.2 $\pm$ 2.1 \\
+CNN--Transformer & 6.3 $\pm$ 0.8 & 5.7 $\pm$ 1.6 & 6.3 $\pm$ 0.8 & 4.4 $\pm$ 1.3 \\
+Landmark MLP & 18.0 $\pm$ 2.1 & 10.3 $\pm$ 1.5 & 18.0 $\pm$ 2.1 & 11.1 $\pm$ 1.8 \\
+Landmark BiLSTM & 24.8 $\pm$ 4.0 & 17.1 $\pm$ 5.6 & 24.8 $\pm$ 4.0 & 16.8 $\pm$ 3.8 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Held-out signer accuracy and macro-F1 (98 clips/fold; mean $\pm$ SD over three seeds).}
+\label{tab:folds}
+\small
+\begin{tabular}{lcccc}
+\toprule
+Model & S1 acc. (\%) & S1 F1 (\%) & S2 acc. (\%) & S2 F1 (\%) \\
+\midrule
+Single-frame CNN & 6.5 $\pm$ 0.6 & 2.8 $\pm$ 0.9 & 5.1 $\pm$ 1.0 & 2.9 $\pm$ 1.3 \\
+CNN--BiLSTM & 8.2 $\pm$ 2.0 & 5.0 $\pm$ 3.2 & 5.8 $\pm$ 2.4 & 2.0 $\pm$ 1.1 \\
+CNN--Transformer & 5.1 $\pm$ 1.0 & 3.7 $\pm$ 1.3 & 7.5 $\pm$ 1.2 & 3.0 $\pm$ 1.4 \\
+Landmark MLP & 18.7 $\pm$ 3.1 & 11.6 $\pm$ 2.5 & 17.3 $\pm$ 1.0 & 10.1 $\pm$ 0.7 \\
+Landmark BiLSTM & 25.9 $\pm$ 2.6 & 17.4 $\pm$ 2.0 & 23.8 $\pm$ 5.6 & 15.0 $\pm$ 4.8 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Descriptive bright versus dark accuracy (98 pooled clips/condition/seed).}
+\label{tab:lighting}
+\small
+\begin{tabular}{lcccc}
+\toprule
+Model & Bright acc. (\%) & Dark acc. (\%) & Bright F1 (\%) & Dark F1 (\%) \\
+\midrule
+Single-frame CNN & 5.8 $\pm$ 1.6 & 5.8 $\pm$ 0.6 & 3.2 $\pm$ 1.1 & 3.0 $\pm$ 0.7 \\
+CNN--BiLSTM & 7.1 $\pm$ 1.0 & 6.8 $\pm$ 3.3 & 3.6 $\pm$ 1.6 & 4.0 $\pm$ 3.2 \\
+CNN--Transformer & 7.1 $\pm$ 0.0 & 5.4 $\pm$ 1.6 & 4.5 $\pm$ 0.3 & 3.0 $\pm$ 1.5 \\
+Landmark MLP & 21.4 $\pm$ 2.0 & 14.6 $\pm$ 2.1 & 12.7 $\pm$ 2.5 & 8.8 $\pm$ 1.2 \\
+Landmark BiLSTM & 27.6 $\pm$ 3.5 & 22.1 $\pm$ 4.6 & 18.4 $\pm$ 3.1 & 14.3 $\pm$ 4.1 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Consonant versus vowel accuracy on the pooled out-of-fold clips.}
+\label{tab:signtype}
+\small
+\begin{tabular}{lcccc}
+\toprule
+Model & Cons. acc. (\%) & Vowel acc. (\%) & Cons. F1 (\%) & Vowel F1 (\%) \\
+\midrule
+Single-frame CNN & 4.2 $\pm$ 0.7 & 10.3 $\pm$ 2.2 & 2.8 $\pm$ 0.5 & 10.9 $\pm$ 2.6 \\
+CNN--BiLSTM & 5.6 $\pm$ 1.8 & 10.9 $\pm$ 2.9 & 4.2 $\pm$ 1.8 & 8.8 $\pm$ 3.5 \\
+CNN--Transformer & 4.9 $\pm$ 0.7 & 10.3 $\pm$ 2.9 & 4.0 $\pm$ 0.8 & 9.5 $\pm$ 2.6 \\
+Landmark MLP & 7.2 $\pm$ 2.4 & 48.1 $\pm$ 1.9 & 5.6 $\pm$ 2.5 & 45.0 $\pm$ 2.8 \\
+Landmark BiLSTM & 10.0 $\pm$ 3.9 & 66.0 $\pm$ 4.0 & 8.4 $\pm$ 4.0 & 64.2 $\pm$ 2.7 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Batch-one clip latency. RGB end-to-end includes original-video decode on Apple M4 MPS. Landmark end-to-end is MediaPipe Hands on 16 cached frames plus the CPU classifier. Streaming FPS is reported separately.}
+\label{tab:runtime}
+\small
+\begin{tabular}{lcccc}
+\toprule
+Model & Device & Model-only (ms) & End-to-end (ms) & Clips/s \\
+\midrule
+Single-frame CNN & MPS & 4.0 (4.2) & 939.0 (2097.8) & 1.06 \\
+CNN--BiLSTM & MPS & 49.5 (50.2) & 962.9 (2126.2) & 1.04 \\
+CNN--Transformer & MPS & 49.7 (50.1) & 970.9 (2162.6) & 1.03 \\
+Landmark BiLSTM & CPU & 0.3 (0.5) & 345.7 (441.2) & 2.89 \\
+\bottomrule
+\end{tabular}
+\end{table}
+

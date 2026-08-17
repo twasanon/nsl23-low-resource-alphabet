@@ -1,0 +1,39 @@
+{
+  "model": "landmark_bilstm",
+  "fold": "heldout_s1",
+  "seed": 17,
+  "best_epoch": 30,
+  "selection_policy": "fixed_final_epoch",
+  "validation_macro_f1": null,
+  "test_loss": 2.560908502461959,
+  "test_accuracy": 0.25510204081632654,
+  "test_macro_precision": 0.17773065936331242,
+  "test_macro_recall": 0.25510204081632654,
+  "test_macro_f1": 0.17473071146540536,
+  "test_weighted_f1": 0.17473071146540536,
+  "accuracy_ci_low": 0.21428571428571427,
+  "accuracy_ci_high": 0.2859693877551006,
+  "macro_f1_ci_low": 0.13032048533699195,
+  "macro_f1_ci_high": 0.20055238978708365,
+  "bootstrap_replicates": 2000,
+  "train_samples": 277,
+  "test_samples": 98,
+  "train_signers": [
+    "S2",
+    "S7",
+    "S8",
+    "S10",
+    "S11",
+    "S12"
+  ],
+  "test_signers": [
+    "S1"
+  ],
+  "parameters_total": 73137,
+  "parameters_trainable": 73137,
+  "checkpoint": "/Users/swat/Downloads/NSL_paper/artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_17/best_checkpoint.pt",
+  "config_sha256": "e438bc5c02314590288c1f73a4097a678d622fea8b5db288db42f54bf515426b",
+  "sample_manifest_sha256": "58a17bfb5c611770707a99f0a5fd9990798598b27a9bc7d669ea506f2a1e23a9",
+  "class_weight_min": 0.6000000238418579,
+  "class_weight_max": 2.0999999046325684
+}

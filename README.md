@@ -1,29 +1,82 @@
 # Low-resource NSL alphabet recognition on NSL23
 
-Working title:
+Paper:
 
 > Low-Resource Nepali Sign Language Alphabet Recognition on NSL23: Comparing RGB Video Models and Hand Landmarks for Webcam Use
 
-This repository studies isolated Nepali Sign Language (NSL) alphabet recognition on the public **NSL23** video dataset (Sunuwar, Borah, and Kharga, 2024). The videos are not ours; download them from [Zenodo record 10478554](https://zenodo.org/records/10478554) (DOI [10.5281/zenodo.10478554](https://doi.org/10.5281/zenodo.10478554), CC BY 4.0).
+[Read the PDF](manuscript/nsl23_low_resource.pdf) · [Open the Colab notebook](https://colab.research.google.com/github/twasanon/nsl23-low-resource-alphabet/blob/main/NSL23_Low_Resource_Colab.ipynb)
 
-## Current status
+This repository is a secondary analysis of the public **NSL23** alphabet videos (Sunuwar, Borah, and Kharga, 2024). The recordings are not ours. Download them from [Zenodo record 10478554](https://zenodo.org/records/10478554) (DOI [10.5281/zenodo.10478554](https://doi.org/10.5281/zenodo.10478554), CC BY 4.0). Git does not contain the zips, extracted `.MOV` files, or the RGB frame cache.
 
-RGB video models (single-frame MobileNetV2, CNN–BiLSTM, CNN–Transformer) have been trained and evaluated under a frozen signer-held-out protocol. Hand-landmark models, a webcam demo, the LaTeX manuscript, and a public Colab notebook are in progress. See `PAPER_DIRECTION.md` and `PROTOCOL.md`.
+## What the paper claims
 
-Do not treat the RGB accuracies (~6–7% on unseen signers) as a finished webcam system. They are the full-image control.
+On 375 original isolated clips, with signers S1 and S2 held out in turn (196 pooled test clips per seed):
+
+| Model | Accuracy | Macro-F1 |
+|---|---:|---:|
+| Single-frame CNN | 5.8% ± 0.8% | 3.5% ± 0.2% |
+| CNN–BiLSTM | 7.0% ± 2.1% | 4.2% ± 2.1% |
+| CNN–Transformer | 6.3% ± 0.8% | 4.4% ± 1.3% |
+| Landmark MLP | 18.0% ± 2.1% | 11.1% ± 1.8% |
+| Landmark BiLSTM | **24.8% ± 4.0%** | **16.8% ± 3.8%** |
+
+Chance for 49 classes is 2.0%. Landmark BiLSTM vowel accuracy is 66.0% ± 4.0%; consonant accuracy is 10.0% ± 3.9%. A CPU webcam loop (`scripts/webcam_demo.py`) processed held-out NSL23 streams at **33–42 FPS** on an Apple M4. That is a speed measurement, not a 49-class streaming accuracy.
+
+Do not quote 93.5%, “state of the art,” or other papers’ percentages as if they were scores on these folds.
 
 ## Setup
-
-NSL23 archives belong in `data/raw_archives/`. Do not commit those files.
 
 ```bash
 uv venv --python 3.11 .venv
 uv pip install --python .venv/bin/python -r requirements.txt
 export PYTHONPATH=src
-python scripts/verify_primary_protocol.py --verify-archive-hashes
+python scripts/validate_primary_claims.py
 ```
 
-Full reproduction steps are in `README_REPRODUCIBILITY.md`.
+`mediapipe==0.10.14` is required. Version 1.0.x crashed on the development Mac.
+
+## Webcam demo
+
+Needs a camera, or any video file:
+
+```bash
+export PYTHONPATH=src
+python scripts/webcam_demo.py \
+  --checkpoint artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_42/best_checkpoint.pt \
+  --camera 0
+```
+
+Held-out checkpoint for S1 is `heldout_s1/...`; for S2 use `heldout_s2/...`. Press `q` to quit. `--video path.MOV --no-window` runs a stream without a GUI.
+
+## Retrain (optional)
+
+RGB frame caches are local-only (`data/frame_cache_primary/`, ~0.9 GB) and need the Zenodo archives. Landmark caches for the 375 primary clips **are** in git (`data/landmark_cache_primary/`).
+
+```bash
+export PYTHONPATH=src
+python scripts/run_landmark_experiments.py          # skips completed runs
+python scripts/summarize_primary_results.py
+python scripts/generate_publication_figures.py
+python scripts/write_results_summary.py
+python scripts/write_latex_tables.py
+python scripts/webcam_demo.py --checkpoint ... --video ... --no-window --max-frames 90
+```
+
+Compile the paper with [Tectonic](https://tectonic-typesetting.github.io/):
+
+```bash
+cd manuscript && tectonic -X compile nsl23_low_resource.tex
+```
+
+## Layout
+
+- `manuscript/nsl23_low_resource.tex` — paper
+- `PROTOCOL.md` — frozen sample, folds, and landmark addendum
+- `CLAIM_LEDGER.md` — what the text is allowed to say
+- `NSL23_Low_Resource_Colab.ipynb` — tables + landmark replay
+- `src/nsl23/` — dataset, models, training
+- `artifacts/results/` — 30-run summaries
+- `artifacts/runs/primary/` — checkpoints and per-run predictions
 
 ## Citation of the dataset
 

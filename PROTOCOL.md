@@ -71,3 +71,14 @@ Bright/normal versus dark performance is a pre-specified descriptive breakdown w
 ## Runtime measurement
 
 Runtime is measured on the local Apple M4 MPS device with batch size one after warm-up and explicit device synchronization. Model-only latency and end-to-end decode/preprocess/transfer/inference latency are reported separately as median and 95th percentile milliseconds per clip. Throughput is reported as clips per second. The study does not claim streaming real-time operation unless a separately implemented sliding-window benchmark supports that claim.
+
+## Landmark addendum (2026-08-17)
+
+Status: frozen after the RGB matrix. Same 375 clips, same S1/S2 folds, same seeds, same 30-epoch final-checkpoint rule.
+
+- Detector: MediaPipe Hands 0.10.14 on the cached 16 RGB frames (`static_image_mode=True`).
+- Features: 21 xyz landmarks, wrist-subtracted, divided by the middle-MCP xy length, plus a detection flag (64-D / frame). Misses are zeros. No clip in the primary set had zero detections (5,868 / 6,000 frames detected).
+- Models: `landmark_mlp` (301,617 parameters) and `landmark_bilstm` (73,137 parameters). Training noise std 0.02 on spatial coordinates only.
+- Device: CPU.
+- Webcam: `scripts/webcam_demo.py` uses video-mode Hands and a 16-frame deque. Streaming FPS is wall-clock frames processed, not RGB clip throughput.
+

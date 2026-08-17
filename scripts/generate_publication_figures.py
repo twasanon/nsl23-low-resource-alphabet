@@ -16,16 +16,26 @@ import seaborn as sns
 from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
 
 
-MODEL_ORDER = ["single_frame_cnn", "cnn_bilstm", "cnn_transformer"]
+MODEL_ORDER = [
+    "single_frame_cnn",
+    "cnn_bilstm",
+    "cnn_transformer",
+    "landmark_mlp",
+    "landmark_bilstm",
+]
 MODEL_LABELS = {
     "single_frame_cnn": "Single-frame CNN",
     "cnn_bilstm": "CNN–BiLSTM",
     "cnn_transformer": "CNN–Transformer",
+    "landmark_mlp": "Landmark MLP",
+    "landmark_bilstm": "Landmark BiLSTM",
 }
 COLORS = {
     "single_frame_cnn": "#0072B2",
     "cnn_bilstm": "#D55E00",
     "cnn_transformer": "#009E73",
+    "landmark_mlp": "#CC79A7",
+    "landmark_bilstm": "#000000",
     "bright": "#E69F00",
     "dark": "#6A5ACD",
 }
@@ -97,35 +107,51 @@ def study_flow(audit_dir: Path, output_dir: Path) -> None:
     box(ax, 0.58, 0.30, 0.34, 0.18, "Fold 2\ntrain: 277 clips (6 signers)\ntest: S2, 98 clips", "#CC79A7")
     arrow(ax, (0.81, 0.68), (0.25, 0.48))
     arrow(ax, (0.84, 0.68), (0.75, 0.48))
-    ax.text(0.50, 0.205, "3 architectures × 3 fixed seeds per fold = 18 runs", ha="center", va="center", fontsize=10, weight="bold")
+    ax.text(0.50, 0.205, "5 models × 3 fixed seeds per fold = 30 runs", ha="center", va="center", fontsize=10, weight="bold")
     ax.text(0.50, 0.115, "Each held-out signer contributes all 49 classes in both bright and dark indoor conditions.", ha="center", va="center", fontsize=8.5)
     ax.text(0.50, 0.045, "Aggregate and cropped/preprocessed categories overlap by two files; exclusions are shown sequentially.", ha="center", va="center", fontsize=7.5, color="#555555")
     save_figure(fig, output_dir, "figure_1_study_flow")
 
 
 def architecture(output_dir: Path) -> None:
-    fig, ax = plt.subplots(figsize=(7.2, 4.4))
+    fig, ax = plt.subplots(figsize=(7.2, 5.2))
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
     ax.axis("off")
-    box(ax, 0.03, 0.40, 0.17, 0.19, "Video clip\n16 temporal bins\n224 × 224", "#0072B2")
-    box(ax, 0.27, 0.40, 0.21, 0.19, "MobileNetV2\nImageNet features\n1280-D per frame\n(frozen)", "#56B4E9")
-    arrow(ax, (0.20, 0.495), (0.27, 0.495))
+    ax.text(0.02, 0.96, "RGB video models (control)", ha="left", va="center", fontsize=10, weight="bold")
+    box(ax, 0.02, 0.72, 0.16, 0.16, "16 RGB frames\n224 × 224", "#0072B2", fontsize=8)
+    box(ax, 0.22, 0.72, 0.20, 0.16, "Frozen MobileNetV2\n1,280-D / frame", "#56B4E9", fontsize=8)
+    arrow(ax, (0.18, 0.80), (0.22, 0.80))
+    box(ax, 0.46, 0.84, 0.30, 0.10, "Middle frame → linear", COLORS["single_frame_cnn"], fontsize=8)
+    box(ax, 0.46, 0.71, 0.30, 0.10, "Projection → BiLSTM → mean", COLORS["cnn_bilstm"], fontsize=8)
+    box(ax, 0.46, 0.58, 0.30, 0.10, "Projection + positions → Transformer", COLORS["cnn_transformer"], fontsize=8)
+    arrow(ax, (0.42, 0.80), (0.46, 0.89))
+    arrow(ax, (0.42, 0.80), (0.46, 0.76))
+    arrow(ax, (0.42, 0.80), (0.46, 0.63))
+    box(ax, 0.80, 0.71, 0.17, 0.16, "49-way\nsoftmax", "#333333", fontsize=8)
+    arrow(ax, (0.76, 0.89), (0.80, 0.83))
+    arrow(ax, (0.76, 0.76), (0.80, 0.79))
+    arrow(ax, (0.76, 0.63), (0.80, 0.75))
 
-    branch_specs = [
-        (0.74, "Middle-frame feature\n→ dropout → linear", "#0072B2"),
-        (0.44, "256-D projection\n→ bidirectional LSTM\n→ layer norm + temporal mean", "#D55E00"),
-        (0.14, "256-D projection +\nlearned positions\n→ 2-layer Transformer\n→ layer norm + temporal mean", "#009E73"),
-    ]
-    for y, text, color in branch_specs:
-        box(ax, 0.57, y, 0.27, 0.17, text, color, fontsize=8.5)
-        arrow(ax, (0.48, 0.495), (0.57, y + 0.085))
-        box(ax, 0.88, y + 0.025, 0.09, 0.12, "49-way\nsoftmax", color, fontsize=8)
-        arrow(ax, (0.84, y + 0.085), (0.88, y + 0.085))
-    ax.text(0.705, 0.965, "Single-frame CNN", ha="center", va="center", fontsize=9.5, weight="bold", color=COLORS["single_frame_cnn"])
-    ax.text(0.705, 0.665, "CNN–BiLSTM", ha="center", va="center", fontsize=9.5, weight="bold", color=COLORS["cnn_bilstm"])
-    ax.text(0.705, 0.365, "CNN–Transformer", ha="center", va="center", fontsize=9.5, weight="bold", color=COLORS["cnn_transformer"])
-    ax.text(0.50, 0.035, "Only the projection/temporal modules and classification heads are optimized; spatial augmentation is sequence-consistent.", ha="center", va="center", fontsize=8)
+    ax.text(0.02, 0.50, "Hand-landmark models (webcam path)", ha="left", va="center", fontsize=10, weight="bold")
+    box(ax, 0.02, 0.22, 0.16, 0.16, "Same 16 frames\nuint8 RGB", "#0072B2", fontsize=8)
+    box(ax, 0.22, 0.22, 0.22, 0.16, "MediaPipe Hands\n21 × xyz + flag\n64-D / frame", "#CC79A7", fontsize=8)
+    arrow(ax, (0.18, 0.30), (0.22, 0.30))
+    box(ax, 0.48, 0.32, 0.28, 0.12, "Flatten 1,024-D → MLP", COLORS["landmark_mlp"], fontsize=8)
+    box(ax, 0.48, 0.16, 0.28, 0.12, "64-D sequence → BiLSTM → mean", COLORS["landmark_bilstm"], fontsize=8)
+    arrow(ax, (0.44, 0.30), (0.48, 0.38))
+    arrow(ax, (0.44, 0.30), (0.48, 0.22))
+    box(ax, 0.80, 0.22, 0.17, 0.16, "49-way\nsoftmax", "#333333", fontsize=8)
+    arrow(ax, (0.76, 0.38), (0.80, 0.34))
+    arrow(ax, (0.76, 0.22), (0.80, 0.28))
+    ax.text(
+        0.50,
+        0.04,
+        "Wrist-relative xy scaling uses the middle-MCP distance. Landmark coordinates are the only input to the webcam demo.",
+        ha="center",
+        va="center",
+        fontsize=8,
+    )
     save_figure(fig, output_dir, "figure_2_architectures")
 
 
@@ -151,7 +177,7 @@ def training_curves(results_dir: Path, output_dir: Path) -> None:
             ax.set_ylim(0, 1)
     axes[0].set_ylabel("Mean across folds and seeds")
     handles, labels = axes[-1].get_legend_handles_labels()
-    fig.legend(handles, labels, loc="lower center", ncol=3, frameon=False, bbox_to_anchor=(0.5, -0.03))
+    fig.legend(handles, labels, loc="lower center", ncol=5, frameon=False, bbox_to_anchor=(0.5, -0.03))
     fig.tight_layout(rect=(0, 0.08, 1, 1))
     save_figure(fig, output_dir, "figure_4_training_curves")
 
@@ -169,9 +195,9 @@ def primary_performance(results_dir: Path, output_dir: Path) -> None:
             ax.errorbar(index, mean, yerr=sd, color="#222222", capsize=3, linewidth=1, zorder=4)
             jitter = rng.uniform(-0.08, 0.08, size=len(values))
             ax.scatter(index + jitter, values, color="#111111", s=18, zorder=5, linewidth=0.3, edgecolor="white")
-            ax.text(index, min(0.115, mean + sd + 0.006), f"{mean:.3f}", ha="center", va="bottom", fontsize=8)
-        ax.set_xticks(range(3), [MODEL_LABELS[name].replace("CNN–", "\nCNN–") for name in MODEL_ORDER])
-        ax.set_ylim(0, 0.12)
+            ax.text(index, mean + sd + 0.012, f"{mean:.3f}", ha="center", va="bottom", fontsize=7)
+        ax.set_xticks(range(len(MODEL_ORDER)), [MODEL_LABELS[name].replace(" ", "\n") for name in MODEL_ORDER], fontsize=7)
+        ax.set_ylim(0, 0.40)
         ax.set_title(title)
         ax.set_ylabel("Score" if ax is axes[0] else "")
     fig.text(0.5, 0.01, "Bars: mean over three seeds after pooling the two held-out folds (196 clips/seed); error bars: ±1 SD; points: seeds.", ha="center", fontsize=8)
@@ -198,8 +224,8 @@ def lighting_performance(results_dir: Path, output_dir: Path) -> None:
             positions = x + (offset_index - 0.5) * width
             ax.bar(positions, values, width=width, label=lighting.capitalize(), color=COLORS[lighting], alpha=0.78)
             ax.errorbar(positions, values, yerr=errors, fmt="none", color="#222222", capsize=2.5, linewidth=0.9)
-        ax.set_xticks(x, [MODEL_LABELS[name].replace("CNN–", "\nCNN–") for name in MODEL_ORDER])
-        ax.set_ylim(0, 0.12)
+        ax.set_xticks(x, [MODEL_LABELS[name].replace(" ", "\n") for name in MODEL_ORDER], fontsize=7)
+        ax.set_ylim(0, 0.40)
         ax.set_title(title)
         ax.set_ylabel("Score" if ax is axes[0] else "")
     axes[1].legend(frameon=False, loc="upper right")
@@ -208,39 +234,47 @@ def lighting_performance(results_dir: Path, output_dir: Path) -> None:
     save_figure(fig, output_dir, "figure_5_lighting_performance")
 
 
-def transformer_confusion(results_dir: Path, output_dir: Path) -> None:
+def confusion_heatmap(results_dir: Path, output_dir: Path, model: str, stem: str, title: str) -> None:
     matrix = pd.read_csv(
-        results_dir / "confusion_cnn_transformer_mean_normalized.csv",
+        results_dir / f"confusion_{model}_mean_normalized.csv",
         index_col=0,
         keep_default_na=False,
     )
     fig, ax = plt.subplots(figsize=(8.1, 7.2))
-    sns.heatmap(matrix, ax=ax, cmap="mako", vmin=0, vmax=1, square=True, cbar_kws={"label": "Mean row-normalized proportion", "shrink": 0.75})
+    sns.heatmap(
+        matrix,
+        ax=ax,
+        cmap="mako",
+        vmin=0,
+        vmax=1,
+        square=True,
+        cbar_kws={"label": "Mean row-normalized proportion", "shrink": 0.75},
+    )
     ax.set_xlabel("Predicted label")
     ax.set_ylabel("True label")
-    ax.set_title("CNN–Transformer confusion matrix averaged over three seeds and two held-out folds")
+    ax.set_title(title)
     ax.tick_params(axis="x", labelrotation=90, labelsize=5.5)
     ax.tick_params(axis="y", labelrotation=0, labelsize=5.5)
-    save_figure(fig, output_dir, "figure_6_transformer_confusion")
+    save_figure(fig, output_dir, stem)
 
 
-def transformer_per_class(results_dir: Path, output_dir: Path) -> None:
+def per_class_recall(results_dir: Path, output_dir: Path, model: str, stem: str, title: str, color: str) -> None:
     data = pd.read_csv(results_dir / "per_class_summary.csv", keep_default_na=False)
-    data = data[data["model"] == "cnn_transformer"].sort_values("class_index")
+    data = data[data["model"] == model].sort_values("class_index")
     fig, axes = plt.subplots(2, 1, figsize=(7.4, 4.6), gridspec_kw={"height_ratios": [36, 13]})
     for ax, sign_type in zip(axes, ["consonant", "vowel"], strict=True):
         subset = data[data["sign_type"] == sign_type]
         x = np.arange(len(subset))
-        ax.bar(x, subset["recall_mean"], color="#009E73", alpha=0.78, width=0.78)
+        ax.bar(x, subset["recall_mean"], color=color, alpha=0.78, width=0.78)
         ax.errorbar(x, subset["recall_mean"], yerr=subset["recall_sd"], fmt="none", ecolor="#333333", capsize=1.5, linewidth=0.7)
         ax.set_xticks(x, subset["label"], rotation=90)
         ax.set_ylim(0, 1)
         ax.set_ylabel("Recall")
         ax.set_title(sign_type.capitalize())
     axes[-1].set_xlabel("NSL23 class")
-    fig.suptitle("CNN–Transformer per-class recall (mean ± SD over three seeds)", y=1.01, fontsize=10)
+    fig.suptitle(title, y=1.01, fontsize=10)
     fig.tight_layout()
-    save_figure(fig, output_dir, "figure_7_transformer_per_class_recall")
+    save_figure(fig, output_dir, stem)
 
 
 def require_files(paths: Iterable[Path]) -> None:
@@ -267,15 +301,36 @@ def main() -> None:
         args.results_dir / "pooled_out_of_fold_by_seed.csv",
         args.results_dir / "condition_summary.csv",
         args.results_dir / "confusion_cnn_transformer_mean_normalized.csv",
+        args.results_dir / "confusion_landmark_bilstm_mean_normalized.csv",
         args.results_dir / "per_class_summary.csv",
     ]
     require_files(required)
     training_curves(args.results_dir, args.output_dir)
     primary_performance(args.results_dir, args.output_dir)
     lighting_performance(args.results_dir, args.output_dir)
-    transformer_confusion(args.results_dir, args.output_dir)
-    transformer_per_class(args.results_dir, args.output_dir)
-    print(json.dumps({"status": "pass", "figures": 7, "output_dir": str(args.output_dir)}))
+    confusion_heatmap(
+        args.results_dir,
+        args.output_dir,
+        "landmark_bilstm",
+        "figure_6_landmark_bilstm_confusion",
+        "Landmark BiLSTM confusion matrix averaged over three seeds and two held-out folds",
+    )
+    per_class_recall(
+        args.results_dir,
+        args.output_dir,
+        "landmark_bilstm",
+        "figure_7_landmark_bilstm_per_class_recall",
+        "Landmark BiLSTM per-class recall (mean ± SD over three seeds)",
+        COLORS["landmark_bilstm"],
+    )
+    confusion_heatmap(
+        args.results_dir,
+        args.output_dir,
+        "cnn_transformer",
+        "figure_8_transformer_confusion",
+        "CNN–Transformer confusion matrix averaged over three seeds and two held-out folds",
+    )
+    print(json.dumps({"status": "pass", "figures": 8, "output_dir": str(args.output_dir)}))
 
 
 if __name__ == "__main__":

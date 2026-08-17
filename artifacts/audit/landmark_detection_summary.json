@@ -1,0 +1,18 @@
+{
+  "clips": 375,
+  "frames": 6000,
+  "detected_frames": 5868,
+  "detection_rate": 0.978,
+  "clips_with_no_detection": 0,
+  "clips_with_full_detection": 314,
+  "median_clip_detection_rate": 1.0,
+  "by_lighting": {
+    "bright": 0.9470663265306123,
+    "dark": 0.9700255102040817,
+    "unknown": 0.9993016759776536
+  },
+  "by_sign_type": {
+    "consonant": 0.9810371517027864,
+    "vowel": 0.9591346153846154
+  }
+}

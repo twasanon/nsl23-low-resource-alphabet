@@ -14,7 +14,7 @@ import pandas as pd
 from nsl23.metrics import classification_metrics, stratified_bootstrap_intervals
 
 
-MODELS = ("single_frame_cnn", "cnn_bilstm", "cnn_transformer")
+MODELS = ("single_frame_cnn", "cnn_bilstm", "cnn_transformer", "landmark_mlp", "landmark_bilstm")
 FOLDS = ("heldout_s1", "heldout_s2")
 METRICS = ("accuracy", "macro_precision", "macro_recall", "macro_f1", "weighted_f1")
 
@@ -256,6 +256,10 @@ def main() -> None:
         ("cnn_transformer", "single_frame_cnn"),
         ("cnn_transformer", "cnn_bilstm"),
         ("cnn_bilstm", "single_frame_cnn"),
+        ("landmark_bilstm", "single_frame_cnn"),
+        ("landmark_bilstm", "cnn_transformer"),
+        ("landmark_bilstm", "landmark_mlp"),
+        ("landmark_mlp", "single_frame_cnn"),
     )
     paired_rows: list[dict[str, Any]] = []
     for left, right in comparisons:
