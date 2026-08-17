@@ -140,6 +140,12 @@ class LandmarkMLP(nn.Module):
             nn.Linear(hidden_dim // 2, num_classes),
         )
 
+    def forward_features(self, clips: torch.Tensor) -> torch.Tensor:
+        features = clips
+        for layer in list(self.net.children())[:-1]:
+            features = layer(features)
+        return features
+
     def forward(self, clips: torch.Tensor) -> torch.Tensor:
         return self.net(clips)
 
@@ -166,14 +172,17 @@ class LandmarkBiLSTM(nn.Module):
         self.dropout = nn.Dropout(dropout)
         self.head = nn.Linear(hidden_dim * 2, num_classes)
 
-    def forward(self, clips: torch.Tensor) -> torch.Tensor:
+    def forward_features(self, clips: torch.Tensor) -> torch.Tensor:
         sequence, _ = self.lstm(clips)
-        pooled = self.norm(sequence).mean(dim=1)
-        return self.head(self.dropout(pooled))
+        return self.norm(sequence).mean(dim=1)
+
+    def forward(self, clips: torch.Tensor) -> torch.Tensor:
+        return self.head(self.dropout(self.forward_features(clips)))
 
 
 def build_model(name: str, config: dict[str, Any], num_classes: int, num_frames: int) -> nn.Module:
-    model_config = config["models"][name]
+    lookup = name if name in config["models"] else ("landmark_bilstm" if name == "proto_bilstm" else name)
+    model_config = config["models"][lookup]
     if name == "single_frame_cnn":
         return SingleFrameCNN(num_classes=num_classes, dropout=model_config["dropout"])
     if name == "cnn_bilstm":
@@ -197,24 +206,29 @@ def build_model(name: str, config: dict[str, Any], num_classes: int, num_frames:
             norm_first=model_config["norm_first"],
         )
     if name == "landmark_mlp":
-        from .landmarks import LANDMARK_DIM
+        from .geometry import frame_dim
 
+        mode = str(config.get("feature_mode", model_config.get("feature_mode", "xyz")))
         return LandmarkMLP(
             num_classes=num_classes,
-            input_dim=LANDMARK_DIM * num_frames,
+            input_dim=frame_dim(mode) * num_frames,
             hidden_dim=model_config["hidden_dim"],
             dropout=model_config["dropout"],
         )
-    if name == "landmark_bilstm":
-        from .landmarks import LANDMARK_DIM
+    if name in {"landmark_bilstm", "proto_bilstm"}:
+        from .geometry import frame_dim
 
+        mode = str(config.get("feature_mode", model_config.get("feature_mode", "xyz")))
+        spec = model_config if name in config["models"] else config["models"]["landmark_bilstm"]
         return LandmarkBiLSTM(
             num_classes=num_classes,
-            input_dim=LANDMARK_DIM,
-            hidden_dim=model_config["hidden_dim"],
-            layers=model_config["layers"],
-            dropout=model_config["dropout"],
+            input_dim=frame_dim(mode),
+            hidden_dim=spec["hidden_dim"],
+            layers=spec["layers"],
+            dropout=spec["dropout"],
         )
+    if name == "crop_cnn":
+        return SingleFrameCNN(num_classes=num_classes, dropout=model_config.get("dropout", 0.2))
     raise KeyError(name)
 
 

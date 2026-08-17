@@ -19,7 +19,7 @@ import torch
 import torchvision
 from torch import nn
 
-from .dataset import make_landmark_loaders, make_loaders
+from .dataset import make_crop_loaders, make_landmark_loaders, make_loaders
 from .metrics import classification_metrics, stratified_bootstrap_intervals
 from .models import build_model, parameter_counts
 
@@ -175,7 +175,7 @@ def main() -> None:
     parser.add_argument("--classes", type=Path, default=Path("configs/nsl23_classes.json"))
     parser.add_argument(
         "--model",
-        choices=["single_frame_cnn", "cnn_bilstm", "cnn_transformer", "landmark_mlp", "landmark_bilstm"],
+        choices=["single_frame_cnn", "cnn_bilstm", "cnn_transformer", "landmark_mlp", "landmark_bilstm", "crop_cnn"],
         required=True,
     )
     parser.add_argument("--seed", type=int, required=True)
@@ -189,7 +189,12 @@ def main() -> None:
     config = json.loads(args.experiment_config.read_text(encoding="utf-8"))
     seed_everything(args.seed)
     device = select_device(args.device)
-    loader_factory = make_landmark_loaders if args.model.startswith("landmark_") else make_loaders
+    if args.model.startswith("landmark_"):
+        loader_factory = make_landmark_loaders
+    elif args.model.startswith("crop_"):
+        loader_factory = make_crop_loaders
+    else:
+        loader_factory = make_loaders
     loaders, labels, rows_by_split = loader_factory(args.samples, args.classes, config, args.seed, args.num_workers)
     fold_values = {row.get("fold", "unspecified") for rows in rows_by_split.values() for row in rows}
     if len(fold_values) != 1:

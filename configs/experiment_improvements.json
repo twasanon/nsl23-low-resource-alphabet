@@ -1,0 +1,55 @@
+{
+  "experiment_name": "nsl23_improvements_angles_crops",
+  "seed_list": [17, 42, 73],
+  "deterministic_algorithms": true,
+  "num_frames": 16,
+  "image_size": 224,
+  "feature_mode": "raw_angle",
+  "crop_dir": "data/hand_crop_cache_primary",
+  "spatial_policy": "hand_crop_resize_224",
+  "backbone": "torchvision_mobilenet_v2_imagenet1k_v2",
+  "freeze_backbone": true,
+  "models": {
+    "landmark_mlp": {
+      "hidden_dim": 256,
+      "dropout": 0.3,
+      "feature_mode": "raw_angle"
+    },
+    "landmark_bilstm": {
+      "hidden_dim": 64,
+      "layers": 1,
+      "dropout": 0.3,
+      "feature_mode": "raw_angle"
+    },
+    "crop_cnn": {
+      "frame_policy": "middle_frame",
+      "dropout": 0.2
+    }
+  },
+  "training": {
+    "batch_size": 8,
+    "max_epochs": 30,
+    "selection_policy": "fixed_final_epoch",
+    "selection_metric": null,
+    "optimizer": "AdamW",
+    "learning_rate": 0.0003,
+    "weight_decay": 0.0001,
+    "scheduler": "cosine_annealing",
+    "loss": "class_weighted_cross_entropy",
+    "class_weighting": "inverse_frequency_normalized_to_mean_one",
+    "label_smoothing": 0.0,
+    "brightness_probability": 0.5,
+    "brightness_delta": 0.08,
+    "contrast_probability": 0.5,
+    "contrast_range": [0.9, 1.1],
+    "landmark_noise_std": 0.02,
+    "horizontal_flip": false
+  },
+  "evaluation": {
+    "class_order": "configs/nsl23_classes.json",
+    "primary_metrics": ["top1_accuracy", "macro_precision", "macro_recall", "macro_f1"],
+    "bootstrap_replicates": 2000,
+    "bootstrap_confidence": 0.95,
+    "test_policy": "evaluate_each_heldout_signer_once_after_the_fixed_final_epoch"
+  }
+}

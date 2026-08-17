@@ -13,21 +13,7 @@ third_party/
 data/extracted/
 data/raw_archives/
 data/frame_cache_primary/
-*.mov
-*.MOV
-*.mp4
-
-# Local caches and editor files
-.cache/
-.mypy_cache/
-.ruff_cache/
-.idea/
-.vscode/
-
-# NSL23 media is obtained from Zenodo (CC BY 4.0). Do not commit archives or extracted videos.
-data/extracted/
-data/raw_archives/
-data/frame_cache_primary/
+data/hand_crop_cache_primary/
 *.mov
 *.MOV
 *.mp4

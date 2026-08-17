@@ -1,0 +1,58 @@
+{
+  "checkpoint": "artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_73/best_checkpoint.pt",
+  "fold": "heldout_s1",
+  "seed": 73,
+  "model": "landmark_bilstm",
+  "top1_softmax": {
+    "accuracy": 0.23469387755102042,
+    "macro_f1": 0.15363679762176002,
+    "n": 98,
+    "consonant_accuracy": 0.06944444444444445,
+    "vowel_accuracy": 0.6923076923076923
+  },
+  "top3_softmax": 0.37755102040816324,
+  "methods": {
+    "train_prototypes": {
+      "accuracy": 0.22448979591836735,
+      "macro_f1": 0.14847661342259183,
+      "n": 98,
+      "consonant_accuracy": 0.041666666666666664,
+      "vowel_accuracy": 0.7307692307692307
+    },
+    "enroll_replace_class": {
+      "accuracy": 0.8571428571428571,
+      "macro_f1": 0.829251700680272,
+      "n": 98,
+      "consonant_accuracy": 0.9305555555555556,
+      "vowel_accuracy": 0.6538461538461539
+    },
+    "enroll_adapt_class": {
+      "accuracy": 0.8061224489795918,
+      "macro_f1": 0.792128279883382,
+      "n": 98,
+      "consonant_accuracy": 0.7916666666666666,
+      "vowel_accuracy": 0.8461538461538461
+    },
+    "enroll_closed_other_lighting": {
+      "accuracy": 0.7346938775510204,
+      "macro_f1": 0.6904761904761904,
+      "n": 98,
+      "consonant_accuracy": 0.7916666666666666,
+      "vowel_accuracy": 0.5769230769230769
+    },
+    "softmax": {
+      "accuracy": 0.23469387755102042,
+      "macro_f1": 0.15363679762176002,
+      "n": 98,
+      "consonant_accuracy": 0.06944444444444445,
+      "vowel_accuracy": 0.6923076923076923
+    },
+    "train_5nn": {
+      "accuracy": 0.3877551020408163,
+      "macro_f1": 0.31285834347058833,
+      "n": 98,
+      "consonant_accuracy": 0.4305555555555556,
+      "vowel_accuracy": 0.2692307692307692
+    }
+  }
+}

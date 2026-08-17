@@ -1,0 +1,9 @@
+{
+  "model_name": "proto_bilstm",
+  "feature_mode": "raw_angle",
+  "seed": 73,
+  "test_accuracy": 0.5306122448979592,
+  "test_macro_f1": 0.49562976705833844,
+  "consonant_accuracy": 0.4722222222222222,
+  "vowel_accuracy": 0.6923076923076923
+}
