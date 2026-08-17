@@ -1,0 +1,10 @@
+{
+  "model_name": "proto_bilstm",
+  "feature_mode": "xyz",
+  "seed": 17,
+  "fold": "heldout_s1",
+  "test_accuracy": 0.5714285714285714,
+  "test_macro_f1": 0.5191448007774538,
+  "consonant_accuracy": 0.6666666666666666,
+  "vowel_accuracy": 0.3076923076923077
+}

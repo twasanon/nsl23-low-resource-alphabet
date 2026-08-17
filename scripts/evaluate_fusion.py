@@ -42,8 +42,31 @@ def main() -> None:
     landmark_model, landmark_payload = load_net(args.landmark_checkpoint, device)
     crop_model, crop_payload = load_net(args.crop_checkpoint, device)
     labels = load_labels(args.classes)
-    rows = [row for row in read_rows(args.manifest) if row["split"] == "test"]
-    mode = str(landmark_payload["experiment_config"].get("feature_mode", "xyz"))
+    all_rows = read_rows(args.manifest)
+    train_rows = [row for row in all_rows if row["split"] == "train"]
+    rows = [row for row in all_rows if row["split"] == "test"]
+    mode = str(landmark_payload.get("feature_mode") or landmark_payload["experiment_config"].get("feature_mode", "xyz"))
+    use_prototypes = landmark_payload.get("model_name") == "proto_bilstm"
+    prototypes = None
+    if use_prototypes:
+        embeds = []
+        ys = []
+        with torch.no_grad():
+            for row in train_rows:
+                land = np.load(Path("data/landmark_cache_primary") / f"{row['sample_id']}.npy")
+                land_tensor = torch.from_numpy(transform_clip(land, mode)).unsqueeze(0).to(device)
+                embeds.append(landmark_model.forward_features(land_tensor)[0].cpu())
+                ys.append(labels.index(row["canonical_label"]))
+        train_embed = torch.stack(embeds)
+        train_y = torch.tensor(ys)
+        prototypes = torch.stack(
+            [
+                train_embed[train_y == class_index].mean(dim=0)
+                if (train_y == class_index).any()
+                else torch.zeros(train_embed.shape[1])
+                for class_index in range(len(labels))
+            ]
+        ).to(device)
     y_true = []
     y_land = []
     y_crop = []
@@ -58,9 +81,13 @@ def main() -> None:
             mean = torch.tensor([0.485, 0.456, 0.406]).view(1, 1, 3, 1, 1)
             std = torch.tensor([0.229, 0.224, 0.225]).view(1, 1, 3, 1, 1)
             crop_tensor = ((crop_tensor.unsqueeze(0) - mean) / std).to(device)
-            logit_l = landmark_model(land_tensor)[0]
+            if use_prototypes:
+                query = landmark_model.forward_features(land_tensor)
+                logit_l = -torch.cdist(query, prototypes)[0]
+            else:
+                logit_l = landmark_model(land_tensor)[0]
             logit_c = crop_model(crop_tensor)[0]
-            fused = args.landmark_weight * logit_l + (1.0 - args.landmark_weight) * logit_c
+            fused = args.landmark_weight * torch.softmax(logit_l, dim=0) + (1.0 - args.landmark_weight) * torch.softmax(logit_c, dim=0)
             y_true.append(label)
             y_land.append(int(logit_l.argmax()))
             y_crop.append(int(logit_c.argmax()))

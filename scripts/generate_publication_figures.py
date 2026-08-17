@@ -114,43 +114,47 @@ def study_flow(audit_dir: Path, output_dir: Path) -> None:
 
 
 def architecture(output_dir: Path) -> None:
-    fig, ax = plt.subplots(figsize=(7.2, 5.2))
+    fig, ax = plt.subplots(figsize=(7.2, 6.1))
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
     ax.axis("off")
-    ax.text(0.02, 0.96, "RGB video models (control)", ha="left", va="center", fontsize=10, weight="bold")
-    box(ax, 0.02, 0.72, 0.16, 0.16, "16 RGB frames\n224 × 224", "#0072B2", fontsize=8)
-    box(ax, 0.22, 0.72, 0.20, 0.16, "Frozen MobileNetV2\n1,280-D / frame", "#56B4E9", fontsize=8)
-    arrow(ax, (0.18, 0.80), (0.22, 0.80))
-    box(ax, 0.46, 0.84, 0.30, 0.10, "Middle frame → linear", COLORS["single_frame_cnn"], fontsize=8)
-    box(ax, 0.46, 0.71, 0.30, 0.10, "Projection → BiLSTM → mean", COLORS["cnn_bilstm"], fontsize=8)
-    box(ax, 0.46, 0.58, 0.30, 0.10, "Projection + positions → Transformer", COLORS["cnn_transformer"], fontsize=8)
-    arrow(ax, (0.42, 0.80), (0.46, 0.89))
-    arrow(ax, (0.42, 0.80), (0.46, 0.76))
-    arrow(ax, (0.42, 0.80), (0.46, 0.63))
-    box(ax, 0.80, 0.71, 0.17, 0.16, "49-way\nsoftmax", "#333333", fontsize=8)
-    arrow(ax, (0.76, 0.89), (0.80, 0.83))
-    arrow(ax, (0.76, 0.76), (0.80, 0.79))
-    arrow(ax, (0.76, 0.63), (0.80, 0.75))
+    ax.text(0.02, 0.97, "RGB video models (control)", ha="left", va="center", fontsize=10, weight="bold")
+    box(ax, 0.02, 0.78, 0.16, 0.13, "16 RGB frames\n224 × 224", "#0072B2", fontsize=8)
+    box(ax, 0.22, 0.78, 0.20, 0.13, "Frozen MobileNetV2\n1,280-D / frame", "#56B4E9", fontsize=8)
+    arrow(ax, (0.18, 0.845), (0.22, 0.845))
+    box(ax, 0.46, 0.88, 0.30, 0.08, "Middle frame → linear", COLORS["single_frame_cnn"], fontsize=8)
+    box(ax, 0.46, 0.78, 0.30, 0.08, "Projection → BiLSTM → mean", COLORS["cnn_bilstm"], fontsize=8)
+    box(ax, 0.46, 0.68, 0.30, 0.08, "Projection + positions → Transformer", COLORS["cnn_transformer"], fontsize=8)
+    arrow(ax, (0.42, 0.845), (0.46, 0.92))
+    arrow(ax, (0.42, 0.845), (0.46, 0.82))
+    arrow(ax, (0.42, 0.845), (0.46, 0.72))
+    box(ax, 0.80, 0.76, 0.17, 0.13, "49-way\nsoftmax", "#333333", fontsize=8)
+    arrow(ax, (0.76, 0.92), (0.80, 0.86))
+    arrow(ax, (0.76, 0.82), (0.80, 0.84))
+    arrow(ax, (0.76, 0.72), (0.80, 0.80))
 
-    ax.text(0.02, 0.50, "Hand-landmark models (webcam path)", ha="left", va="center", fontsize=10, weight="bold")
-    box(ax, 0.02, 0.22, 0.16, 0.16, "Same 16 frames\nuint8 RGB", "#0072B2", fontsize=8)
-    box(ax, 0.22, 0.22, 0.22, 0.16, "MediaPipe Hands\n21 × xyz + flag\n64-D / frame", "#CC79A7", fontsize=8)
-    arrow(ax, (0.18, 0.30), (0.22, 0.30))
-    box(ax, 0.48, 0.32, 0.28, 0.12, "Flatten 1,024-D → MLP", COLORS["landmark_mlp"], fontsize=8)
-    box(ax, 0.48, 0.16, 0.28, 0.12, "64-D sequence → BiLSTM → mean", COLORS["landmark_bilstm"], fontsize=8)
-    arrow(ax, (0.44, 0.30), (0.48, 0.38))
-    arrow(ax, (0.44, 0.30), (0.48, 0.22))
-    box(ax, 0.80, 0.22, 0.17, 0.16, "49-way\nsoftmax", "#333333", fontsize=8)
-    arrow(ax, (0.76, 0.38), (0.80, 0.34))
-    arrow(ax, (0.76, 0.22), (0.80, 0.28))
+    ax.text(0.02, 0.62, "xyz landmark control (24.8%)", ha="left", va="center", fontsize=10, weight="bold")
+    box(ax, 0.02, 0.46, 0.16, 0.12, "Same 16 frames", "#0072B2", fontsize=8)
+    box(ax, 0.22, 0.46, 0.22, 0.12, "MediaPipe Hands\n64-D xyz + flag", "#CC79A7", fontsize=8)
+    box(ax, 0.48, 0.46, 0.28, 0.12, "BiLSTM → mean → softmax", COLORS["landmark_bilstm"], fontsize=8)
+    arrow(ax, (0.18, 0.52), (0.22, 0.52))
+    arrow(ax, (0.44, 0.52), (0.48, 0.52))
+
+    ax.text(0.02, 0.40, "Improved webcam path", ha="left", va="center", fontsize=10, weight="bold")
+    box(ax, 0.02, 0.16, 0.16, 0.16, "Same 16 frames\nuint8 RGB", "#0072B2", fontsize=8)
+    box(ax, 0.22, 0.16, 0.24, 0.16, "21 xyz + 20 angles\n+ flag = 84-D / frame", "#CC79A7", fontsize=8)
+    box(ax, 0.50, 0.16, 0.26, 0.16, "BiLSTM encoder\nprototypical loss", "#000000", fontsize=8)
+    box(ax, 0.80, 0.16, 0.17, 0.16, "Nearest\nclass mean", "#333333", fontsize=8)
+    arrow(ax, (0.18, 0.24), (0.22, 0.24))
+    arrow(ax, (0.46, 0.24), (0.50, 0.24))
+    arrow(ax, (0.76, 0.24), (0.80, 0.24))
     ax.text(
         0.50,
         0.04,
-        "Wrist-relative xy scaling uses the middle-MCP distance. Landmark coordinates are the only input to the webcam demo.",
+        "The camera demo uses the 84-D prototypical encoder. Closed 1-shot enrollment replaces train means with the other lighting of the test signer.",
         ha="center",
         va="center",
-        fontsize=8,
+        fontsize=7.5,
     )
     save_figure(fig, output_dir, "figure_2_architectures")
 

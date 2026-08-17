@@ -116,19 +116,54 @@ def main() -> None:
         "model_name": "proto_bilstm",
         "feature_mode": args.feature_mode,
         "seed": args.seed,
+        "fold": next((row.get("fold") for row in test_meta if row.get("fold")), None),
         "test_accuracy": metrics["accuracy"],
         "test_macro_f1": metrics["macro_f1"],
         "consonant_accuracy": float((y_true[~vowel] == pred[~vowel]).mean()),
         "vowel_accuracy": float((y_true[vowel] == pred[vowel]).mean()),
         "labels": labels,
-        "experiment_config": {"feature_mode": args.feature_mode, "num_frames": 16, "models": {"landmark_bilstm": {"hidden_dim": args.hidden_dim, "layers": 1, "dropout": 0.3}}},
+        "prototypes": prototypes,
+        "experiment_config": {
+            "feature_mode": args.feature_mode,
+            "num_frames": 16,
+            "models": {"landmark_bilstm": {"hidden_dim": args.hidden_dim, "layers": 1, "dropout": 0.3}},
+        },
         "state_dict": encoder.state_dict(),
     }
     args.output_dir.mkdir(parents=True, exist_ok=True)
     torch.save(payload, args.output_dir / "best_checkpoint.pt")
     write_csv(args.output_dir / "training_history.csv", history)
-    (args.output_dir / "metrics.json").write_text(json.dumps({k: payload[k] for k in payload if k not in {"state_dict", "labels", "experiment_config"}}, indent=2) + "\n")
-    print(json.dumps({k: payload[k] for k in payload if k not in {"state_dict", "labels", "experiment_config"}}, indent=2))
+    pred_rows = []
+    for row, true_index, pred_index in zip(test_meta, y_true, pred, strict=True):
+        pred_rows.append(
+            {
+                "fold": row.get("fold", ""),
+                "model": "proto_bilstm",
+                "seed": args.seed,
+                "sample_id": row["sample_id"],
+                "signer": row.get("signer", ""),
+                "sign_type": row.get("sign_type", ""),
+                "lighting": row.get("lighting", ""),
+                "true_index": int(true_index),
+                "true_label": labels[int(true_index)],
+                "predicted_index": int(pred_index),
+                "predicted_label": labels[int(pred_index)],
+                "correct": int(true_index == pred_index),
+            }
+        )
+    write_csv(args.output_dir / "test_predictions.csv", pred_rows)
+    metric_keys = (
+        "model_name",
+        "feature_mode",
+        "seed",
+        "fold",
+        "test_accuracy",
+        "test_macro_f1",
+        "consonant_accuracy",
+        "vowel_accuracy",
+    )
+    (args.output_dir / "metrics.json").write_text(json.dumps({k: payload[k] for k in metric_keys}, indent=2) + "\n")
+    print(json.dumps({k: payload[k] for k in metric_keys}, indent=2))
 
 
 if __name__ == "__main__":

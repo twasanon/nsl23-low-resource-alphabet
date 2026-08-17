@@ -82,3 +82,14 @@ Status: frozen after the RGB matrix. Same 375 clips, same S1/S2 folds, same seed
 - Device: CPU.
 - Webcam: `scripts/webcam_demo.py` uses video-mode Hands and a 16-frame deque. Streaming FPS is wall-clock frames processed, not RGB clip throughput.
 
+## Improvement addendum (2026-08-17)
+
+Same 375 clips and S1/S2 folds. Does not replace the frozen xyz 30-run matrix.
+
+- Features: `raw_angle` concatenates 63 xyz, 20 inter-joint angles (15 finger + 5 wrist span), and the detection flag (84-D / frame).
+- Cross-entropy: `landmark_mlp` and `landmark_bilstm` with `configs/experiment_improvements.json`, 30 fixed epochs.
+- Prototypical: `scripts/train_protonet.py`, 40 epochs, 40 episodes/epoch, 5-shot/2-query with replacement, nearest **training** prototype at test time. xyz ablation uses `--feature-mode xyz`.
+- Crops: MediaPipe boxes on the RGB cache → `data/hand_crop_cache_primary/` (not in git). Frozen MobileNetV2 middle-frame CNN.
+- Enrollment: `enroll_closed_other_lighting` is the 49-way 1-shot protocol. Do not headline `enroll_replace_class`.
+- Webcam default: prototypical xyz+angle checkpoint, nearest class mean.
+

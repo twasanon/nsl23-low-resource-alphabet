@@ -25,7 +25,11 @@ This ledger is the manuscript's fail-closed evidence map. A quantitative or meth
 | Runtime | Report synchronized batch-one model-only and end-to-end median/p95 latency on the Apple M4 MPS host. Do not call RGB clip latency streaming or real-time performance. | `artifacts/runtime/*/runtime.json` | verified |
 | Landmark representation | MediaPipe Hands 0.10.14, wrist-relative xyz, 64-D frames, 97.8% frame detections, 0 empty clips. | `src/nsl23/landmarks.py`; `artifacts/audit/landmark_detection_summary.json` | verified |
 | Landmark performance | Landmark BiLSTM 24.8% ± 4.0% pooled accuracy; MLP 18.0% ± 2.1%; same 196 clips/seed as RGB. | `artifacts/results/model_summary.csv`; 30-run `primary_results_summary.json` | verified |
-| Webcam loop | Sliding-window MediaPipe + landmark BiLSTM on NSL23 `.MOV` streams: 33–42 FPS on Apple M4 CPU. Do not equate FPS with alphabet accuracy. | `scripts/webcam_demo.py`; `artifacts/runtime/webcam_heldout_s1_A.json` | verified |
+| Joint-angle CE | xyz+angle BiLSTM 37.9% ± 2.4% pooled; MLP 22.4% ± 3.1%. Same folds/seeds. | `artifacts/runs/improvements/*/landmark_*/**/metrics.json`; `artifacts/results/improvements/summary.json` | verified |
+| Prototypical encoder | xyz+angle Proto-BiLSTM 59.4% ± 3.3% pooled; xyz-only proto 55.8% ± 1.8%. Test uses training-set prototypes only. | proto `metrics.json`; `scripts/train_protonet.py` | verified |
+| Cropped-hand CNN | Frozen MobileNetV2 on MediaPipe hand crops: 19.2% ± 1.3%. Fusion with proto is 59.7% ± 3.6% and is not a headline gain. | crop `metrics.json`; `artifacts/results/improvements/fusion_proto_*.json` | verified |
+| Closed 1-shot | Other lighting of the test signer, 49-way: 76.2% ± 4.2% (xyz BiLSTM), 78.2% ± 2.8% (angle BiLSTM), 73.0% ± 1.5% (proto). Do not report `enroll_replace_class` as 1-shot. | `artifacts/results/improvements/enrollment_*.json` | verified |
+| Webcam loop | Sliding-window MediaPipe + prototypical landmark encoder on NSL23 `.MOV` streams: 33–42 FPS on Apple M4 CPU (proto S1-A 39.6 FPS). Do not equate FPS with alphabet accuracy. | `scripts/webcam_demo.py`; `artifacts/runtime/webcam_heldout_s1_A.json`; `artifacts/runtime/webcam_proto_heldout_s1_A.json` | verified |
 | Reproducibility | The code, configurations, notebook, manifests builders, audit scripts, and compact supplementary bundle reproduce the analysis from the official archives. | `NSL23_CNN_Transformer_Reproducibility.ipynb`; `NSL23_reproducibility_bundle.zip`; protocol snapshot | verified |
 
 ## Prohibited claims

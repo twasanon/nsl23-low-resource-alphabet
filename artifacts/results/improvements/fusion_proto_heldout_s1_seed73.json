@@ -1,0 +1,12 @@
+{
+  "landmark": 0.5918367346938775,
+  "crop": 0.21428571428571427,
+  "fusion": 0.5918367346938775,
+  "fusion_macro_f1": 0.5160673793326854,
+  "n": 98,
+  "landmark_checkpoint": "artifacts/runs/improvements/heldout_s1/proto_bilstm/seed_73/best_checkpoint.pt",
+  "crop_checkpoint": "artifacts/runs/improvements/heldout_s1/crop_cnn/seed_73/best_checkpoint.pt",
+  "landmark_weight": 0.5,
+  "fusion_consonant_accuracy": 0.6388888888888888,
+  "fusion_vowel_accuracy": 0.46153846153846156
+}

@@ -1,0 +1,14 @@
+{
+  "frames": 90,
+  "predictions": 75,
+  "elapsed_seconds": 2.2738,
+  "fps": 39.58,
+  "ema_fps": 39.76,
+  "source": "data/extracted/NSL_Vowel/S1_NSL_Vowel_Unprepared_Bright/S1_A.MOV",
+  "checkpoint": "artifacts/runs/improvements/heldout_s1/proto_bilstm/seed_42/best_checkpoint.pt",
+  "last_prediction": {
+    "frame": 90,
+    "label": "A",
+    "confidence": 0.9993810653686523
+  }
+}

@@ -13,19 +13,26 @@ import cv2
 import numpy as np
 import torch
 
-from nsl23.landmarks import LANDMARK_DIM, empty_frame_features, make_detector, normalize_landmarks
+from nsl23.geometry import transform_clip
+from nsl23.landmarks import empty_frame_features, make_detector, normalize_landmarks
 from nsl23.models import build_model
 
 
-def load_checkpoint(path: Path, device: torch.device) -> tuple[torch.nn.Module, list[str], dict]:
+def load_checkpoint(path: Path, device: torch.device):
     payload = torch.load(path, map_location=device, weights_only=False)
     config = payload["experiment_config"]
     labels = payload["labels"]
-    model = build_model(payload["model_name"], config, len(labels), int(config["num_frames"]))
+    model_name = payload["model_name"]
+    if model_name == "proto_bilstm" and "proto_bilstm" not in config.get("models", {}):
+        model_name = "landmark_bilstm"
+    model = build_model(model_name, config, len(labels), int(config["num_frames"]))
     model.load_state_dict(payload["state_dict"])
     model.to(device)
     model.eval()
-    return model, labels, config
+    prototypes = payload.get("prototypes")
+    if prototypes is not None:
+        prototypes = prototypes.to(device)
+    return model, labels, config, payload, prototypes
 
 
 def features_from_bgr(frame_bgr: np.ndarray, detector) -> np.ndarray:
@@ -65,8 +72,9 @@ def main() -> None:
     args = parser.parse_args()
 
     device = torch.device(args.device)
-    model, labels, config = load_checkpoint(args.checkpoint, device)
+    model, labels, config, payload, prototypes = load_checkpoint(args.checkpoint, device)
     num_frames = int(config["num_frames"])
+    feature_mode = str(payload.get("feature_mode") or config.get("feature_mode", "xyz"))
     buffer: deque[np.ndarray] = deque(maxlen=num_frames)
     detector = make_detector(static_image_mode=False, min_detection_confidence=0.35)
     source = cv2.VideoCapture(str(args.video) if args.video else args.camera)
@@ -87,9 +95,14 @@ def main() -> None:
             frame_index += 1
             buffer.append(features_from_bgr(frame, detector))
             if len(buffer) == num_frames:
-                clip = torch.from_numpy(np.stack(buffer, axis=0)).unsqueeze(0).to(device)
+                clip_xyz = np.stack(buffer, axis=0)
+                clip = torch.from_numpy(transform_clip(clip_xyz, feature_mode)).unsqueeze(0).to(device)
                 with torch.no_grad():
-                    logits = model(clip)
+                    if prototypes is not None:
+                        features = model.forward_features(clip)
+                        logits = -torch.cdist(features, prototypes)
+                    else:
+                        logits = model(clip)
                     probabilities = torch.softmax(logits, dim=1).cpu().numpy()[0]
                 if args.smoothing > 0:
                     ema = probabilities if ema is None else args.smoothing * ema + (1.0 - args.smoothing) * probabilities

@@ -24,10 +24,10 @@ Comparing RGB Video Models and Hand Landmarks for Webcam Use}
 \maketitle
 
 \begin{abstract}
-Public Nepali Sign Language (NSL) video is scarce, and reported accuracies on other NSL collections cannot be ranked against one another because they use different classes, splits, and sensors. This paper studies isolated alphabet recognition on the public NSL23 release. After auditing the files, the primary sample is 375 original, individually labelled clips from seven signers. Aggregate recordings without timestamps and cropped derivatives are excluded. Two complete-alphabet signers (S1, S2) are held out in turn, giving 277 training clips and 98 test clips per fold. Five models are trained under the same 30-epoch, three-seed protocol: a frozen ImageNet MobileNetV2 classifier on the middle frame, a CNN--BiLSTM, a CNN--Transformer, a multilayer perceptron on MediaPipe hand landmarks, and a bidirectional LSTM on the same landmarks. On 196 pooled unseen-signer clips, RGB accuracy remains $5.8\% \pm 0.8\%$ to $7.0\% \pm 2.1\%$ (chance is $2.0\%$ for 49 classes). Landmark models reach $18.0\% \pm 2.1\%$ (MLP) and $24.8\% \pm 4.0\%$ (BiLSTM). The BiLSTM gain is concentrated on vowels ($66.0\% \pm 4.0\%$ versus $10.0\% \pm 3.9\%$ on consonants). A CPU webcam loop using MediaPipe Hands and the landmark BiLSTM sustains $33$--$42$ frames per second on an Apple~M4. The result supports a low-resource practice demo, not an interpreter and not a claim of state-of-the-art NSL recognition.
+Public Nepali Sign Language (NSL) video is scarce, and reported accuracies on other NSL collections cannot be ranked against one another because they use different classes, splits, and sensors. This paper studies isolated alphabet recognition on the public NSL23 release. After auditing the files, the primary sample is 375 original, individually labelled clips from seven signers. Aggregate recordings without timestamps and cropped derivatives are excluded. Two complete-alphabet signers (S1, S2) are held out in turn, giving 277 training clips and 98 test clips per fold. Five models are trained under the same 30-epoch, three-seed protocol: a frozen ImageNet MobileNetV2 classifier on the middle frame, a CNN--BiLSTM, a CNN--Transformer, a multilayer perceptron on MediaPipe hand landmarks, and a bidirectional LSTM on the same landmarks. On 196 pooled unseen-signer clips, RGB accuracy remains $5.8\% \pm 0.8\%$ to $7.0\% \pm 2.1\%$ (chance is $2.0\%$ for 49 classes). Wrist-relative xyz landmarks reach $24.8\% \pm 4.0\%$ with a BiLSTM, mostly on vowels ($66.0\% \pm 4.0\%$ versus $10.0\% \pm 3.9\%$ on consonants). A second matrix on the same folds concatenates 20 inter-joint angles and replaces the softmax head with prototypical nearest-class means~\cite{snell2017prototypical,chamachot2026geometry}. That encoder reaches $59.4\% \pm 3.3\%$ unseen-signer accuracy, with consonants at $61.8\% \pm 5.7\%$. Closed 1-shot enrollment, using the other lighting of the held-out signer as the only support set, raises a cross-entropy BiLSTM to $76.2\%$--$78.2\%$. A CPU webcam loop with the prototypical encoder sustains $33$--$42$ frames per second on an Apple~M4. The result is a stronger practice demo than the xyz softmax baseline. It is still not an interpreter, and it is not a claim of state-of-the-art NSL recognition.
 \end{abstract}
 
-\noindent\textbf{Keywords:} Nepali Sign Language; NSL23; signer-independent evaluation; hand landmarks; MediaPipe; webcam; low-resource sign recognition
+\noindent\textbf{Keywords:} Nepali Sign Language; NSL23; signer-independent evaluation; hand landmarks; MediaPipe; prototypical networks; joint angles; webcam; low-resource sign recognition
 
 \section{Introduction}
 
@@ -40,16 +40,18 @@ The practical goal that motivated this work is narrower than a new sequence arch
 Hand landmarks are a different representation. MediaPipe Hands returns 21 three-dimensional keypoints per detected hand~\cite{zhang2020mediapipe}. The vector is small enough for a CPU classifier. It also drops most of the clothing and background that a frozen ImageNet encoder still sees. NSL letter systems have used landmarks on other image collections~\cite{shrestha2024mediapipe}.
 Those systems were not evaluated on the original isolated NSL23 clips with S1 and S2 held out.
 
-This paper keeps the audited 375-clip sample and the two signer-held-out folds, then adds landmark classifiers and a measured webcam loop. The questions are:
+This paper keeps the audited 375-clip sample and the two signer-held-out folds, then adds landmark classifiers, a follow-on representation study, and a measured webcam loop. The questions are:
 
 \begin{enumerate}
 \item How many original NSL23 clips support isolated-letter evaluation without inferred segment boundaries?
 \item On those folds, do frozen-RGB temporal heads improve over a middle-frame CNN?
 \item Do wrist-normalized hand landmarks improve over the same RGB controls?
-\item Can the better landmark model run as a sliding-window camera demo at interactive frame rates on a laptop CPU?
+\item Can a landmark model run as a sliding-window camera demo at interactive frame rates on a laptop CPU?
+\item On the same folds, do inter-joint angles and prototypical classification raise unseen-signer accuracy above the xyz softmax BiLSTM?
+\item If the other lighting of the held-out signer is available as a 49-way 1-shot support set, how much does that enrollment protocol add?
 \end{enumerate}
 
-The answers are descriptive. Only two signers provide a complete 49-class unseen test. Scores from other NSL papers, including word-level Transformers~\cite{heuju2022word} and still-image letter CNNs~\cite{shrestha2024mediapipe}, are not competitors on this exam.
+The answers are descriptive. Only two signers provide a complete 49-class unseen test. Scores from other NSL papers, including word-level Transformers~\cite{heuju2022word} and still-image letter CNNs~\cite{shrestha2024mediapipe}, are not competitors on this exam. Chamachot and Lertniphonphan's angle features and few-shot protocol are a method source, not a leaderboard for NSL23~\cite{chamachot2026geometry}.
 
 \section{Related work}
 
@@ -66,6 +68,10 @@ NSL23 itself is a dataset paper, not a recognition leaderboard~\cite{sunuwar2024
 \subsection{Lightweight RGB encoders and pose}
 
 MobileNetV2 is a compact ImageNet classifier~\cite{sandler2018mobilenetv2}. Pretrained visual features often transfer, but transfer quality depends on the domain gap~\cite{kornblith2019better}. Isolated NSL letters are hand shapes, often nearly static, recorded at variable resolution. A frozen ImageNet encoder is a controlled baseline, not an assumption that those features are appropriate. Pose and landmark pipelines replace the image with keypoints. MediaPipe Hands is one such detector, designed for on-device tracking~\cite{zhang2020mediapipe}. Detection can fail under occlusion, blur, or poor lighting; those failure rates belong in the experiment rather than as a reason to avoid the tool.
+
+\subsection{Geometric hand features and prototypical classifiers}
+
+Wrist-relative coordinates still rotate with the camera and the forearm. Inter-joint angles computed from the same 21 MediaPipe points are invariant to rotation, translation, and isotropic scale. Chamachot and Lertniphonphan use a 20-angle descriptor with a prototypical network on static fingerspelling images from several languages~\cite{chamachot2026geometry}. Prototypical networks classify a query by Euclidean distance to a class mean in an embedding space~\cite{snell2017prototypical}. We reuse those two ideas on NSL23 video clips, with a BiLSTM encoder over 16 frames, without claiming a result on their static alphabets.
 
 \section{Dataset and evaluation protocol}
 
@@ -128,7 +134,7 @@ Figure~\ref{fig:arch} shows the two pipelines. RGB models share a frozen encoder
 \begin{figure}[t]
 \centering
 \includegraphics[width=0.98\linewidth]{figure_2_architectures.pdf}
-\caption{RGB controls (top) and landmark models (bottom). The webcam demo uses only the landmark path.}
+\caption{RGB controls (top), xyz landmark softmax (middle), and the improved webcam path (bottom): 84-D xyz+angle frames and nearest class prototype.}
 \label{fig:arch}
 \end{figure}
 
@@ -182,9 +188,36 @@ The landmark MLP flattens the clip to $\mathbb{R}^{1024}$ and uses hidden widths
 \bar{\mathbf{h}} = \frac{1}{T}\sum_{t=1}^{T} \mathrm{LN}([\overrightarrow{\mathbf{h}}_t; \overleftarrow{\mathbf{h}}_t]).
 \end{equation}
 
+\subsection{Joint angles and prototypical training}
+
+The follow-on matrix keeps the same 16-frame MediaPipe cache. From the wrist-relative points $\tilde{\mathbf{p}}_i$, we compute 15 intra-finger flexion angles (three along each of the five rays from the wrist) and five abduction angles at the wrist, following the 20-angle layout of Chamachot and Lertniphonphan~\cite{chamachot2026geometry}. For unit vectors $\mathbf{u}$ and $\mathbf{v}$ from a pivot joint,
+\begin{equation}
+\phi(\mathbf{u},\mathbf{v}) = \arccos\bigl(\mathrm{clip}(\mathbf{u}^{\top}\mathbf{v}, -1, 1)\bigr).
+\end{equation}
+A miss ($d_t=0$) yields a zero angle vector. Concatenating the 63 coordinates, the 20 angles, and the detection flag gives
+\begin{equation}
+\mathbf{x}_t^{\mathrm{raw+ang}} = \bigl[\tilde{\mathbf{p}}_0;\ldots;\tilde{\mathbf{p}}_{20}; \boldsymbol{\phi}_t; d_t\bigr] \in \mathbb{R}^{84}.
+\end{equation}
+The BiLSTM input width grows from 64 to 84 ($83{,}377$ parameters). Cross-entropy training is otherwise unchanged.
+
+Prototypical training uses the same BiLSTM as an encoder $g_{\psi}$ that maps a clip to $\bar{\mathbf{h}} \in \mathbb{R}^{128}$. Each epoch runs 40 episodes. An episode draws, for every class, five support clips and two query clips from the training fold, with replacement when a class has fewer than seven training clips. Class prototypes are support means. The loss is softmax over Euclidean distances~\cite{snell2017prototypical}:
+\begin{equation}
+\mathbf{c}_c = \frac{1}{|S_c|}\sum_{(\mathbf{X},y)\in S_c} g_{\psi}(\mathbf{X}), \qquad
+p(y=c\mid\mathbf{X}) = \frac{\exp(-\lVert g_{\psi}(\mathbf{X})-\mathbf{c}_c\rVert_2)}{\sum_{c'}\exp(-\lVert g_{\psi}(\mathbf{X})-\mathbf{c}_{c'}\rVert_2)}.
+\end{equation}
+After 40 epochs, test clips are classified by nearest \emph{training}-set prototype. The held-out signer never contributes a prototype in this evaluation. An xyz-only prototypical ablation uses the same encoder and episodes with 64-D frames.
+
+\subsection{Cropped-hand CNN and fusion}
+
+Full-frame RGB leaves the hand as a small region in a $224\times 224$ letterbox. A follow-on control crops a square around the detected hand from the same 16 cached frames, resizes the crop to $224\times 224$, and trains the frozen MobileNetV2 middle-frame classifier on those crops ($62{,}769$ trainable parameters). Fusion averages softmax probabilities from a landmark model and the crop CNN with equal weight, specified before seeing test scores.
+
+\subsection{Closed 1-shot enrollment}
+
+Each test signer has exactly two original clips per class (bright and dark), so a 5-shot enrollment of the test person is impossible. The honest 1-shot protocol uses the other lighting of all 49 classes from that signer as the support set and the remaining 98 clips as queries: when the query is bright, prototypes are the 49 dark clips, and conversely. Missing classes, which do not occur on S1 or S2, would fall back to the training mean. Replacing only the true class prototype while leaving the other 48 classes as other people's means is not reported as 1-shot accuracy; that setup is too easy.
+
 \subsection{Loss and optimization}
 
-All five models use inverse-frequency class-weighted cross entropy without label smoothing. For class counts $n_c$ in a training fold,
+The five models in the primary matrix use inverse-frequency class-weighted cross entropy without label smoothing. For class counts $n_c$ in a training fold,
 \begin{equation}
 w_c \propto \frac{1}{n_c}, \qquad
 \frac{1}{C}\sum_{c=1}^{C} w_c = 1, \qquad
@@ -192,11 +225,11 @@ w_c \propto \frac{1}{n_c}, \qquad
 \end{equation}
 with $C=49$. The weights offset the release's two isolated clips per vowel versus up to seven per consonant.
 
-AdamW uses learning rate $3 \times 10^{-4}$ and weight decay $10^{-4}$~\cite{loshchilov2019adamw}, with cosine annealing over 30 epochs, batch size 8, and seeds $17$, $42$, and $73$. Deterministic algorithms are enabled. RGB models train on Apple~M4 MPS; landmark models train on CPU. The schedule, including the absence of a validation split, was fixed before the RGB matrix and reused for landmarks.
+AdamW uses learning rate $3 \times 10^{-4}$ and weight decay $10^{-4}$~\cite{loshchilov2019adamw}, with cosine annealing over 30 epochs, batch size 8, and seeds $17$, $42$, and $73$. Deterministic algorithms are enabled. RGB models train on Apple~M4 MPS; landmark models train on CPU. The schedule, including the absence of a validation split, was fixed before the RGB matrix and reused for landmarks. Prototypical runs use the same optimizer and seeds for 40 epochs, without class-weighted cross entropy, because the episode already visits every class.
 
 \subsection{Webcam loop}
 
-The demo does not classify a pre-cut clip. It maintains a deque of the most recent $T=16$ landmark vectors from a camera or video stream, runs the landmark BiLSTM on that window, and optionally smooths class probabilities with an exponential moving average
+The demo does not classify a pre-cut clip. It maintains a deque of the most recent $T=16$ landmark vectors from a camera or video stream, concatenates the 20 joint angles, runs the prototypical BiLSTM encoder on that window, and assigns the nearest stored training-class mean. Class probabilities are a softmax over negated distances, optionally smoothed with an exponential moving average
 \begin{equation}
 \mathbf{s}_t = \alpha \mathbf{s}_{t-1} + (1-\alpha)\hat{\mathbf{y}}_t, \qquad \alpha = 0.4.
 \end{equation}
@@ -204,7 +237,7 @@ Streaming speed is wall-clock frames processed per second, including MediaPipe, 
 
 \section{Experiments}
 
-The matrix is five models, two folds, and three seeds (30 runs). Each test fold has 98 clips: 49 classes $\times$ \{bright, dark\}. Seed-level scores pool the two non-overlapping held-out signers (196 unique clips). Architecture summaries are the mean and sample standard deviation of those three seed scores. Top-1 accuracy and macro-F1 are the primary descriptors~\cite{sokolova2009measures}. Equal class support makes pooled accuracy identical to macro-recall.
+The primary matrix is five models, two folds, and three seeds (30 runs). A follow-on matrix on the same folds and seeds trains xyz+angle cross-entropy models, prototypical BiLSTMs (xyz and xyz+angle), and the cropped-hand CNN, then evaluates closed 1-shot enrollment. Each test fold has 98 clips: 49 classes $\times$ \{bright, dark\}. Seed-level scores pool the two non-overlapping held-out signers (196 unique clips). Architecture summaries are the mean and sample standard deviation of those three seed scores. Top-1 accuracy and macro-F1 are the primary descriptors~\cite{sokolova2009measures}. Equal class support makes pooled accuracy identical to macro-recall.
 
 Class-stratified clip bootstrap intervals (2{,}000 replicates) are stored with each run. They describe prediction variability on the observed clips~\cite{efron1993bootstrap}. They do not estimate uncertainty over a population of signers.
 
@@ -273,25 +306,62 @@ Table~\ref{tab:signtype} is the more informative split. RGB vowel accuracy is ab
 
 Figure~\ref{fig:conf} and Figure~\ref{fig:recall} show where consonants go. Across the 12 repeated evaluations of each class (two clips $\times$ two folds $\times$ three seeds), BHA, RA, and TA are never recognized: BHA and RA are always mapped to AH, and TA is always mapped to RI. NA is always mapped to YAN. Those are systematic confusions on this protocol, not rare off-diagonal noise.
 
+\subsection{Joint angles, prototypical classification, and crops}
+
+Table~\ref{tab:improve} and Figure~\ref{fig:improve} report the follow-on matrix on the same 196 clips per seed. Concatenating the 20 angles under cross entropy raises the BiLSTM from $24.8\% \pm 4.0\%$ to $37.9\% \pm 2.4\%$. Consonant accuracy moves from $10.0\%$ to $28.7\% \pm 4.5\%$; vowels stay near $63.5\%$. The angle MLP does not beat the xyz BiLSTM.
+
+Prototypical training is the larger change. An xyz prototypical BiLSTM reaches $55.8\% \pm 1.8\%$. Adding angles to that encoder reaches $59.4\% \pm 3.3\%$ accuracy and $54.7\% \pm 4.2\%$ macro-F1. Consonants are $61.8\% \pm 5.7\%$; vowels are $52.6\% \pm 4.8\%$. The softmax xyz model was a vowel specialist. The prototypical encoder trades some of that vowel rate for a usable consonant rate. Fold means are $63.3\% \pm 3.7\%$ on S1 and $55.4\% \pm 3.3\%$ on S2.
+
+The cropped-hand CNN is $19.2\% \pm 1.3\%$. Cropping helps relative to full-frame RGB ($5.8\%$--$7.0\%$) and does not catch landmarks. Equal-weight softmax fusion of the prototypical encoder and the crop CNN is $59.7\% \pm 3.6\%$, within noise of the prototypical encoder alone. Fusion of the angle BiLSTM and the crop CNN is about $41.5\%$, a few points above the BiLSTM and still far below prototypical classification. Figure~\ref{fig:proto_conf} is the corresponding confusion matrix.
+
+\input{generated_improvement_tables.tex}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.98\linewidth]{figure_9_zero_shot_improvements.pdf}
+\caption{Unseen-signer accuracy after pooling S1 and S2. The xyz BiLSTM is the frozen 30-run control; the remaining bars are the follow-on matrix.}
+\label{fig:improve}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.98\linewidth]{figure_11_proto_bilstm_confusion.pdf}
+\caption{Prototypical xyz+angle BiLSTM confusion, row-normalized and averaged over two folds and three seeds.}
+\label{fig:proto_conf}
+\end{figure}
+
+\subsection{Closed 1-shot enrollment}
+
+Table~\ref{tab:enroll} and Figure~\ref{fig:enroll} separate the hard exam (train prototypes only) from a tutor setting in which the system has seen the test signer's other lighting of every letter. Closed 1-shot accuracy is $76.2\% \pm 4.2\%$ for the xyz BiLSTM, $78.2\% \pm 2.8\%$ for the angle BiLSTM, and $73.0\% \pm 1.5\%$ for the prototypical encoder. Enrollment helps the weaker softmax models more. It does not replace the unseen-signer number: a new user who has not recorded a dark and a bright take of all 49 letters still faces the $59.4\%$ prototypical exam.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.98\linewidth]{figure_10_enrollment.pdf}
+\caption{Unseen-signer classification versus closed 1-shot enrollment on the other lighting of the held-out signer.}
+\label{fig:enroll}
+\end{figure}
+
 \subsection{Runtime and webcam}
 
 Table~\ref{tab:runtime} separates network time from pipeline time. On MPS, RGB model-only medians are $4.0$~ms (single-frame) and about $50$~ms (temporal heads). End-to-end RGB clip processing is about $0.94$--$0.97$~s because decoding dominates. That measurement is not a camera frame rate.
 
 On CPU, the landmark BiLSTM forward pass is $0.3$~ms per 16-frame clip ($0.5$~ms at the 95th percentile). Running MediaPipe on those 16 cached frames plus the classifier takes a median $346$~ms per clip. The webcam loop is cheaper per frame because Hands runs in video mode on one frame at a time and the LSTM is applied to a rolling window.
 
-On original NSL23 videos, with the landmark BiLSTM trained without the signer in the file, the loop processed 90 frames of S1's bright isolated \texttt{A} in $2.27$~s ($39.7$~FPS) and 90 frames of the corresponding dark clip in $2.16$~s ($41.7$~FPS). S2's bright \texttt{A} clip is shorter (71 decoded frames) and ran at $32.4$~FPS. In those three streams the argmax after EMA smoothing was \texttt{A}. That is a qualitative check on one vowel, consistent with the $66\%$ unseen-signer vowel rate, not a streaming accuracy estimate over the alphabet.
+On original NSL23 videos, with the prototypical xyz+angle encoder trained without the signer in the file, the loop processed 90 frames of S1's bright isolated \texttt{A} in $2.27$~s ($39.6$~FPS). The argmax after EMA smoothing was \texttt{A}. The earlier xyz softmax loop on the same clip was $39.7$~FPS; nearest-prototype classification does not change the MediaPipe-dominated budget. In three xyz-softmax streams reported previously (S1 bright, S1 dark, S2 bright \texttt{A}), wall-clock rates were $33$--$42$~FPS. Those measurements are a speed check on one vowel, not a streaming accuracy estimate over the alphabet.
 
 \section{Discussion}
 
 The RGB comparison answers the original architectural question. With a frozen ImageNet encoder, 16 letterboxed frames, and this isolated subset, a BiLSTM or Transformer head does not produce a reliable unseen-signer gain. Perfect training accuracy and $\approx 6\%$ test accuracy point to a representation failure. Many NSL23 consonant classes are held shapes. ImageNet features, even from MobileNetV2, are a weak description of those shapes when the test person changes.
 
-Landmarks change the input. Coordinates ignore most of the background, and wrist-relative scaling removes some of the absolute position and size of the hand in the frame. The classifier that then works best here is not a Transformer on images; it is a $73$k-parameter BiLSTM on 64-dimensional pose vectors. That model is also the one that can be attached to a camera without decoding 224-pixel RGB clips through a CNN.
+Landmarks change the input. Coordinates ignore most of the background, and wrist-relative scaling removes some of the absolute position and size of the hand in the frame. Under softmax cross entropy, the model that then works best is a $73$k-parameter BiLSTM on 64-dimensional pose vectors ($24.8\%$). That is the frozen control. The webcam path that follows uses the same LSTM width with 84-D frames and nearest-class means ($83$k parameters), not a Transformer on images.
 
-The vowel/consonant split limits how far that conclusion should be pushed. Vowels in this release are few, exist for only two isolated signers, and appear to be more separable in landmark space. Consonants are the bulk of the alphabet and remain near $10\%$ for the best model. Several confusions are complete across seeds. A webcam that is fast and occasionally right on \texttt{A} can still be wrong on a large set of similar consonants.
+The vowel/consonant split on the xyz softmax BiLSTM limits how far the $24.8\%$ number should be pushed. Vowels in this release are few, exist for only two isolated signers, and are more separable in landmark space. Consonants are the bulk of the alphabet and were near $10\%$ for that model. Several confusions were complete across seeds.
 
-Two product readings follow, and they should not be merged. For a new signer, $24.8\%$ top-1 on 49 classes is above chance and above RGB, and it is not usable as translation. For a learner practising letters on their own camera, a fast landmark demo is a reasonable prototype, especially on more distinct vowels, provided the interface does not imply that the system ``understands NSL.'' Signer-dependent enrollment is likely necessary before consonant accuracy would be acceptable even for practice; that experiment is outside the frozen protocol.
+The follow-on matrix changes the product reading. Prototypical classification, not a deeper RGB network, is what moves consonants. Unseen-signer accuracy of $59.4\%$ is still two errors in five, and it is not translation. It is no longer a system that is almost always wrong on the 36 consonants. Closed 1-shot enrollment at $76$--$78\%$ is the number that belongs to a tutor that has already seen the learner's other lighting of each letter. Those two settings should not be merged in a demo caption.
 
-Other published percentages stay in their own rows. A $90\%$ still-image result on a private or Kaggle letter set is not a loss for this paper, and $24.8\%$ on NSL23 is not a win over a 71-word video study. Different labels, different files, different splits.
+Cropping the hand for a frozen ImageNet CNN does not close the gap. The failure of full-frame RGB was not only that the hand was small; the frozen encoder remains a weak description of NSL letter shapes when the person changes.
+
+Other published percentages stay in their own rows. A $90\%$ still-image result on a private or Kaggle letter set is not a loss for this paper, $59.4\%$ on NSL23 is not a win over a 71-word video study, and the 20-angle descriptor is not a reproduction of Chamachot and Lertniphonphan's static few-shot numbers~\cite{chamachot2026geometry}. Different labels, different files, different splits.
 
 \section{Limitations}
 
@@ -299,13 +369,15 @@ The complete-alphabet unseen test uses two people. Clip bootstrap intervals do n
 
 MediaPipe is a third-party detector. Landmark quality is not independent of lighting, blur, skin tone, or camera. A $97.8\%$ frame detection rate on these cached frames does not guarantee the same rate on an unseen webcam.
 
-The RGB encoder was frozen. Fine-tuning MobileNetV2, or pretraining on a large still-image letter set, might raise RGB accuracy. It would not automatically yield a 40~FPS laptop demo. Hyperparameters were not searched after seeing test scores; they may be suboptimal.
+The RGB encoder was frozen. Fine-tuning MobileNetV2, or pretraining on a large still-image letter set, might raise RGB or crop accuracy. Poudel's Kaggle still-image NSL letters were not used here; this environment had no Kaggle credentials, and that collection is 36 consonants rather than the 49 NSL23 classes. Hyperparameters were not searched after seeing test scores; they may be suboptimal.
+
+Closed 1-shot enrollment uses the other lighting of the same recording session, not a second day and not a live enrollment UI. With two clips per class per signer, 5-shot enrollment of the test person cannot be run honestly.
 
 The webcam measurement uses NSL23 files as a stream, not a live user study. FPS is hardware-specific (Apple~M4, MediaPipe~0.10.14, CPU). Interactive speed is not the same as recognition quality.
 
 \section{Conclusion}
 
-On audited original isolated NSL23 clips, with S1 and S2 held out, frozen RGB video models remain near $6$--$7\%$ accuracy. Wrist-normalized MediaPipe landmarks raise that to $24.8\% \pm 4.0\%$ with a $73$k-parameter BiLSTM, mostly by separating vowels. A CPU webcam loop using that model runs at $33$--$42$~FPS on an Apple~M4. The public files, protocol, predictions, and demo script are released so later work can replace the detector, unfreeze the RGB encoder, or add signer enrollment without repeating the sample-definition mistakes that make NSL23 easy to overcount.
+On audited original isolated NSL23 clips, with S1 and S2 held out, frozen RGB video models remain near $6$--$7\%$ accuracy. Wrist-normalized MediaPipe landmarks raise that to $24.8\% \pm 4.0\%$ with a softmax BiLSTM, mostly by separating vowels. Concatenating 20 joint angles and training the same encoder with prototypical loss reaches $59.4\% \pm 3.3\%$ unseen-signer accuracy, with consonants at $61.8\%$. Closed 1-shot enrollment on the other lighting of the test signer is $76$--$78\%$ for the cross-entropy BiLSTMs. A CPU webcam loop using the prototypical encoder runs at $33$--$42$~FPS on an Apple~M4. The public files, protocol, predictions, and demo script are released so later work can replace the detector, unfreeze the RGB encoder, or change the enrollment UI without repeating the sample-definition mistakes that make NSL23 easy to overcount.
 
 \section*{Data availability}
 

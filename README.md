@@ -17,12 +17,18 @@ On 375 original isolated clips, with signers S1 and S2 held out in turn (196 poo
 | Single-frame CNN | 5.8% ± 0.8% | 3.5% ± 0.2% |
 | CNN–BiLSTM | 7.0% ± 2.1% | 4.2% ± 2.1% |
 | CNN–Transformer | 6.3% ± 0.8% | 4.4% ± 1.3% |
-| Landmark MLP | 18.0% ± 2.1% | 11.1% ± 1.8% |
-| Landmark BiLSTM | **24.8% ± 4.0%** | **16.8% ± 3.8%** |
+| Landmark MLP (xyz) | 18.0% ± 2.1% | 11.1% ± 1.8% |
+| Landmark BiLSTM (xyz, softmax) | 24.8% ± 4.0% | 16.8% ± 3.8% |
+| Hand-crop CNN | 19.2% ± 1.3% | 15.9% ± 0.7% |
+| xyz+angle BiLSTM (softmax) | 37.9% ± 2.4% | 30.1% ± 2.6% |
+| xyz Proto-BiLSTM | 55.8% ± 1.8% | 50.6% ± 2.4% |
+| **xyz+angle Proto-BiLSTM** | **59.4% ± 3.3%** | **54.7% ± 4.2%** |
 
-Chance for 49 classes is 2.0%. Landmark BiLSTM vowel accuracy is 66.0% ± 4.0%; consonant accuracy is 10.0% ± 3.9%. A CPU webcam loop (`scripts/webcam_demo.py`) processed held-out NSL23 streams at **33–42 FPS** on an Apple M4. That is a speed measurement, not a 49-class streaming accuracy.
+Chance for 49 classes is 2.0%. The prototypical encoder’s consonant accuracy is 61.8% ± 5.7% (the xyz softmax BiLSTM was 10.0% ± 3.9% on consonants). Closed 1-shot enrollment on the test signer’s other lighting is 76.2%–78.2% for the softmax BiLSTMs; that is a tutor protocol, not the unseen-signer exam.
 
-Do not quote 93.5%, “state of the art,” or other papers’ percentages as if they were scores on these folds.
+A CPU webcam loop (`scripts/webcam_demo.py`) with the prototypical encoder processed a held-out NSL23 stream at **39.6 FPS** on an Apple M4; earlier xyz-softmax streams were **33–42 FPS**. That is a speed measurement, not a 49-class streaming accuracy.
+
+Do not quote 93.5%, “state of the art,” or other papers’ percentages as if they were scores on these folds. Do not headline `enroll_replace_class`.
 
 ## Setup
 
@@ -42,11 +48,11 @@ Needs a camera, or any video file:
 ```bash
 export PYTHONPATH=src
 python scripts/webcam_demo.py \
-  --checkpoint artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_42/best_checkpoint.pt \
+  --checkpoint artifacts/runs/improvements/heldout_s1/proto_bilstm/seed_42/best_checkpoint.pt \
   --camera 0
 ```
 
-Held-out checkpoint for S1 is `heldout_s1/...`; for S2 use `heldout_s2/...`. Press `q` to quit. `--video path.MOV --no-window` runs a stream without a GUI.
+Held-out prototypical checkpoint for S1 is `heldout_s1/proto_bilstm/...`; for S2 use `heldout_s2/...`. The xyz softmax control remains under `artifacts/runs/primary/`. Press `q` to quit. `--video path.MOV --no-window` runs a stream without a GUI.
 
 ## Retrain (optional)
 
@@ -55,8 +61,12 @@ RGB frame caches are local-only (`data/frame_cache_primary/`, ~0.9 GB) and need 
 ```bash
 export PYTHONPATH=src
 python scripts/run_landmark_experiments.py          # skips completed runs
+python scripts/run_improvement_experiments.py       # angles + crop CNN
+python scripts/train_protonet.py --samples data/manifests/folds/heldout_s1_cached.csv --output-dir artifacts/runs/improvements/heldout_s1/proto_bilstm/seed_17 --seed 17
+python scripts/evaluate_enrollment.py --checkpoint ... --manifest ... --output ...
 python scripts/summarize_primary_results.py
 python scripts/generate_publication_figures.py
+python scripts/generate_improvement_figures.py
 python scripts/write_results_summary.py
 python scripts/write_latex_tables.py
 python scripts/webcam_demo.py --checkpoint ... --video ... --no-window --max-frames 90

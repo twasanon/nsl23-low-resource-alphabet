@@ -1,0 +1,36 @@
+% Auto-generated from the improvement matrix. Do not edit by hand.
+\begin{table}[t]
+\centering
+\caption{Follow-on unseen-signer accuracy on the same S1/S2 folds (196 clips/seed; mean $\pm$ SD over three seeds). The xyz BiLSTM row is the frozen 30-run control.}
+\label{tab:improve}
+\small
+\begin{tabular}{lcccc}
+\toprule
+Model & Acc. (\%) & Macro-F1 (\%) & Cons. (\%) & Vow. (\%) \\
+\midrule
+xyz BiLSTM (CE) & 24.8 $\pm$ 4.0 & 16.8 $\pm$ 3.8 & 10.0 $\pm$ 3.9 & 66.0 $\pm$ 4.0 \\
+Hand-crop CNN & 19.2 $\pm$ 1.3 & 15.9 $\pm$ 0.7 & 15.5 $\pm$ 0.8 & 29.5 $\pm$ 2.9 \\
+xyz+angle MLP (CE) & 22.4 $\pm$ 3.1 & 14.6 $\pm$ 2.9 & 13.7 $\pm$ 3.6 & 46.8 $\pm$ 2.9 \\
+xyz+angle BiLSTM (CE) & 37.9 $\pm$ 2.4 & 30.1 $\pm$ 2.6 & 28.7 $\pm$ 4.5 & 63.5 $\pm$ 3.8 \\
+xyz Proto-BiLSTM & 55.8 $\pm$ 1.8 & 50.6 $\pm$ 2.4 & 58.3 $\pm$ 2.5 & 48.7 $\pm$ 5.9 \\
+xyz+angle Proto-BiLSTM & 59.4 $\pm$ 3.3 & 54.7 $\pm$ 4.2 & 61.8 $\pm$ 5.7 & 52.6 $\pm$ 4.8 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Closed 1-shot enrollment: the other lighting of the held-out signer supplies one support clip per class (98 queries/fold). Mean $\pm$ SD over three seeds after pooling S1 and S2.}
+\label{tab:enroll}
+\small
+\begin{tabular}{lcc}
+\toprule
+Encoder & Unseen signer (\%) & Closed 1-shot (\%) \\
+\midrule
+xyz BiLSTM (CE) & 24.8 $\pm$ 4.0 & 76.2 $\pm$ 4.2 \\
+xyz+angle BiLSTM (CE) & 37.9 $\pm$ 2.4 & 78.2 $\pm$ 2.8 \\
+xyz+angle Proto-BiLSTM & 59.4 $\pm$ 3.3 & 73.0 $\pm$ 1.5 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
