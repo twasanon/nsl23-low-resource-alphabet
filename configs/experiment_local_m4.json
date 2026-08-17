@@ -1,0 +1,67 @@
+{
+  "experiment_name": "nsl23_original_isolated_twofold_signer_m4",
+  "seed_list": [17, 42, 73],
+  "deterministic_algorithms": true,
+  "num_frames": 16,
+  "image_size": 224,
+  "spatial_policy": "aspect_ratio_preserving_resize_with_black_letterbox",
+  "backbone": "torchvision_mobilenet_v2_imagenet1k_v2",
+  "freeze_backbone": true,
+  "models": {
+    "single_frame_cnn": {
+      "frame_policy": "middle_frame",
+      "dropout": 0.2
+    },
+    "cnn_bilstm": {
+      "projection_dim": 256,
+      "hidden_dim": 128,
+      "layers": 1,
+      "bidirectional": true,
+      "dropout": 0.2,
+      "temporal_pooling": "mean"
+    },
+    "cnn_transformer": {
+      "projection_dim": 256,
+      "heads": 4,
+      "layers": 2,
+      "feedforward_dim": 512,
+      "encoder_dropout": 0.0,
+      "head_dropout": 0.2,
+      "activation": "gelu",
+      "positional_embedding": "learned",
+      "temporal_pooling": "mean",
+      "norm_first": false
+    }
+  },
+  "training": {
+    "batch_size": 8,
+    "max_epochs": 30,
+    "selection_policy": "fixed_final_epoch",
+    "selection_metric": null,
+    "optimizer": "AdamW",
+    "learning_rate": 0.0003,
+    "weight_decay": 0.0001,
+    "scheduler": "cosine_annealing",
+    "loss": "class_weighted_cross_entropy",
+    "class_weighting": "inverse_frequency_normalized_to_mean_one",
+    "label_smoothing": 0.0,
+    "brightness_probability": 0.5,
+    "brightness_delta": 0.08,
+    "contrast_probability": 0.5,
+    "contrast_range": [0.9, 1.1],
+    "horizontal_flip": false
+  },
+  "evaluation": {
+    "class_order": "configs/nsl23_classes.json",
+    "primary_metrics": ["top1_accuracy", "macro_precision", "macro_recall", "macro_f1"],
+    "bootstrap_replicates": 2000,
+    "bootstrap_confidence": 0.95,
+    "test_policy": "evaluate_each_heldout_signer_once_after_the_fixed_final_epoch"
+  },
+  "runtime": {
+    "local_device": "Apple_M4_MPS",
+    "batch1_warmup": 20,
+    "batch1_iterations": 100,
+    "report": ["model_only_median_ms_per_clip", "model_only_p95_ms_per_clip", "end_to_end_median_ms_per_clip", "end_to_end_p95_ms_per_clip"]
+  }
+}

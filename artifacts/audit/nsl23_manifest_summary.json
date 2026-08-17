@@ -1,0 +1,212 @@
+{
+  "videos": 630,
+  "decoded_videos": 630,
+  "isolated_videos": 607,
+  "aggregate_videos": 23,
+  "cropped_or_preprocessed_videos": 234,
+  "primary_usable_isolated_clips": 375,
+  "primary_usable_isolated_signers": [
+    "S1",
+    "S2",
+    "S7",
+    "S8",
+    "S10",
+    "S11",
+    "S12"
+  ],
+  "primary_usable_isolated_classes": [
+    "A",
+    "AA",
+    "AH",
+    "AI",
+    "AM",
+    "AU",
+    "BA",
+    "BHA",
+    "CHA",
+    "CHHA",
+    "DA",
+    "DAA",
+    "DHA",
+    "DHAA",
+    "D_SHA",
+    "E",
+    "GA",
+    "GHA",
+    "GYA",
+    "HA",
+    "I",
+    "II",
+    "JA",
+    "JHA",
+    "KA",
+    "KHA",
+    "KSHA",
+    "LA",
+    "MA",
+    "M_SHA",
+    "NA",
+    "NAA",
+    "NGA",
+    "O",
+    "PA",
+    "PHA",
+    "RA",
+    "RI",
+    "TA",
+    "TAA",
+    "THA",
+    "THAA",
+    "TRA",
+    "T_SHA",
+    "U",
+    "UU",
+    "WA",
+    "YA",
+    "YAN"
+  ],
+  "missing_primary_isolated_classes": [],
+  "per_signer": {
+    "S1": {
+      "videos": 197,
+      "isolated": 197,
+      "cropped": 99,
+      "primary_isolated": 98
+    },
+    "S2": {
+      "videos": 195,
+      "isolated": 195,
+      "cropped": 97,
+      "primary_isolated": 98
+    },
+    "S3": {
+      "videos": 43,
+      "aggregate": 7,
+      "cropped": 37,
+      "primary_isolated": 0,
+      "isolated": 36
+    },
+    "S4": {
+      "videos": 4,
+      "aggregate": 4,
+      "cropped": 1,
+      "primary_isolated": 0
+    },
+    "S5": {
+      "videos": 2,
+      "aggregate": 2,
+      "cropped": 0,
+      "primary_isolated": 0
+    },
+    "S6": {
+      "videos": 6,
+      "aggregate": 6,
+      "cropped": 0,
+      "primary_isolated": 0
+    },
+    "S7": {
+      "videos": 36,
+      "isolated": 36,
+      "cropped": 0,
+      "primary_isolated": 36
+    },
+    "S8": {
+      "videos": 36,
+      "isolated": 36,
+      "cropped": 0,
+      "primary_isolated": 36
+    },
+    "S9": {
+      "videos": 1,
+      "aggregate": 1,
+      "cropped": 0,
+      "primary_isolated": 0
+    },
+    "S10": {
+      "videos": 36,
+      "isolated": 36,
+      "cropped": 0,
+      "primary_isolated": 36
+    },
+    "S11": {
+      "videos": 36,
+      "isolated": 36,
+      "cropped": 0,
+      "primary_isolated": 36
+    },
+    "S12": {
+      "videos": 35,
+      "isolated": 35,
+      "cropped": 0,
+      "primary_isolated": 35
+    },
+    "S13": {
+      "videos": 1,
+      "aggregate": 1,
+      "cropped": 0,
+      "primary_isolated": 0
+    },
+    "S14": {
+      "videos": 2,
+      "aggregate": 2,
+      "cropped": 0,
+      "primary_isolated": 0
+    }
+  },
+  "per_condition_all_videos": {
+    "Indoor Unprepared": 394,
+    "Prepared": 231,
+    "RealWorld Unprepared": 5
+  },
+  "per_label_primary_isolated": {
+    "A": 4,
+    "AA": 4,
+    "AH": 4,
+    "AI": 4,
+    "AM": 4,
+    "AU": 4,
+    "BA": 9,
+    "BHA": 9,
+    "CHA": 9,
+    "CHHA": 9,
+    "DA": 9,
+    "DAA": 9,
+    "DHA": 8,
+    "DHAA": 9,
+    "D_SHA": 9,
+    "E": 4,
+    "GA": 9,
+    "GHA": 9,
+    "GYA": 9,
+    "HA": 9,
+    "I": 4,
+    "II": 4,
+    "JA": 9,
+    "JHA": 9,
+    "KA": 9,
+    "KHA": 9,
+    "KSHA": 9,
+    "LA": 9,
+    "MA": 9,
+    "M_SHA": 9,
+    "NA": 9,
+    "NAA": 9,
+    "NGA": 9,
+    "O": 4,
+    "PA": 9,
+    "PHA": 9,
+    "RA": 9,
+    "RI": 4,
+    "TA": 9,
+    "TAA": 9,
+    "THA": 9,
+    "THAA": 9,
+    "TRA": 9,
+    "T_SHA": 9,
+    "U": 4,
+    "UU": 4,
+    "WA": 9,
+    "YA": 9,
+    "YAN": 9
+  }
+}

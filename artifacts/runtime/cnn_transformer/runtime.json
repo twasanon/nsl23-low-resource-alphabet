@@ -1,0 +1,44 @@
+{
+  "model": "cnn_transformer",
+  "fold": "heldout_s2",
+  "seed": 42,
+  "checkpoint": "/Users/swat/Downloads/NSL_paper/artifacts/runs/primary/heldout_s2/cnn_transformer/seed_42/best_checkpoint.pt",
+  "checkpoint_epoch": 30,
+  "sample_manifest": "/Users/swat/Downloads/NSL_paper/data/manifests/folds/heldout_s2_cached.csv",
+  "sample_manifest_sha256": "0923cbd7584ed9442d0c94316c688aac072a0994a4c6613343ddd1144a807ee8",
+  "batch_size": 1,
+  "num_frames": 16,
+  "image_size": 224,
+  "model_only_definition": "device-resident normalized tensor through model forward and softmax with explicit device synchronization",
+  "end_to_end_definition": "open and decode original video, sample frames, letterbox, normalize, transfer, model forward, softmax, and synchronize",
+  "model_only_iterations": 100,
+  "end_to_end_test_clips": 98,
+  "model_only": {
+    "median_ms_per_clip": 49.668020499666454,
+    "p95_ms_per_clip": 50.11393059958209,
+    "mean_ms_per_clip": 49.687044880101894,
+    "clips_per_second_from_median": 20.13367937638496
+  },
+  "end_to_end": {
+    "median_ms_per_clip": 970.9277710007882,
+    "p95_ms_per_clip": 2162.6369874998995,
+    "mean_ms_per_clip": 1153.6224362652858,
+    "clips_per_second_from_median": 1.0299427309296607
+  },
+  "parameters_total": 3623217,
+  "parameters_trainable": 1399345,
+  "environment": {
+    "python": "3.11.14",
+    "platform": "macOS-26.3.1-arm64-arm-64bit",
+    "torch": "2.13.0",
+    "torchvision": "0.28.0",
+    "scikit_learn": "1.9.0",
+    "device": "mps",
+    "mps_available": true,
+    "cuda_available": false,
+    "cuda_version": null,
+    "deterministic_algorithms": false,
+    "gpu_name": "Apple M4"
+  },
+  "machine": "arm64"
+}

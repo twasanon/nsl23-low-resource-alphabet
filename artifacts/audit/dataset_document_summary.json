@@ -1,0 +1,310 @@
+{
+  "source_document_rows": 630,
+  "isolated_video_rows": 607,
+  "aggregate_video_rows": 23,
+  "expected_gestures_from_document": 1205,
+  "signers": [
+    "S1",
+    "S2",
+    "S3",
+    "S4",
+    "S5",
+    "S6",
+    "S7",
+    "S8",
+    "S9",
+    "S10",
+    "S11",
+    "S12",
+    "S13",
+    "S14"
+  ],
+  "per_signer": {
+    "S1": {
+      "isolated": 197,
+      "videos": 197
+    },
+    "S2": {
+      "isolated": 195,
+      "videos": 195
+    },
+    "S3": {
+      "aggregate": 7,
+      "videos": 43,
+      "isolated": 36
+    },
+    "S4": {
+      "aggregate": 4,
+      "videos": 4
+    },
+    "S5": {
+      "aggregate": 2,
+      "videos": 2
+    },
+    "S6": {
+      "aggregate": 6,
+      "videos": 6
+    },
+    "S7": {
+      "isolated": 36,
+      "videos": 36
+    },
+    "S8": {
+      "isolated": 36,
+      "videos": 36
+    },
+    "S9": {
+      "aggregate": 1,
+      "videos": 1
+    },
+    "S10": {
+      "isolated": 36,
+      "videos": 36
+    },
+    "S11": {
+      "isolated": 36,
+      "videos": 36
+    },
+    "S12": {
+      "isolated": 35,
+      "videos": 35
+    },
+    "S13": {
+      "aggregate": 1,
+      "videos": 1
+    },
+    "S14": {
+      "aggregate": 2,
+      "videos": 2
+    }
+  },
+  "isolated_raw_labels": [
+    "A",
+    "AA",
+    "AH",
+    "AI",
+    "AM",
+    "ANGA",
+    "AU",
+    "BA",
+    "BHA",
+    "CHA",
+    "CHHA",
+    "D",
+    "DA",
+    "DAA",
+    "DHA",
+    "DHAA",
+    "DHHA",
+    "D_SA",
+    "D_SHA",
+    "E",
+    "FA",
+    "GA",
+    "GHA",
+    "GYA",
+    "HA",
+    "I",
+    "II",
+    "JA",
+    "JHA",
+    "KA",
+    "KHA",
+    "KSH",
+    "KSHA",
+    "K_SHA",
+    "LA",
+    "MA",
+    "M_SHA",
+    "N",
+    "NA",
+    "NAA",
+    "NGA",
+    "NYA",
+    "O",
+    "PA",
+    "PHA",
+    "RA",
+    "RE",
+    "SA",
+    "SHA",
+    "SHHA",
+    "T",
+    "TA",
+    "TAA",
+    "THA",
+    "THAA",
+    "THH",
+    "THHA",
+    "TRA",
+    "T_SHA",
+    "U",
+    "UU",
+    "WA",
+    "YA",
+    "YAN"
+  ],
+  "aggregate_files": [
+    {
+      "signer": "S3",
+      "raw_filename": "all_consonant_Phone_Camera.MOV",
+      "sign_type": "consonant",
+      "duration_seconds": 69.7,
+      "expected_gesture_count": 36
+    },
+    {
+      "signer": "S3",
+      "raw_filename": "all_Consonant_RealWorld_2.MOV",
+      "sign_type": "consonant",
+      "duration_seconds": 53.02,
+      "expected_gesture_count": 36
+    },
+    {
+      "signer": "S3",
+      "raw_filename": "all_Consonant_Real_World_1.MOV",
+      "sign_type": "consonant",
+      "duration_seconds": 65.88,
+      "expected_gesture_count": 36
+    },
+    {
+      "signer": "S3",
+      "raw_filename": "Consonant_Camera.MOV",
+      "sign_type": "consonant",
+      "duration_seconds": 74.28,
+      "expected_gesture_count": 36
+    },
+    {
+      "signer": "S3",
+      "raw_filename": "NSL_Vowel_Prepared_Camera_all.MOV",
+      "sign_type": "vowel",
+      "duration_seconds": 19.82,
+      "expected_gesture_count": 13
+    },
+    {
+      "signer": "S3",
+      "raw_filename": "NSL_Vowel_Prepared_Phone_all_Cropped.MOV",
+      "sign_type": "vowel",
+      "duration_seconds": 27.18,
+      "expected_gesture_count": 13
+    },
+    {
+      "signer": "S3",
+      "raw_filename": "NSL_Vowel_Unprepared_Realworld_All.MOV",
+      "sign_type": "vowel",
+      "duration_seconds": 19.54,
+      "expected_gesture_count": 13
+    },
+    {
+      "signer": "S4",
+      "raw_filename": "NSL_Consonant_Camera.MOV",
+      "sign_type": "consonant",
+      "duration_seconds": 64.14,
+      "expected_gesture_count": 36
+    },
+    {
+      "signer": "S4",
+      "raw_filename": "NSL_Consonant_Phone_Camera.MOV",
+      "sign_type": "consonant",
+      "duration_seconds": 58.14,
+      "expected_gesture_count": 36
+    },
+    {
+      "signer": "S4",
+      "raw_filename": "NSL_Vowel_Prepared_all_Camera.MOV",
+      "sign_type": "vowel",
+      "duration_seconds": 18.84,
+      "expected_gesture_count": 13
+    },
+    {
+      "signer": "S4",
+      "raw_filename": "NSL_vowel_Prepared_al_Phone_Cropped.mov",
+      "sign_type": "vowel",
+      "duration_seconds": 19.17,
+      "expected_gesture_count": 13
+    },
+    {
+      "signer": "S5",
+      "raw_filename": "NSL_Consonant_Camera.MOV",
+      "sign_type": "consonant",
+      "duration_seconds": 60.48,
+      "expected_gesture_count": 36
+    },
+    {
+      "signer": "S5",
+      "raw_filename": "NSL_Vowel_Prepared_all_Camera.MOV",
+      "sign_type": "vowel",
+      "duration_seconds": 19.74,
+      "expected_gesture_count": 13
+    },
+    {
+      "signer": "S6",
+      "raw_filename": "NSL_Consonant_Camera.MOV",
+      "sign_type": "consonant",
+      "duration_seconds": 60.42,
+      "expected_gesture_count": 36
+    },
+    {
+      "signer": "S6",
+      "raw_filename": "NSL_Consonant_PnoneCamera.mov",
+      "sign_type": "consonant",
+      "duration_seconds": 60.04,
+      "expected_gesture_count": 36
+    },
+    {
+      "signer": "S6",
+      "raw_filename": "NSL_Consonant_Unprepared.mov",
+      "sign_type": "consonant",
+      "duration_seconds": 39.59,
+      "expected_gesture_count": 36
+    },
+    {
+      "signer": "S6",
+      "raw_filename": "NSL_Vowel_All_Unprepared.mov",
+      "sign_type": "vowel",
+      "duration_seconds": 14.45,
+      "expected_gesture_count": 13
+    },
+    {
+      "signer": "S6",
+      "raw_filename": "NSL_Vowel_Prepared_all_camera.mov",
+      "sign_type": "vowel",
+      "duration_seconds": 25.72,
+      "expected_gesture_count": 13
+    },
+    {
+      "signer": "S6",
+      "raw_filename": "NSL_Vowel_Prepared_all_Phone.mov",
+      "sign_type": "vowel",
+      "duration_seconds": 18.47,
+      "expected_gesture_count": 13
+    },
+    {
+      "signer": "S9",
+      "raw_filename": "NSL_ALL_Consonant.MOV",
+      "sign_type": "consonant",
+      "duration_seconds": 268.77,
+      "expected_gesture_count": 36
+    },
+    {
+      "signer": "S13",
+      "raw_filename": "NSL_All_Consonant.mov",
+      "sign_type": "consonant",
+      "duration_seconds": 252.57,
+      "expected_gesture_count": 36
+    },
+    {
+      "signer": "S14",
+      "raw_filename": "NSL_Consonant.mov",
+      "sign_type": "consonant",
+      "duration_seconds": 47.57,
+      "expected_gesture_count": 36
+    },
+    {
+      "signer": "S14",
+      "raw_filename": "NSL_Vowel_Unprepared_all_phone.mov",
+      "sign_type": "vowel",
+      "duration_seconds": 16.73,
+      "expected_gesture_count": 13
+    }
+  ]
+}

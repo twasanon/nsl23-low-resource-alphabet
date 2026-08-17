@@ -1,0 +1,88 @@
+{
+  "preset_base": "narrative_proposal",
+  "named_override": "nccsrj_academic_manuscript",
+  "override_reason": "The target journal explicitly requires Times New Roman 12 pt, double spacing, Microsoft Word, and an anonymous article body.",
+  "page": {
+    "size": "US Letter",
+    "orientation": "portrait",
+    "width_inches": 8.5,
+    "height_inches": 11.0,
+    "margins_inches": {"top": 1.0, "right": 1.0, "bottom": 1.0, "left": 1.0},
+    "header_inches": 0.492,
+    "footer_inches": 0.492,
+    "content_width_inches": 6.5,
+    "content_width_dxa": 9360
+  },
+  "typography": {
+    "font": "Times New Roman",
+    "body_size_pt": 12,
+    "body_alignment": "left",
+    "body_before_pt": 0,
+    "body_after_pt": 0,
+    "body_line_spacing": "double",
+    "body_first_line_indent_inches": 0.3,
+    "title_size_pt": 12,
+    "title_weight": "bold",
+    "title_alignment": "center",
+    "title_before_pt": 0,
+    "title_after_pt": 12,
+    "heading_1_size_pt": 12,
+    "heading_1_weight": "bold",
+    "heading_1_color": "000000",
+    "heading_1_before_pt": 12,
+    "heading_1_after_pt": 0,
+    "heading_2_size_pt": 12,
+    "heading_2_weight": "bold_italic",
+    "heading_2_color": "000000",
+    "heading_2_before_pt": 8,
+    "heading_2_after_pt": 0,
+    "abstract_first_line_indent_inches": 0.0,
+    "reference_hanging_indent_inches": 0.5
+  },
+  "lists": {
+    "bullet_level_0": {"marker_aligned_at_inches": 0.25, "text_indent_at_inches": 0.5, "hanging_inches": 0.25, "after_pt": 0, "line_spacing": "double"},
+    "decimal_level_0": {"marker_aligned_at_inches": 0.25, "text_indent_at_inches": 0.5, "hanging_inches": 0.25, "after_pt": 0, "line_spacing": "double"}
+  },
+  "tables": {
+    "width_dxa": 9360,
+    "indent_dxa": 0,
+    "layout": "fixed",
+    "font": "Times New Roman",
+    "font_size_pt": 12,
+    "line_spacing": "double",
+    "header_fill": "F2F2F2",
+    "border_style": "single_grid",
+    "cell_margins_dxa": {"top": 80, "bottom": 80, "start": 90, "end": 90},
+    "named_override_reason": "The journal states that the manuscript is to use Times New Roman 12 point and double spacing throughout, so table text follows the same rule."
+  },
+  "captions": {
+    "font": "Times New Roman",
+    "size_pt": 12,
+    "line_spacing": "double",
+    "before_pt": 4,
+    "after_pt": 8,
+    "alignment": "left",
+    "named_override_reason": "Captions use the journal's stated Times New Roman 12 point, double-spaced manuscript typography."
+  },
+  "table_citation_text": {
+    "font": "Times New Roman",
+    "size_pt": 12,
+    "line_spacing": "double",
+    "before_pt": 4,
+    "after_pt": 4
+  },
+  "page_furniture": {
+    "first_page_pattern": "editorial_cover_minimal_academic_override",
+    "running_header": "none",
+    "footer": "centered_page_number",
+    "footer_font": "Times New Roman",
+    "footer_size_pt": 12
+  },
+  "colors": {
+    "body": "000000",
+    "heading": "000000",
+    "muted": "555555",
+    "table_header_fill": "F2F2F2",
+    "table_border": "666666"
+  }
+}

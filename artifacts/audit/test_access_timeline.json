@@ -1,0 +1,27 @@
+{
+  "timezone": "America/Denver (UTC-06:00 on 2026-08-15)",
+  "events": [
+    {
+      "local_time": "2026-08-15T15:45:31-06:00",
+      "event": "The primary protocol and experiment configuration received their final modification before any three-model smoke result was written."
+    },
+    {
+      "local_time": "2026-08-15T15:47:35-06:00",
+      "event": "One-epoch heldout-S1 single-frame software smoke artifact completed."
+    },
+    {
+      "local_time": "2026-08-15T15:48:19-06:00",
+      "event": "One-epoch heldout-S1 CNN-BiLSTM software smoke artifact completed."
+    },
+    {
+      "local_time": "2026-08-15T15:49:08-06:00",
+      "event": "One-epoch heldout-S1 CNN-Transformer software smoke artifact completed."
+    },
+    {
+      "local_time": "2026-08-15T15:53:26-06:00",
+      "event": "Exact primary input hashes were recorded in protocol_freeze.json before the first full 30-epoch primary run."
+    }
+  ],
+  "interpretation": "The smoke tests exercised software and artifact export only. Their one-epoch scores were not used to select architectures, preprocessing, hyperparameters, folds, seeds, or epochs. The final protocol/configuration files predate the smoke artifacts, and the exact hash snapshot predates the full primary matrix.",
+  "manuscript_disclosure": "A one-epoch software smoke test accessed the S1 fold before the full matrix; its scores were not used for design or selection."
+}

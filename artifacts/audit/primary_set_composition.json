@@ -1,0 +1,24 @@
+{
+  "primary_clips": 375,
+  "sign_type": {
+    "consonant": 323,
+    "vowel": 52
+  },
+  "recording_groups": {
+    "prepared_consonant_unknown_lighting": 179,
+    "unprepared_bright_consonant": 72,
+    "unprepared_dark_consonant": 72,
+    "unprepared_bright_vowel": 26,
+    "unprepared_dark_vowel": 26
+  },
+  "per_signer_and_sign_type": {
+    "S1": {"consonant": 72, "vowel": 26},
+    "S2": {"consonant": 72, "vowel": 26},
+    "S7": {"consonant": 36, "vowel": 0},
+    "S8": {"consonant": 36, "vowel": 0},
+    "S10": {"consonant": 36, "vowel": 0},
+    "S11": {"consonant": 36, "vowel": 0},
+    "S12": {"consonant": 35, "vowel": 0}
+  },
+  "interpretation": "Only S1 and S2 provide original individually labelled clips for all 49 classes. In each fold, vowel training therefore comes from the other complete-alphabet signer alone (two condition clips per vowel class). The five remaining training signers contribute prepared consonant clips only."
+}

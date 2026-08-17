@@ -1,0 +1,129 @@
+{
+  "videos": 114,
+  "decoded_videos": 114,
+  "isolated_videos": 104,
+  "aggregate_videos": 10,
+  "cropped_or_preprocessed_videos": 54,
+  "primary_usable_isolated_clips": 52,
+  "primary_usable_isolated_signers": [
+    "S1",
+    "S2"
+  ],
+  "primary_usable_isolated_classes": [
+    "A",
+    "AA",
+    "AH",
+    "AI",
+    "AM",
+    "AU",
+    "E",
+    "I",
+    "II",
+    "O",
+    "RI",
+    "U",
+    "UU"
+  ],
+  "missing_primary_isolated_classes": [
+    "KA",
+    "KHA",
+    "GA",
+    "GHA",
+    "NGA",
+    "CHA",
+    "CHHA",
+    "JA",
+    "JHA",
+    "YAN",
+    "TA",
+    "THA",
+    "DA",
+    "DHA",
+    "NA",
+    "TAA",
+    "THAA",
+    "DAA",
+    "DHAA",
+    "NAA",
+    "PA",
+    "PHA",
+    "BA",
+    "BHA",
+    "MA",
+    "YA",
+    "RA",
+    "LA",
+    "WA",
+    "T_SHA",
+    "M_SHA",
+    "D_SHA",
+    "HA",
+    "KSHA",
+    "TRA",
+    "GYA"
+  ],
+  "per_signer": {
+    "S1": {
+      "videos": 52,
+      "isolated": 52,
+      "cropped": 26,
+      "primary_isolated": 26
+    },
+    "S2": {
+      "videos": 52,
+      "isolated": 52,
+      "cropped": 26,
+      "primary_isolated": 26
+    },
+    "S3": {
+      "videos": 3,
+      "aggregate": 3,
+      "cropped": 1,
+      "primary_isolated": 0
+    },
+    "S4": {
+      "videos": 2,
+      "aggregate": 2,
+      "cropped": 1,
+      "primary_isolated": 0
+    },
+    "S5": {
+      "videos": 1,
+      "aggregate": 1,
+      "cropped": 0,
+      "primary_isolated": 0
+    },
+    "S6": {
+      "videos": 3,
+      "aggregate": 3,
+      "cropped": 0,
+      "primary_isolated": 0
+    },
+    "S14": {
+      "videos": 1,
+      "aggregate": 1,
+      "cropped": 0,
+      "primary_isolated": 0
+    }
+  },
+  "per_condition_all_videos": {
+    "Indoor Unprepared": 106,
+    "Prepared": 7,
+    "RealWorld Unprepared": 1
+  },
+  "per_label_primary_isolated": {
+    "A": 4,
+    "AA": 4,
+    "AH": 4,
+    "AI": 4,
+    "AM": 4,
+    "AU": 4,
+    "E": 4,
+    "I": 4,
+    "II": 4,
+    "O": 4,
+    "RI": 4,
+    "U": 4,
+    "UU": 4
+  }
+}

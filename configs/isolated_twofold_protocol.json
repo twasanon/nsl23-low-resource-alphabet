@@ -1,0 +1,25 @@
+{
+  "protocol_name": "nsl23_original_isolated_twofold_signer_swap",
+  "primary_inclusion": "Only original individually labelled clips for which usable_as_isolated_clip is true in the lossless manifest.",
+  "primary_exclusions": [
+    "All aggregate recordings because the release provides no gesture timestamps and visual audit showed that equal-duration bins do not preserve labels.",
+    "All cropped or otherwise preprocessed duplicates.",
+    "Any video that fails decoding or label canonicalization."
+  ],
+  "folds": [
+    {
+      "name": "heldout_s1",
+      "test_signer": "S1"
+    },
+    {
+      "name": "heldout_s2",
+      "test_signer": "S2"
+    }
+  ],
+  "training_signers": "For each fold, every other signer with an original individually labelled clip is included in training.",
+  "validation_policy": "No validation split and no checkpoint selection. Hyperparameters are common to all models and the final fixed-epoch checkpoint is evaluated once.",
+  "test_coverage_requirement": "Each held-out signer must contain all 49 classes, with no unseen-label dropping.",
+  "pooling_policy": "Fold-level results are reported separately. Out-of-fold predictions for S1 and S2 are pooled only after both folds are complete.",
+  "frozen_before_training": true,
+  "frozen_date": "2026-08-15"
+}

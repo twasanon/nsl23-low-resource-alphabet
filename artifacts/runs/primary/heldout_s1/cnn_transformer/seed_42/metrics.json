@@ -1,0 +1,39 @@
+{
+  "model": "cnn_transformer",
+  "fold": "heldout_s1",
+  "seed": 42,
+  "best_epoch": 30,
+  "selection_policy": "fixed_final_epoch",
+  "validation_macro_f1": null,
+  "test_loss": 4.165108077380122,
+  "test_accuracy": 0.04081632653061224,
+  "test_macro_precision": 0.04405571752510529,
+  "test_macro_recall": 0.04081632653061224,
+  "test_macro_f1": 0.03269608238552338,
+  "test_weighted_f1": 0.03269608238552338,
+  "accuracy_ci_low": 0.01020408163265306,
+  "accuracy_ci_high": 0.07142857142857142,
+  "macro_f1_ci_low": 0.004911259375545093,
+  "macro_f1_ci_high": 0.047047426257952565,
+  "bootstrap_replicates": 2000,
+  "train_samples": 277,
+  "test_samples": 98,
+  "train_signers": [
+    "S2",
+    "S7",
+    "S8",
+    "S10",
+    "S11",
+    "S12"
+  ],
+  "test_signers": [
+    "S1"
+  ],
+  "parameters_total": 3623217,
+  "parameters_trainable": 1399345,
+  "checkpoint": "/Users/swat/Downloads/NSL_paper/artifacts/runs/primary/heldout_s1/cnn_transformer/seed_42/best_checkpoint.pt",
+  "config_sha256": "11cbece70b78247847a6ceb2a73fc421ea2776c573b2438b2db560b826764a42",
+  "sample_manifest_sha256": "8b2e047ee86cc0e5280999564a3af676158685f8c963604cf339d9ac52c0b3ac",
+  "class_weight_min": 0.6000000238418579,
+  "class_weight_max": 2.0999999046325684
+}

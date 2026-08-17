@@ -1,0 +1,24 @@
+{
+  "train": [
+    "S1",
+    "S5",
+    "S6",
+    "S7",
+    "S8",
+    "S9",
+    "S10",
+    "S11",
+    "S12",
+    "S13",
+    "S14"
+  ],
+  "validation": [
+    "S4"
+  ],
+  "test": [
+    "S2",
+    "S3"
+  ],
+  "rationale": "The fixed split is signer-disjoint and reserves complete vowel coverage for validation and test. S2 contributes indoor unprepared bright/dark samples; S3 contributes prepared and real-world unprepared samples, which permits a descriptive condition analysis without selecting the split from model results.",
+  "frozen_before_training": true
+}

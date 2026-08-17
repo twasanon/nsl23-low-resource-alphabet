@@ -1,0 +1,11 @@
+{
+  "aggregate_sources": 23,
+  "decoded": 23,
+  "cropped_or_preprocessed": 2,
+  "primary_included": 0,
+  "per_sign_type": {
+    "consonant": 13,
+    "vowel": 10
+  },
+  "policy": "Aggregate sources are inventoried but excluded from primary modeling because the release has no gesture timestamps and equal-duration candidate bins did not reliably retain class identity under visual review."
+}

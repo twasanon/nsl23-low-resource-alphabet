@@ -1,0 +1,66 @@
+{
+  "protocol_name": "nsl23_original_isolated_twofold_signer_swap",
+  "primary_samples": 375,
+  "available_signers": [
+    "S1",
+    "S2",
+    "S7",
+    "S8",
+    "S10",
+    "S11",
+    "S12"
+  ],
+  "per_signer": {
+    "S1": 98,
+    "S2": 98,
+    "S7": 36,
+    "S8": 36,
+    "S10": 36,
+    "S11": 36,
+    "S12": 35
+  },
+  "per_sign_type": {
+    "vowel": 52,
+    "consonant": 323
+  },
+  "folds": {
+    "heldout_s1": {
+      "test_signer": "S1",
+      "train_samples": 277,
+      "test_samples": 98,
+      "train_signers": [
+        "S2",
+        "S7",
+        "S8",
+        "S10",
+        "S11",
+        "S12"
+      ],
+      "test_classes": 49,
+      "train_classes": 49,
+      "test_per_condition": {
+        "Indoor Unprepared - Bright": 49,
+        "Indoor Unprepared - Dark": 49
+      }
+    },
+    "heldout_s2": {
+      "test_signer": "S2",
+      "train_samples": 277,
+      "test_samples": 98,
+      "train_signers": [
+        "S1",
+        "S7",
+        "S8",
+        "S10",
+        "S11",
+        "S12"
+      ],
+      "test_classes": 49,
+      "train_classes": 49,
+      "test_per_condition": {
+        "Indoor Unprepared - Bright": 49,
+        "Indoor Unprepared - Dark": 49
+      }
+    }
+  }
+}

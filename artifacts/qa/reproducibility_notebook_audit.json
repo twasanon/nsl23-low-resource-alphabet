@@ -1,0 +1,10 @@
+{
+  "status": "pass",
+  "notebook": "NSL23_CNN_Transformer_Reproducibility.ipynb",
+  "cells": 27,
+  "code_cells": 13,
+  "markdown_cells": 14,
+  "all_code_cells_parse": true,
+  "schema_valid": true,
+  "stale_outputs": 0
+}

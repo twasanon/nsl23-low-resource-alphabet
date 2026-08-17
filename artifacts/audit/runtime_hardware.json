@@ -1,0 +1,11 @@
+{
+  "model": "Mac mini",
+  "model_identifier": "Mac16,10",
+  "chip": "Apple M4",
+  "cpu_cores": 10,
+  "performance_cores": 4,
+  "efficiency_cores": 6,
+  "unified_memory_gb": 16,
+  "pytorch_backend": "MPS",
+  "privacy_note": "Device serial number, hardware UUID, provisioning identifier, and account/host identifiers are intentionally omitted."
+}

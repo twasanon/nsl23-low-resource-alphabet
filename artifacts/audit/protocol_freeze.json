@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "purpose": "Immutable input snapshot taken before the first full primary training run.",
+  "frozen_at_utc": "2026-08-15T21:53:26.673184+00:00",
+  "host": "Shaswats-Mac-mini.local",
+  "platform": "macOS-26.3.1-arm64-arm-64bit",
+  "git_revision": null,
+  "inputs": [
+    {
+      "path": "PROTOCOL.md",
+      "bytes": 6482,
+      "sha256": "34d435a068533966686bbae4637048fa6e0292942eeda06ae324a9c92c54a26c"
+    },
+    {
+      "path": "requirements.txt",
+      "bytes": 188,
+      "sha256": "bdfcbcb7b1826d6579b589166df027ddda480c2f9759748f97b5d248cf91d83e"
+    },
+    {
+      "path": "configs/nsl23_classes.json",
+      "bytes": 1557,
+      "sha256": "df16e18056ed9c822241404a5172d5fc8314767b21efc29711a15714f18e76ec"
+    },
+    {
+      "path": "configs/isolated_twofold_protocol.json",
+      "bytes": 1295,
+      "sha256": "bec39c0f96d9cada70af569b3703ee36481913821d9498c25844d0db60f0b5f0"
+    },
+    {
+      "path": "configs/experiment_local_m4.json",
+      "bytes": 2064,
+      "sha256": "dfa4b95a7cf9466a856280f0b05542922b776b6a45a74ae6fd52a46a749b9025"
+    },
+    {
+      "path": "data/manifests/nsl23_manifest_all.csv",
+      "bytes": 228135,
+      "sha256": "73e5e473aaa0a8ca53f62660275d3015e1743f62fb3f56c8f61012e0574dac7d"
+    },
+    {
+      "path": "data/manifests/folds/heldout_s1_cached.csv",
+      "bytes": 175082,
+      "sha256": "8b2e047ee86cc0e5280999564a3af676158685f8c963604cf339d9ac52c0b3ac"
+    },
+    {
+      "path": "data/manifests/folds/heldout_s2_cached.csv",
+      "bytes": 175082,
+      "sha256": "0923cbd7584ed9442d0c94316c688aac072a0994a4c6613343ddd1144a807ee8"
+    },
+    {
+      "path": "src/nsl23/dataset.py",
+      "bytes": 4941,
+      "sha256": "e65a8be6e462a034ef8e4d8c8859ca15a267f999659d214ffe9fffc05eda329e"
+    },
+    {
+      "path": "src/nsl23/frame_cache.py",
+      "bytes": 6514,
+      "sha256": "65a2fc5c78fbcab59a283b6a3fa7fae9f8f81fe2728dd0d128721b0db6cade51"
+    },
+    {
+      "path": "src/nsl23/metrics.py",
+      "bytes": 2970,
+      "sha256": "8da52e2a66253d7e5e9474279ba02b9e37ad87b10521087b39e73359946995e4"
+    },
+    {
+      "path": "src/nsl23/models.py",
+      "bytes": 6082,
+      "sha256": "7b12225b986c3701afa251c37eab18c58594af8e63ea023b7a64acd058766a77"
+    },
+    {
+      "path": "src/nsl23/train.py",
+      "bytes": 16414,
+      "sha256": "84fe009e58dd0b1c3d08c92040c3fcc798d12ac6a46041eab194107a93089bc0"
+    },
+    {
+      "path": "scripts/run_primary_experiments.py",
+      "bytes": 2938,
+      "sha256": "e111c16573935e758330b026f2414214118d8daf98532c6b5b9d226f9760df83"
+    },
+    {
+      "path": "scripts/verify_primary_protocol.py",
+      "bytes": 4102,
+      "sha256": "7eddaff58f5b8fe04bb7dabc2924408767bfd28928c4538c24167e7ed81f3ef6"
+    }
+  ],
+  "snapshot_sha256": "512c9ded600038a0bf310d820a13310ccecf3c0b3a9df90f92be42549c8221e5"
+}

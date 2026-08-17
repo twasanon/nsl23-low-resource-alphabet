@@ -1,0 +1,38 @@
+{
+  "source_record": "https://zenodo.org/records/10478554",
+  "source_doi": "10.5281/zenodo.10478554",
+  "license": "CC BY 4.0",
+  "verified_date": "2026-08-15",
+  "files": [
+    {
+      "name": "Details Dataset.docx",
+      "bytes": 2439940,
+      "md5": "811a5bea58b775b6acd243ad26c1aa04",
+      "verified": true
+    },
+    {
+      "name": "NSL_Vowel.zip",
+      "bytes": 622466937,
+      "md5": "82aab6ac857ffe641f4a5815389a244c",
+      "verified": true
+    },
+    {
+      "name": "NSL_Consonant_Part_1.zip",
+      "bytes": 3455940835,
+      "md5": "03e831f7b69599794402e1297915849e",
+      "verified": true
+    },
+    {
+      "name": "NSL_Consonant_Part_2.zip",
+      "bytes": 3792081528,
+      "md5": "52be2e9182c799b8de5623ec3d169b36",
+      "verified": true
+    },
+    {
+      "name": "NSL_Consonant_Part_3.zip",
+      "bytes": 2465088463,
+      "md5": "dc410b3aaceb764783ea054382c23d15",
+      "verified": true
+    }
+  ]
+}

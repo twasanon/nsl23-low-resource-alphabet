@@ -1,0 +1,329 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{cite}
+\usepackage{url}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstset{
+  basicstyle=\ttfamily\scriptsize,
+  breaklines=true,
+  columns=fullflexible,
+  frame=single,
+  rulecolor=\color{black},
+  showstringspaces=false
+}
+
+\title{Bridging the Silent Gap: Real-Time Nepali Sign Language Recognition\\Using a Hybrid CNN--Transformer Architecture}
+
+\author{
+\IEEEauthorblockN{Shaswat Chapagain\IEEEauthorrefmark{1}}
+\IEEEauthorblockA{\IEEEauthorrefmark{1}Department/College, City, Nepal \\
+Email: swatlegacy@gmail.com}
+}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Nepali Sign Language (NSL) is a primary communication medium for the Deaf and Hard-of-Hearing community in Nepal and Nepali-speaking regions. Despite its social importance, NSL remains under-resourced in terms of publicly available datasets and reproducible real-time recognition systems. This paper presents a Nepal-specific computer vision pipeline for real-time isolated-sign recognition using the NSL23 video dataset. We propose a hybrid architecture that combines a lightweight convolutional backbone for per-frame spatial representation and a Transformer encoder for temporal modeling through self-attention. To address domain shifts common in Nepal (prepared vs.\ unprepared backgrounds, indoor/outdoor capture, and lighting variation), we specify an augmentation strategy and recommend signer-independent evaluation. In addition, we describe a streaming inference procedure based on sliding windows and probability smoothing suitable for webcam deployment. The manuscript includes the mathematical formulation and a runnable PyTorch reference implementation (model + dataset loader) in the Appendix to support reproducibility and extension.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Nepali Sign Language, sign language recognition, CNN, Transformer, self-attention, real-time inference, NSL23, low-resource computer vision.
+\end{IEEEkeywords}
+
+\section{Introduction}
+Communication barriers between Deaf signers and non-signers continue to limit access to education, services, and employment in Nepal. NSL has standardized alphabets (vowels and consonants) and manual signs, and the standard gestures are documented by national Deaf organizations (noted in the NSL23 data article) \cite{sunuwar2024dib}. However, compared to high-resource sign languages, NSL has fewer open datasets and fewer reproducible baselines.
+
+The NSL23 dataset \cite{sunuwar2024dib,zenodo_nsl23} is a key step toward reproducible research: it contains 630 videos capturing 1205 isolated gesture instances for 36 consonants and 13 vowels, performed by 14 volunteers (5 native signers and 9 beginners) across prepared (black backdrop) and unprepared environments, as well as indoor/outdoor real-world settings with natural lighting variations. These capture conditions match real use in Nepal---from classrooms and community centers to public service desks---and highlight the need for models that generalize across backgrounds, illumination, and unseen signers.
+
+\textbf{Contributions.} This paper makes three application-oriented contributions:
+\begin{itemize}
+  \item A hybrid CNN--Transformer model for NSL video recognition that is compute-efficient yet temporally expressive.
+  \item A Nepal-specific training strategy aligned with NSL23 capture conditions (background/illumination diversity) and a signer-independent evaluation protocol.
+  \item A streaming inference design for real-time deployment (sliding windows + smoothing), plus runnable reference code.
+\end{itemize}
+
+Table~\ref{tab:modelcomp} summarizes the primary model comparison (baselines vs.\ proposed), while Table~\ref{tab:robustness} reports the robustness of the best model across recording conditions.
+
+\section{Related Work}
+Traditional sign recognition often used handcrafted features and temporal models (e.g., HMMs). Deep learning shifted the field toward CNN-based spatial encoders and temporal heads such as RNN/LSTM. For Nepal-specific work, Ligal and Baral compare CNN--RNN and Vision Transformer approaches for word-level NSL and report slightly higher accuracy for the Transformer-based classifier \cite{ligal2022ioegc}. Transformers have become standard sequence models due to self-attention \cite{vaswani2017attention}, while lightweight CNNs such as MobileNetV2 \cite{sandler2018mobilenetv2} and residual networks \cite{he2016resnet} remain common spatial feature extractors.
+
+For low-resource sign languages, dataset scarcity is a central bottleneck. NSL23 \cite{sunuwar2024dib,zenodo_nsl23} and recent NSL character datasets \cite{poudel2025arxiv} indicate growing research activity. This work focuses on an application-ready model aligned with NSL23 videos and real-time constraints, emphasizing robustness to Nepal-relevant domain shifts.
+
+\section{Dataset: NSL23 and Nepal-Specific Considerations}
+We use the \textbf{NSL23} Nepali Sign Language alphabet dataset, released on Zenodo and described in a Data in Brief publication~\cite{zenodo_nsl23,sunuwar2024dib}. NSL23 covers the full Nepali alphabet used in NSL education: \textbf{36 consonants and 13 vowels} (49 classes total). The dataset contains \textbf{630 videos} and \textbf{1205 labeled gesture instances}, recorded from \textbf{14 volunteers} (IDs \texttt{S1}--\texttt{S14}) performing signs with the \textbf{right hand}. Recordings span controlled ``prepared'' settings and more realistic ``unprepared'' and real-world scenes, and include both static and dynamic gestures (notably some vowels), motivating temporal modeling.
+
+\paragraph{Why Nepal-specific evaluation is harder.}
+Three domain shifts matter for Nepal deployment:
+\begin{enumerate}
+  \item \textbf{Background shift:} prepared background vs.\ uncontrolled indoor/outdoor backgrounds.
+  \item \textbf{Illumination shift:} bright vs.\ dim indoor scenes; outdoor natural lighting.
+  \item \textbf{Signer shift:} variation in hand geometry, articulation speed, and experience level.
+\end{enumerate}
+These shifts motivate signer-disjoint splits and careful preprocessing.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig_dataset_samples.png}
+\caption{NSL23 capture conditions (placeholders). Replace with real frames extracted from NSL23 using the notebook utility function \texttt{save\_sample\_grid(\ldots)}.}
+\label{fig:samples}
+\end{figure}
+
+\subsection{Robust Indexing, Label Normalization, and Splits}
+NSL23 distributions may include (i) isolated per-sign clips organized by signer folders (e.g., \texttt{/S1/\ldots}), (ii) repeated takes where filenames contain suffixes like \texttt{(2)} or \texttt{(3)}, and (iii) long aggregate recordings that contain many signs in a single file (e.g., ``all consonants'')~\cite{sunuwar2024dib}. To ensure reproducible training and avoid leakage, our pipeline constructs a manifest with robust parsing and filtering (this matches the accompanying Colab notebook).
+
+\paragraph{Step 1: recursive scan (preferring cropped clips).}
+We recursively scan the unzipped directory for video extensions (\texttt{.mov/.mp4}). If a \texttt{cropped} subfolder exists, we \emph{prefer cropped videos} exclusively to reduce background clutter and accelerate training.
+
+\paragraph{Step 2: signer extraction from the full path.}
+Signer IDs are extracted by searching for the regex \texttt{S$\backslash$d\{1,2\}} in the \emph{folder name and path parts} (e.g., \texttt{\ldots/S12/A (2).mov}). If no signer token is found, we assign \texttt{UNK} and retain the sample only for non-signer-aware diagnostics.
+
+\paragraph{Step 3: label extraction and normalization from filenames.}
+Given a filename stem, we normalize labels by:
+(i) removing any leading signer prefix such as \texttt{S1\_},
+(ii) removing parenthetical take markers \texttt{(2), (3), \ldots},
+(iii) stripping trailing numeric suffixes,
+(iv) converting spaces to underscores and uppercasing.
+Repeated takes (e.g., \texttt{A (2).mov}) become additional samples under the same canonical label (\texttt{A}). We also apply a small alias map for known variants (e.g., \texttt{KSH} $\rightarrow$ \texttt{KSHA}) to prevent accidental class-splitting.
+
+\paragraph{Step 4: removing aggregate/non-isolated recordings.}
+We drop videos that are not isolated single-label clips using two complementary rules:
+\begin{itemize}
+  \item \textbf{Name-based filter:} exclude stems containing tokens such as \texttt{ALL}, \texttt{NSL}, \texttt{CONSONANT}, \texttt{VOWEL}, \texttt{CAMERA}, \texttt{REALWORLD}, \texttt{PREPARED}, \texttt{UNPREPARED}, \texttt{PHONE}.
+  \item \textbf{Duration filter:} estimate duration via OpenCV (\texttt{frames/fps}) and exclude clips longer than a threshold (we use \textbf{10 seconds} by default), which reliably removes multi-sign recordings.
+\end{itemize}
+
+\paragraph{Step 5: signer-independent splitting and safe label mapping.}
+We perform a \textbf{signer-disjoint} split using grouped shuffling by signer (\texttt{GroupShuffleSplit}): 10\% test, 10\% validation, and the remainder for training. The label-to-index mapping is built from \emph{training labels only}; any validation/test samples with unseen labels are dropped (rare, but prevents accidental leakage from indexing artifacts).
+
+This procedure aligns the experimental protocol with the dataset structure and ensures that reported results reflect generalization to unseen signers and realistic Nepal settings.
+
+\section{Proposed Method}
+\subsection{Problem Formulation}
+Given a video clip $V = \{I_t\}_{t=1}^{T_v}$, we sample $T$ frames $\{I_{\tau_1},\dots,I_{\tau_T}\}$ and predict a class $y \in \{1,\dots,C\}$ where $C$ is the number of sign categories. The model $p_\theta$ outputs:
+\begin{equation}
+\hat{y} = \arg\max_{c} \, p_\theta(y=c \mid V).
+\end{equation}
+
+\subsection{Architecture Overview}
+Fig.~\ref{fig:arch} shows the hybrid pipeline. A CNN backbone extracts a spatial feature vector per frame; a Transformer encoder models temporal dependencies; a pooling layer produces a clip embedding; finally a linear classifier outputs logits.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{fig_architecture.png}
+\caption{Hybrid CNN--Transformer architecture for NSL video classification.}
+\label{fig:arch}
+\end{figure}
+
+\subsection{Frame Encoder (CNN)}
+Let $I_{\tau_i}\in\mathbb{R}^{H\times W\times 3}$ be a sampled RGB frame. A CNN $f_{\text{cnn}}(\cdot)$ produces a feature map, followed by global average pooling (GAP) to obtain:
+\begin{equation}
+\mathbf{z}_i = \text{GAP}\!\left(f_{\text{cnn}}(I_{\tau_i})\right) \in \mathbb{R}^{d_{\text{cnn}}}.
+\end{equation}
+We project to Transformer dimension $d$:
+\begin{equation}
+\mathbf{x}_i = \mathbf{W}_p \mathbf{z}_i + \mathbf{b}_p,\quad \mathbf{x}_i\in\mathbb{R}^{d}.
+\end{equation}
+
+\subsection{Positional Encoding}
+Temporal order is encoded by adding $\mathbf{p}_i$:
+\begin{equation}
+\tilde{\mathbf{x}}_i = \mathbf{x}_i + \mathbf{p}_i.
+\end{equation}
+We can use sinusoidal encodings \cite{vaswani2017attention}:
+\begin{align}
+p_{i,2k} &= \sin\!\left(\frac{i}{10000^{2k/d}}\right), &
+p_{i,2k+1} &= \cos\!\left(\frac{i}{10000^{2k/d}}\right).
+\end{align}
+
+\subsection{Transformer Encoder for Temporal Modeling}
+Stack $\tilde{\mathbf{x}}_i$ into $\mathbf{X}\in\mathbb{R}^{T\times d}$. For one attention head:
+\begin{align}
+\mathbf{Q} &= \mathbf{X}\mathbf{W}_Q,\quad 
+\mathbf{K} = \mathbf{X}\mathbf{W}_K,\quad 
+\mathbf{V} = \mathbf{X}\mathbf{W}_V, \\
+\text{Attn}(\mathbf{Q},\mathbf{K},\mathbf{V}) &= \text{softmax}\!\left(\frac{\mathbf{Q}\mathbf{K}^\top}{\sqrt{d_h}}\right)\mathbf{V}.
+\end{align}
+Multi-head attention concatenates heads and projects:
+\begin{equation}
+\text{MSA}(\mathbf{X}) = \left[\text{head}_1;\dots;\text{head}_H\right]\mathbf{W}_O.
+\end{equation}
+Each encoder block applies residual connections, layer normalization, and a feed-forward network:
+\begin{align}
+\mathbf{U} &= \text{LN}(\mathbf{X} + \text{MSA}(\mathbf{X})),\\
+\mathbf{H} &= \text{LN}(\mathbf{U} + \text{FFN}(\mathbf{U})).
+\end{align}
+
+\subsection{Temporal Pooling and Classification}
+We compute a clip embedding by mean pooling:
+\begin{equation}
+\mathbf{g} = \frac{1}{T}\sum_{i=1}^{T} \mathbf{h}_i,
+\end{equation}
+then logits $\boldsymbol{\ell} = \mathbf{W}_c\mathbf{g} + \mathbf{b}_c$ and probabilities via softmax.
+
+\subsection{Loss Function}
+Cross-entropy loss is:
+\begin{equation}
+\mathcal{L}(\theta) = -\sum_{c=1}^{C} \mathbb{1}[y=c]\log p_\theta(y=c \mid V).
+\end{equation}
+We optionally use label smoothing with parameter $\varepsilon$:
+\begin{equation}
+\tilde{y}_c = (1-\varepsilon)\mathbb{1}[y=c] + \varepsilon/C.
+\end{equation}
+
+\section{Training and Real-Time Inference}
+\subsection{Sampling, Preprocessing, and Augmentation}
+NSL23 clips vary in frame rate (e.g., 30/50/60 fps), resolution, and duration~\cite{sunuwar2024dib}. To obtain a fixed-size input for training and real-time inference, we sample a constant number of frames per clip and apply lightweight augmentations.
+
+\paragraph{Uniform frame sampling.}
+For each video, we use OpenCV to read the total frame count $N$. We then select $T$ indices uniformly spaced over $[0, N\!-\!1]$ and retrieve frames by seeking to each index. If frame-count metadata is unavailable, we fall back to reading all frames once and sampling from the buffered list. If a seek/read fails, we repeat the last successfully read frame (or use a zero frame if none were read). In our reference implementation, we use $T\!=\!16$ by default to balance accuracy with real-time throughput. Larger windows (e.g., $T\!=\!24$ or $T\!=\!32$) may improve recognition of dynamic gestures at increased compute cost; for fair benchmarking we keep $T$ fixed across all models.
+
+\paragraph{Spatial preprocessing and normalization.}
+Each sampled frame is converted from BGR to RGB, resized to $224\times224$, and scaled to $[0,1]$. For compatibility with ImageNet-pretrained backbones, we apply ImageNet mean/standard-deviation normalization per frame.
+
+\paragraph{Augmentation.}
+To improve robustness to Nepal-specific lighting and capture variation while preserving sign semantics, we use only \textbf{photometric} augmentations in the default pipeline:
+\begin{itemize}
+\item random brightness jitter (additive, bounded),
+\item random contrast jitter (around the per-frame mean).
+\end{itemize}
+We do \emph{not} apply horizontal flips by default because mirroring can change sign meaning for some alphabets; flips should be enabled only after NSL expert validation. These choices are implemented exactly in the accompanying Colab notebook to ensure reproducibility.
+
+\subsection{Evaluation Metrics}
+Besides top-1 accuracy, we report macro-averaged precision, recall, and F1 to handle class imbalance. Let $TP_c, FP_c, FN_c$ be per-class counts:
+\begin{align}
+\text{Precision}_c &= \frac{TP_c}{TP_c + FP_c}, &
+\text{Recall}_c &= \frac{TP_c}{TP_c + FN_c}, \\
+\text{F1}_c &= \frac{2\,\text{Precision}_c\,\text{Recall}_c}{\text{Precision}_c+\text{Recall}_c}.
+\end{align}
+Macro-F1 is $\frac{1}{C}\sum_{c=1}^{C}\text{F1}_c$. We also recommend reporting condition-wise metrics (prepared/unprepared/real-world) and signer-wise metrics.
+
+\subsection{Signer-Independent Evaluation}
+To assess generalization to new users in Nepal, we recommend a signer-independent split: all clips from some subjects are held out for testing. This split is more realistic than random clip splits that leak signer identity.
+
+\subsection{Streaming Inference with Sliding Window}
+For webcam inference, maintain a buffer of the latest $T$ frames. Every $s$ frames, run the model to get $p_t$ and smooth:
+\begin{equation}
+\bar{p}_t = \alpha \bar{p}_{t-1} + (1-\alpha)p_t.
+\end{equation}
+Throughput is measured as $\text{FPS} = N_{\text{clips}}/t_{\text{sec}}$; end-to-end latency includes capture, preprocessing, model forward, and post-processing.
+
+\subsection{Complexity}
+CNN cost per clip: $T\cdot \text{FLOPs}_{\text{cnn}}$. Transformer encoder cost:
+\begin{equation}
+\mathcal{O}\left(L(T^2 d + T d^2)\right),
+\end{equation}
+which is practical for small $T$ (8--16) and moderate $d$ (128--256). For edge deployment, consider quantization and TensorRT/ONNX acceleration.
+
+\section{Reporting Template}
+After running the provided code on NSL23, report:
+\begin{itemize}
+\item Top-1 accuracy, macro-F1, confusion matrix.
+\item Condition-wise accuracy (prepared vs.\ unprepared vs.\ real-world).
+\item Signer-independent performance (held-out signers).
+\item FPS and latency on target hardware (GPU/CPU/mobile).
+\end{itemize}
+
+\begin{table}[t]
+\centering
+\caption{Recommended hyperparameters (adjust per compute).}
+\label{tab:hparams}
+\begin{tabular}{ll}
+\toprule
+Parameter & Value \\
+\midrule
+Frames per clip $T$ & 16 \\
+Backbone & MobileNetV2 (default) \\
+Transformer layers $L$ & 4 \\
+Heads $H$ & 4 \\
+Embedding dim $d$ & 256 \\
+Optimizer & AdamW \\
+Learning rate & $3\times 10^{-4}$ \\
+Batch size & 8--32 \\
+Epochs & 30--80 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Model comparison on signer-independent NSL23 test set (held-out signers).}
+\label{tab:modelcomp}
+\begin{tabular}{lcccc}
+\toprule
+Model & Top-1 (\%) & Macro-F1 & FPS (clips/s) & Latency (ms/frame) \\
+\midrule
+Single-frame CNN (MobileNetV2) & -- & -- & -- & -- \\
+CNN + BiLSTM & -- & -- & -- & -- \\
+CNN + Transformer (Proposed) & -- & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Robustness of the best model (CNN + Transformer) across recording conditions on held-out signers.}
+\label{tab:robustness}
+\begin{tabular}{lccc}
+\toprule
+Subset & Top-1 (\%) & Macro-F1 & Notes \\
+\midrule
+Prepared & -- & -- & controlled background \\
+Unprepared & -- & -- & cluttered background \\
+Real-world & -- & -- & indoor/outdoor scenes \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Ethical and Social Considerations}
+Assistive recognition systems should be developed with community input and respect for privacy. NSL23 is released under CC BY 4.0 \cite{zenodo_nsl23}. Deployment in Nepal should avoid surveillance-style misuse and instead focus on consent-based accessibility settings (e.g., opt-in kiosks, educational tools). We recommend validating labels and usability with NSL experts and Deaf community organizations during system refinement.
+
+\section{Discussion and Limitations}
+The hybrid CNN--Transformer approach balances spatial inductive bias with temporal context. For NSL23, generalization across backgrounds and signers is central due to the mix of prepared and unprepared environments \cite{sunuwar2024dib,zenodo_nsl23}. Limitations include (i) label mapping complexity due to heterogeneous folder/file conventions, (ii) possible confusion among visually similar alphabets without hand-keypoint supervision, and (iii) limited data scale compared to large sign datasets. Future work can incorporate hand pose estimation, self-supervised pretraining, and expanded NSL vocabularies beyond alphabets.
+
+\section{Conclusion}
+We presented a Nepal-specific, real-time NSL recognition pipeline using a hybrid CNN--Transformer architecture grounded in the NSL23 dataset. The paper provides the mathematical formulation, deployment-oriented inference, and runnable reference code to support reproducibility and practical adoption in Nepal.
+
+\section*{Acknowledgment}
+We acknowledge the NSL23 dataset creators and volunteers who contributed to data collection. We also recognize the efforts of Nepalese Deaf community organizations that standardize and promote NSL.
+
+\appendices
+\section{Code Availability}
+\label{app:code}
+The complete source code and Colab notebook used to reproduce the experiments (including Tables~\ref{tab:modelcomp}--\ref{tab:robustness}) are available at:
+\url{https://github.com/<YOUR-REPO-URL>}.
+The notebook downloads NSL23 directly from Zenodo (record 10478554) and does not redistribute the dataset.
+
+\begin{thebibliography}{99}
+
+\bibitem{sunuwar2024dib}
+J.~Sunuwar, S.~Borah, and A.~Kharga, ``NSL23 dataset for alphabets of Nepali sign language,'' \emph{Data in Brief}, vol.~53, p.~110080, Apr.~2024, doi: 10.1016/j.dib.2024.110080.
+
+\bibitem{zenodo_nsl23}
+J.~Sunuwar, S.~Borah, and A.~Kharga, ``Nepali Sign Language -Consonant and Vowel (NSL23),'' Zenodo, Dec.~2023 (v2), doi: 10.5281/zenodo.10478554.
+
+\bibitem{vaswani2017attention}
+A.~Vaswani \emph{et~al.}, ``Attention is all you need,'' in \emph{Advances in Neural Information Processing Systems (NeurIPS)}, 2017.
+
+\bibitem{sandler2018mobilenetv2}
+M.~Sandler, A.~Howard, M.~Zhu, A.~Zhmoginov, and L.-C.~Chen, ``MobileNetV2: Inverted residuals and linear bottlenecks,'' in \emph{Proc. IEEE CVPR}, 2018.
+
+\bibitem{he2016resnet}
+K.~He, X.~Zhang, S.~Ren, and J.~Sun, ``Deep residual learning for image recognition,'' in \emph{Proc. IEEE CVPR}, 2016.
+
+\bibitem{ligal2022ioegc}
+S.~Ligal and D.~S.~Baral, ``Nepali Sign Language gesture recognition using deep learning,'' in \emph{Proceedings of 12th IOE Graduate Conference}, Oct.~2022, pp.~1788--1795.
+
+\bibitem{poudel2025arxiv}
+B.~Poudel, S.~Ghimire, S.~Bhattarai, S.~Bhandari, and S.~S.~Dahal, ``Nepali Sign Language characters recognition: Dataset development and deep learning approaches,'' arXiv:2510.11243, 2025.
+
+\end{thebibliography}
+
+\end{document}

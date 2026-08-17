@@ -1,0 +1,22 @@
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+.DS_Store
+.python-version
+
+# NSL23 media is obtained from Zenodo (CC BY 4.0). Do not commit archives or extracted videos.
+data/extracted/
+data/raw_archives/
+data/frame_cache_primary/
+*.mov
+*.MOV
+*.mp4
+
+# Local caches and editor files
+.cache/
+.mypy_cache/
+.ruff_cache/
+.idea/
+.vscode/
