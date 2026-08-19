@@ -24,11 +24,11 @@ On 375 original isolated clips, with signers S1 and S2 held out in turn (196 poo
 | xyz Proto-BiLSTM | 55.8% ± 1.8% | 50.6% ± 2.4% |
 | **xyz+angle Proto-BiLSTM** | **59.4% ± 3.3%** | **54.7% ± 4.2%** |
 
-Chance for 49 classes is 2.0%. The prototypical encoder’s consonant accuracy is 61.8% ± 5.7% (the xyz softmax BiLSTM was 10.0% ± 3.9% on consonants). Closed 1-shot enrollment on the test signer’s other lighting is 76.2%–78.2% for the softmax BiLSTMs; that is a tutor protocol, not the unseen-signer exam.
+Chance for 49 classes is 2.0%. The prototypical encoder’s consonant accuracy is 61.8% ± 5.7% (the xyz softmax BiLSTM was 10.0% ± 3.9% on consonants). Closed 1-shot enrollment on the test signer’s other lighting is 76.2%–78.2% for the softmax BiLSTMs; that is a tutor protocol, not the unseen-signer exam. On the same prototypical encoder, top-3 is 85.5% ± 6.0% and a 5-way 1-shot protocol is 90.6% ± 2.5% (chance 20%). Those are different exams.
 
 A CPU webcam loop (`scripts/webcam_demo.py`) with the prototypical encoder processed a held-out NSL23 stream at **39.6 FPS** on an Apple M4; earlier xyz-softmax streams were **33–42 FPS**. That is a speed measurement, not a 49-class streaming accuracy.
 
-Do not quote 93.5%, “state of the art,” or other papers’ percentages as if they were scores on these folds. Do not headline `enroll_replace_class`.
+Do not quote 93.5%, “state of the art,” 5-way ~91% as 49-way alphabet accuracy, or other papers’ percentages as if they were scores on these folds. Do not headline `enroll_replace_class`.
 
 ## Setup
 
@@ -66,6 +66,7 @@ python scripts/train_protonet.py --samples data/manifests/folds/heldout_s1_cache
 python scripts/evaluate_enrollment.py --checkpoint ... --manifest ... --output ...
 python scripts/summarize_primary_results.py
 python scripts/generate_publication_figures.py
+python scripts/evaluate_alternative_protocols.py
 python scripts/generate_improvement_figures.py
 python scripts/write_results_summary.py
 python scripts/write_latex_tables.py

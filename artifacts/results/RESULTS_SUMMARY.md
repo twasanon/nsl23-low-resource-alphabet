@@ -101,3 +101,16 @@ See `artifacts/results/improvements/summary.json`. Pooled unseen-signer accuracy
 | xyz+angle Proto-BiLSTM | 59.4% ± 3.3% | 54.7% ± 4.2% | 61.8% ± 5.7% | 52.6% ± 4.8% |
 
 Closed 1-shot (other lighting of the held-out signer): xyz BiLSTM 76.2% ± 4.2%; xyz+angle BiLSTM 78.2% ± 2.8%; prototypical encoder 73.0% ± 1.5%. Do not report `enroll_replace_class` as 1-shot accuracy.
+
+Same prototypical encoder, other exams (`alternative_protocols.json`):
+
+| Exam | Chance | Score |
+|---|---:|---:|
+| 49-way top-1, unseen (primary) | 2.0% | 59.4% ± 3.3% |
+| 49-way top-3, unseen | 6.1% | 85.5% ± 6.0% |
+| 49-way top-5, unseen | 10.2% | 91.3% ± 4.0% |
+| 36-way consonants, unseen | 2.8% | 65.7% ± 3.6% |
+| 5-way 1-shot, unseen prototypes | 20.0% | 90.6% ± 2.5% |
+| 5-way 1-shot, same signer | 20.0% | 93.3% ± 1.5% |
+
+Do not quote 5-way or top-5 as 49-way alphabet accuracy.

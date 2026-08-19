@@ -168,7 +168,34 @@ def enrollment_figure(enroll: dict[str, tuple[float, float]], output_dir: Path) 
     save_figure(fig, output_dir, "figure_10_enrollment")
 
 
-def write_tables(models: dict, enroll: dict, fusion: dict, primary: pd.DataFrame, output: Path) -> None:
+def protocol_ladder(protocols: dict, closed_1shot: tuple[float, float], output_dir: Path) -> None:
+    rows = [
+        ("49-way top-1\n(unseen, primary)", protocols["top1"], protocols["chance"]["top1"]),
+        ("49-way top-3\n(unseen)", protocols["top3"], protocols["chance"]["top3"]),
+        ("49-way top-5\n(unseen)", protocols["top5"], protocols["chance"]["top5"]),
+        ("36-way consonants\n(unseen)", protocols["consonant_36way"], protocols["chance"]["consonant_36way"]),
+        ("5-way 1-shot\n(unseen prototypes)", protocols["five_way_unseen"], protocols["chance"]["five_way_unseen"]),
+        ("5-way 1-shot\n(same signer)", protocols["five_way_same_signer"], protocols["chance"]["five_way_same_signer"]),
+        ("49-way closed 1-shot\n(other lighting)", {"mean": closed_1shot[0], "sd": closed_1shot[1]}, protocols["chance"]["closed_1shot_49way"]),
+    ]
+    fig, ax = plt.subplots(figsize=(7.5, 3.25))
+    x = np.arange(len(rows))
+    means = [row[1]["mean"] for row in rows]
+    sds = [row[1]["sd"] for row in rows]
+    chances = [row[2] for row in rows]
+    colors = ["#000000", "#0072B2", "#0072B2", "#CC79A7", "#E69F00", "#E69F00", "#009E73"]
+    ax.bar(x, means, color=[mpl.colors.to_rgba(c, 0.78) for c in colors], edgecolor=colors, width=0.72)
+    ax.errorbar(x, means, yerr=sds, fmt="none", ecolor="#222222", capsize=3, linewidth=1)
+    ax.scatter(x, chances, marker="_", s=180, color="#666666", zorder=5, linewidths=2)
+    ax.set_xticks(x, [row[0] for row in rows], fontsize=6.4)
+    ax.set_ylim(0, 1.05)
+    ax.set_ylabel("Score")
+    fig.text(0.5, 0.01, "Same prototypical xyz+angle encoder. Grey ticks are chance. Mean ± SD over three seeds. The leftmost bar is the primary claim.", ha="center", fontsize=8)
+    fig.tight_layout(rect=(0, 0.08, 1, 1))
+    save_figure(fig, output_dir, "figure_12_protocol_ladder")
+
+
+def write_tables(models: dict, enroll: dict, protocols: dict, primary: pd.DataFrame, output: Path) -> None:
     xyz = (
         float(primary.loc["landmark_bilstm", "accuracy_mean"]),
         float(primary.loc["landmark_bilstm", "accuracy_sd"]),
@@ -214,6 +241,31 @@ def write_tables(models: dict, enroll: dict, fusion: dict, primary: pd.DataFrame
         "",
     ]
     output.write_text("\n".join(lines) + "\n")
+    protocol_lines = [
+        "% Auto-generated alternative exams. Do not edit by hand.",
+        r"\begin{table}[t]",
+        r"\centering",
+        r"\caption{The same xyz+angle prototypical encoder under exams used in other sign and few-shot papers. Primary claim is still 49-way unseen top-1. Five-way episodes use 500 draws per run.}",
+        r"\label{tab:protocols}",
+        r"\small",
+        r"\begin{tabular}{lcc}",
+        r"\toprule",
+        r"Exam & Chance (\%) & Score (\%) \\",
+        r"\midrule",
+        f"49-way top-1, unseen signer (primary) & {100.0 / 49.0:.1f} & {pm(protocols['top1']['mean'], protocols['top1']['sd'])} \\\\",
+        f"49-way top-3, unseen signer & {300.0 / 49.0:.1f} & {pm(protocols['top3']['mean'], protocols['top3']['sd'])} \\\\",
+        f"49-way top-5, unseen signer & {500.0 / 49.0:.1f} & {pm(protocols['top5']['mean'], protocols['top5']['sd'])} \\\\",
+        f"36-way consonants, unseen signer & {100.0 / 36.0:.1f} & {pm(protocols['consonant_36way']['mean'], protocols['consonant_36way']['sd'])} \\\\",
+        f"5-way 1-shot, unseen-signer prototypes & 20.0 & {pm(protocols['five_way_unseen']['mean'], protocols['five_way_unseen']['sd'])} \\\\",
+        f"5-way 1-shot, same signer, other lighting & 20.0 & {pm(protocols['five_way_same_signer']['mean'], protocols['five_way_same_signer']['sd'])} \\\\",
+        f"49-way closed 1-shot, other lighting & {100.0 / 49.0:.1f} & {pm(*enroll['proto_closed'][:2])} \\\\",
+        r"\bottomrule",
+        r"\end{tabular}",
+        r"\end{table}",
+        "",
+    ]
+    output.with_name("generated_protocol_tables.tex").write_text("\n".join(protocol_lines) + "\n")
+    output.write_text("\n".join(lines) + "\n")
 
 
 def main() -> None:
@@ -236,9 +288,13 @@ def main() -> None:
         "proto_zero": collect_enrollment(result_dir, "enrollment_proto_*.json", "train_prototypes"),
         "proto_closed": collect_enrollment(result_dir, "enrollment_proto_*.json", "enroll_closed_other_lighting"),
     }
-    fusion = {}
+    protocols = json.loads((result_dir / "alternative_protocols.json").read_text())
     result_dir.mkdir(parents=True, exist_ok=True)
-    summary = {"models": {k: {mk: {"mean": v[0], "sd": v[1], "seeds": v[2]} for mk, v in block.items()} for k, block in models.items()}, "enrollment": {k: {"mean": v[0], "sd": v[1], "seeds": v[2]} for k, v in enroll.items()}}
+    summary = {
+        "models": {k: {mk: {"mean": v[0], "sd": v[1], "seeds": v[2]} for mk, v in block.items()} for k, block in models.items()},
+        "enrollment": {k: {"mean": v[0], "sd": v[1], "seeds": v[2]} for k, v in enroll.items()},
+        "protocols": {k: protocols[k] for k in protocols if k not in {"runs"}},
+    }
     (result_dir / "summary.json").write_text(json.dumps(summary, indent=2) + "\n")
     proto_confusion(run_dir, class_list, result_dir / "confusion_proto_bilstm_mean_normalized.csv")
     matrix = pd.read_csv(result_dir / "confusion_proto_bilstm_mean_normalized.csv", index_col=0, keep_default_na=False)
@@ -252,7 +308,8 @@ def main() -> None:
     save_figure(fig, figure_dir, "figure_11_proto_bilstm_confusion")
     zero_shot_figure(primary, models, figure_dir)
     enrollment_figure(enroll, figure_dir)
-    write_tables(models, enroll, fusion, primary, Path("manuscript/generated_improvement_tables.tex"))
+    protocol_ladder(protocols, enroll["proto_closed"][:2], figure_dir)
+    write_tables(models, enroll, protocols, primary, Path("manuscript/generated_improvement_tables.tex"))
     print(json.dumps(summary, indent=2))
 
 

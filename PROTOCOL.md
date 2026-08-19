@@ -91,5 +91,6 @@ Same 375 clips and S1/S2 folds. Does not replace the frozen xyz 30-run matrix.
 - Prototypical: `scripts/train_protonet.py`, 40 epochs, 40 episodes/epoch, 5-shot/2-query with replacement, nearest **training** prototype at test time. xyz ablation uses `--feature-mode xyz`.
 - Crops: MediaPipe boxes on the RGB cache → `data/hand_crop_cache_primary/` (not in git). Frozen MobileNetV2 middle-frame CNN.
 - Enrollment: `enroll_closed_other_lighting` is the 49-way 1-shot protocol. Do not headline `enroll_replace_class`.
+- Alternative exams (`scripts/evaluate_alternative_protocols.py`): top-3/top-5, 36-way consonants, 5-way 1-shot (500 episodes). Same proto checkpoints. Do not quote 5-way as 49-way accuracy.
 - Webcam default: prototypical xyz+angle checkpoint, nearest class mean.
 
