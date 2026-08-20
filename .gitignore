@@ -14,6 +14,11 @@ data/extracted/
 data/raw_archives/
 data/frame_cache_primary/
 data/hand_crop_cache_primary/
+data/aggregate_track_cache/
+annotations/v2/segments.csv
+annotations/v2/tape_outcomes.csv
+annotations/v2/coverage.csv
+artifacts/v2_review/
 *.mov
 *.MOV
 *.mp4

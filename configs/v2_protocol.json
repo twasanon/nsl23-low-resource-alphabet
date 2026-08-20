@@ -1,0 +1,40 @@
+{
+  "annotation_version": "v2.0",
+  "created_before_any_v2_training": true,
+  "frozen": false,
+  "frozen_date": null,
+  "segments_sha256": null,
+  "coverage_sha256": null,
+  "protocol_sha256": null,
+  "test_hierarchy": ["S5", "S14", "S4", "S6"],
+  "preferred_test": ["S5", "S14"],
+  "test_fallback": ["S4", "S6"],
+  "validation_hierarchy": ["S3"],
+  "locked_development": ["S1", "S2"],
+  "assigned_roles": {
+    "frozen_test": [],
+    "validation": [],
+    "development": ["S1", "S2"],
+    "held_as_fallback": ["S4", "S6"],
+    "development_consonant_only": ["S7", "S8", "S10", "S11", "S12"],
+    "incomplete": []
+  },
+  "stage2": {
+    "name": "data_only_s1_s2_diagnostic",
+    "model": "prototypical xyz+angle BiLSTM",
+    "script": "scripts/train_protonet.py",
+    "feature_mode": "raw_angle",
+    "evaluate_on": ["S1", "S2"],
+    "compare_to": "59.4% ± 3.3% prototypical xyz+angles on 375 isolated clips, heldout_s1 / heldout_s2",
+    "never_evaluate": "frozen testers assigned at freeze (preferred S5/S14, else S4 then S6)"
+  },
+  "stage3": {
+    "use": "development + validation only",
+    "never_look_at_test_predictions": true
+  },
+  "stage4_final_test": {
+    "evaluate_once": true,
+    "report": ["per_tester", "pooled"],
+    "descriptive_not_causal": "A prepared vs unprepared accuracy gap is not a causal environment effect; signer and condition change together."
+  }
+}

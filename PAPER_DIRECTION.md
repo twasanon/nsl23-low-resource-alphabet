@@ -1,7 +1,10 @@
 # Paper direction: what this project is for, and what to do next
 
-**Status:** manuscript, landmark matrix, and webcam timing completed 17 August 2026.  
-**This file is the current research plan.** It does not replace `context_nsl.md` (original handoff) or `PROTOCOL.md` (frozen experiment). It records the shift the RGB results forced.
+**Status (19 August 2026):** Version 1 is **frozen**. Landmark matrix, prototypical xyz+angles (59.4% ± 3.3%), and webcam timing are done. Do not retune the S1/S2 folds.
+
+**Current plan:** [`VERSION2.md`](VERSION2.md) — annotate the 21 original aggregate tapes, freeze splits from completeness, then rerun the *same* prototypical model on **S1/S2** (the 59.4% exam) before any architecture change. Preferred final testers are S5 and S14; they stay sealed until Stage 4.
+
+This file is the Version 1 rationale (why landmarks replaced the CNN–Transformer). It does not replace `PROTOCOL.md` (frozen V1 experiment) or `VERSION2.md`.
 
 ---
 
@@ -136,7 +139,7 @@ Add a **hand-landmark** pipeline:
 4. Compare it with the three RGB models already finished.
 5. If landmarks beat RGB, implement a **webcam sliding-window** demo and measure **frames per second on this Mac** (and later a cheap CPU/Colab if needed).
 
-MediaPipe is allowed. It is a tool. Shrestha et al. (2024) used it on **their** letter data, not on public NSL23 video with a documented signer split. Poudel et al. fine-tuned a CNN on **still images they collected**, not on NSL23 video. This test is still open.
+MediaPipe is allowed. It is a tool. Shrestha et al. (2024) used it on **their** letter data, not on public NSL23 video with a documented signer split. Poudel et al. fine-tuned a CNN on **still images they collected**, not on NSL23 video. The V1 landmark test on NSL23 is **closed**: MediaPipe Hands 0.10.14 on the 375 clips, prototypical xyz+angles at 59.4% ± 3.3%, webcam loop 33–42 FPS. Version 2 does not reopen that comparison; it expands the sample.
 
 ---
 
@@ -190,4 +193,4 @@ Not allowed:
 - **Landmarks beat RGB but still fail unseen signers:** the paper is the benchmark plus a tutor-mode (same-user) webcam tool. Say so. Do not call it a translator.
 - **Landmarks do not beat RGB:** stop adding architectures. The contribution is the NSL23 isolated protocol and the negative result. Real-time webcam is then out of scope for this dataset subset.
 
-The path to take is the first block above: **landmarks on the frozen NSL23 folds, then webcam timing, then the paper.** That is the original product goal, with a method that can actually run on a camera.
+Version 1 followed that path. Version 2 is in `VERSION2.md`.
