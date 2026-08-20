@@ -1,18 +1,23 @@
 # Version 2 aggregate annotation
 
-Motion proposals are navigation only. Dynamic vowels may live between holds. The accepted interval is the complete gesture, including motion. `include_in_v2` stays false until pass 2. Automatic class guesses are never labels.
+Read [`ANNOTATION_GUIDE.md`](ANNOTATION_GUIDE.md) before opening the review interface.
 
-1. `python scripts/list_v2_tapes.py`
-2. `python scripts/propose_aggregate_segments.py --from-cache` — all detected holds kept; `class` is empty; `tape_outcomes.csv` records expected vs detected counts, including incomplete tapes.
-3. `python scripts/migrate_v2_segment_schema.py` — only if an older CSV exists.
-4. `python scripts/review_aggregates.py --port 8765` — one proposal at a time: full-tape timeline, ±3 s video (mandatory for vowels), previous / expected / next class, frame and time bounds, accept / reject / incomplete / ambiguous, insert missed signs. Pass 2 hides prior accept/reject. S5, S14, S4, and S6 are marked as the test hierarchy.
-5. `python scripts/report_v2_coverage.py` — then **stop**. Do not train.
-6. `python scripts/freeze_v2_protocol.py` — only after pass 2. Writes hashed `verified_segments_v2.0.csv`, `coverage_v2.0.csv`, and `configs/v2_protocol.json`.
+Motion proposals are not labels. Pass 1 may show a non-authoritative tape-order hint. Pass 2 starts from the original proposal and hides pass-1 outputs and the hint. Every proposal requires two different named, NSL-knowledgeable reviewers.
 
-Each accepted row stores at least: `segment_id`, `source_video`, `source_video_hash`, `signer`, `class`, `start_frame`, `end_frame`, `start_time_s`, `end_time_s`, `fps`, `condition`, `capture_device`, `proposal_method`, `review_pass_1`, `review_pass_2`, `include_in_v2`, `exclusion_reason`.
+```bash
+python scripts/make_v2_review_pilot.py
+python scripts/review_aggregates.py --mode pass1 --reviewer "REVIEWER A" --segments annotations/v2/pilot_segments.csv --port 8765
+python scripts/review_aggregates.py --mode pass2 --reviewer "REVIEWER B" --segments annotations/v2/pilot_segments.csv --port 8765
+python scripts/report_v2_annotation_agreement.py --segments annotations/v2/pilot_segments.csv --output annotations/v2/pilot_agreement.json
 
-**S4 and S6 are held_as_fallback until freeze.** They are not development. Preferred testers are S5 and S14; fallback is S4 then S6, completeness only.
+python scripts/review_aggregates.py --mode pass1 --reviewer "REVIEWER A" --port 8765
+python scripts/review_aggregates.py --mode pass2 --reviewer "REVIEWER B" --port 8765
+python scripts/report_v2_annotation_agreement.py --output annotations/v2/agreement_pre_adjudication.json
+python scripts/review_aggregates.py --mode adjudicate --reviewer "ADJUDICATOR" --port 8765
+python scripts/report_v2_coverage.py
+python scripts/freeze_v2_protocol.py
+```
 
-Stage 2 (after freeze) retrains the same prototypical xyz+angle model and evaluates **S1/S2**, comparable to 59.4%. Do not score frozen testers until Stage 4.
+The reviewer writes atomically and keeps `segments.csv.bak`. Never run two reviewer servers against the same CSV simultaneously. Do not use `configs/signer_split.json`, and do not train until freeze.
 
-Do not commit unreviewed `segments.csv`. After freeze, commit the v2.0 verified files and protocol JSON.
+Current hierarchy lock: `09a2b7b2cb3a580c6cf3e3cd0c952a04ec4a793863ab27212c0cdeb55c5ab009`.

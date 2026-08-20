@@ -1,196 +1,84 @@
-# Paper direction: what this project is for, and what to do next
+# NSL23 paper direction
 
-**Status (19 August 2026):** Version 1 is **frozen**. Landmark matrix, prototypical xyz+angles (59.4% ± 3.3%), and webcam timing are done. Do not retune the S1/S2 folds.
+**Present status (20 August 2026):** Version 1 is frozen. Version 2 is the scientific direction. **Do not train Version 2.** The repository contains 691 motion proposals, zero completed review passes, zero verified segments, and no frozen V2 sample manifests.
 
-**Current plan:** [`VERSION2.md`](VERSION2.md) — annotate the 21 original aggregate tapes, freeze splits from completeness, then rerun the *same* prototypical model on **S1/S2** (the 59.4% exam) before any architecture change. Preferred final testers are S5 and S14; they stay sealed until Stage 4.
+The protocol and executable gates are now aligned. Human annotation is the immediate gate, but it must be performed by people who can identify the NSL alphabet. See [`annotations/v2/ANNOTATION_GUIDE.md`](annotations/v2/ANNOTATION_GUIDE.md).
 
-This file is the Version 1 rationale (why landmarks replaced the CNN–Transformer). It does not replace `PROTOCOL.md` (frozen V1 experiment) or `VERSION2.md`.
+## What you personally need to do
 
----
+You do not need to label clips merely because you own the project. You should label them only if you genuinely know the 49 NSL alphabet signs. Otherwise, recruit qualified reviewers and coordinate the process.
 
-## If you are confused, read this first
+Before the real review:
 
-Three different things got mixed together. They are not the same.
+1. Create the disposable S3 calibration pilot with `python scripts/make_v2_review_pilot.py`.
+2. Run pilot pass 1 and pass 2 with qualified reviewers.
+3. If the boundary policy changes, update the protocol while the real review count is still zero, refresh the hierarchy hash, and commit/tag that lock.
+4. Do not merge pilot decisions into `annotations/v2/segments.csv`.
 
-1. **NSL23 (the dataset)**  
-   Pre-recorded alphabet videos from Sunuwar et al. A person signs one letter (or a long aggregate tape). Files on disk. **This is not a webcam, and it is not real-time.** You cannot “see real-time usage” inside the zip files. You can only **train** on them.
+Real pass 1:
 
-2. **The experiment (what we measure on those files)**  
-   Which recognizer is more accurate on held-out clips: RGB CNN / BiLSTM / Transformer vs hand landmarks. This uses the dataset as a test bench.
+```bash
+python scripts/review_aggregates.py --mode pass1 --reviewer "REVIEWER A" --port 8765
+```
 
-3. **The product goal (why you started)**  
-   A cheap **live webcam** alphabet recognizer. That is a **separate program** you build after a method looks good. You point a camera at a person, run the model every few frames, and time FPS. NSL23 does not do that for you.
+Real pass 2, with a different person for every tape:
 
-So: the dataset does not demonstrate real-time use. Real-time is a **deployment test** you add. The paper can be “which method is accurate enough *and* cheap enough to run live,” but only if you actually time a live loop. Until then, you only have clip accuracy.
+```bash
+python scripts/review_aggregates.py --mode pass2 --reviewer "REVIEWER B" --port 8765
+```
 
-MediaPipe is not banned. The closest NSL paper that compared it (Bhusal & Baral, sentence-level, 2024) found **lower error with MediaPipe Holistic** (WER 20.23% vs 25.62% without it). Shrestha et al. used MediaPipe for letters and reported high validation accuracy. Known weaknesses: dark video, blur, occlusion, missing hands. NSL23 has dark clips, so that is a reason to **measure** failure rate, not a reason to skip the tool.
+Pass 2 starts from the original proposal and hides pass-1 decisions, class, bounds, and the tape-order class hint. Both reviewers must also sweep each full source tape for detector misses. Save the hash-bound pre-adjudication agreement report before resolving conflicts.
 
-### Other papers’ percentages are not one leaderboard
+## Locked scientific decisions
 
-Every number below was produced by **that paper’s own model, on that paper’s own test files**. Accuracy means: correct predictions ÷ test samples in *that* experiment. They are not scores on NSL23, and they are not comparable to each other.
-
-| Paper | Their number | What produced it |
-|---|---|---|
-| Poudel et al. (2026) | 90.45% (MobileNetV2), 88.78% (ResNet50) | Their 54,000 **still images**, 36 classes, 70/15/15 split. Table 1 lists 90.45% as **training** accuracy; validation is 98.99%; a later table on 8,100 images reports ~0.99. The abstract still quotes 90.45%. |
-| Heuju & Rijal (2022) | 55.9% (71 words), 89% (9 words) | Their **private word videos**, 70/30 split |
-| Ligal & Baral (2022) | ~88% | Different **private word** set |
-| Shrestha et al. (2024) | val ~88% | Their letter images + MediaPipe |
-| Bhusal & Baral (2024) | WER 20% | 40 **sentences**, not letters |
-| Sunuwar et al. (2024) | none | Dataset only |
-
-The original `context_nsl.md` goal was **not** “beat all of these.” It was a real-time, low-resource NSL alphabet system on **public NSL23 video**, with a CNN–Transformer as the candidate method.
-
-You cannot accomplish “beat all of these” with one number. Different exams. 91% on Poudel’s photos does not beat Heuju’s 55% on words, and 8% on NSL23 unseen signers does not lose to Poudel’s 90% in any fair sense.
-
-Using Poudel’s Kaggle images is allowed (cite them). Sensible use: **pretrain** an image CNN on Poudel, then test on NSL23 video frames. That may help RGB. It is not “beating 90.45%.” Beating Poudel only counts if you evaluate on **Poudel’s test split**. That would be a different paper (still-image classification), not the webcam-on-NSL23 paper.
-
----
-
-
-## Dataset ownership (do not confuse this)
-
-The videos are **not** ours.
-
-- Source: **NSL23**, Sunuwar, Borah, and Kharga (2024), *Data in Brief*.
-- Public files: Zenodo record `10478554`, DOI `10.5281/zenodo.10478554`, CC BY 4.0.
-- We use them as a **secondary analysis**: cite the dataset paper, keep the license, do not pretend we collected the clips, do not redistribute the videos unless the license and venue require it.
-
-That was always the plan in `context_nsl.md`. Using a public dataset is normal. Uniqueness has to come from **protocol + method + measurement**, not from owning NSL23.
-
----
-
-## What the paper is actually for
-
-The original point was not “invent a Transformer.” It was:
-
-> A **real-time**, **low-resource** NSL alphabet recognizer that can run from a **webcam**, useful in a Nepal/NSL setting.
-
-The CNN–Transformer was a **candidate method** for that product, not the product.
-
-`context_nsl.md` already said: keep “Real-Time” in the title only if sliding-window / webcam inference is implemented and timed. The RGB study never built that pipeline. It timed offline clips on an Apple M4. End-to-end RGB inference was about **one second per clip** because decoding and preprocessing dominate. That is not a webcam system.
-
-So the goal still stands. The RGB hybrid is the wrong vehicle for it.
-
-### Working title
-
-Do not use the old title (`Bridging the Silent Gap: Real-Time … CNN–Transformer`). The hybrid did not win, and real-time is not measured yet.
-
-**Use this:**
-
-> Low-Resource Nepali Sign Language Alphabet Recognition on NSL23: Comparing RGB Video Models and Hand Landmarks for Webcam Use
-
-That title matches work already done (RGB comparison on NSL23) and work still required (landmarks + a webcam you can test). It does not claim the Transformer is better, and it does not say “real-time” until FPS is measured.
-
-Shorter fallback if the journal wants fewer words:
-
-> Comparing RGB and Landmark Models for Isolated Nepali Sign Language Alphabet Recognition on NSL23
-
-### Poudel images: use as a helper, not as the paper
-
-Option A (pretrain on Poudel, test on NSL23) is **worth doing if it is cheap**, because more handshape photos can help a fine-tuned CNN. It will not by itself give you a low-resource webcam. A MobileNet on full frames is still heavier than MediaPipe coordinates.
-
-Order:
-
-1. Landmarks + tiny classifier on the frozen NSL23 folds (this is the webcam candidate).
-2. Optional: Poudel-pretrained / fine-tuned RGB CNN on the same folds (this is “did extra images help?”).
-3. Put the faster accurate model in a webcam script you can run on this Mac.
-
-Poudel does not replace NSL23 and does not replace the RGB evaluation already finished.
-
----
-
-## What already exists (do not redo)
-
-| File | What it is |
+| Decision | Lock |
 |---|---|
-| `context_nsl.md` | Original CNN–Transformer handoff, journal rules, dataset pitfalls |
-| `PROTOCOL.md` | Frozen RGB experiment: 375 isolated original clips, S1/S2 holdout, 18 runs |
-| `CLAIM_LEDGER.md` | What the RGB manuscript is allowed to say |
-| `artifacts/results/` | Real RGB numbers (~6–7% unseen-signer accuracy) |
-| `manuscript/blinded_manuscript.md` | Draft of the RGB-only paper (placeholders, not a Word file) |
+| V1 59.4% ± 3.3% | Exploratory development evidence on S1/S2, not an untouched confirmation. |
+| Test candidates | S5, S14, S4, S6 remain sealed permanently. Every candidate with 49 verified classes becomes a tester; none is released into development. |
+| Minimum Stage 4 | At least two complete frozen testers. Otherwise publish the V1 exploration plus annotation resource without a confirmatory 49-way result. |
+| Development | S1/S2; S3 is validation if complete. If S3 is incomplete, Stage 3 is skipped and its verified non-test clips may augment training; other incomplete non-test signers may also contribute verified/original clips. |
+| Stage 2 | Existing prototypical image xyz+angle model; S1/S2 isolated development diagnostic only. |
+| Stage 3 | Exactly three geometry trials, 40 epochs, seeds 17/42/73, LOSO S1/S2/S3. Select mean per-signer macro-recall. Skip if S3 is incomplete. |
+| Final retrain | Required train-only batch on every permitted non-test sample, including S3. It cannot load tester rows. |
+| Stage 4 | Evaluation-only batch from the three frozen checkpoints. No retraining or adaptation. |
+| Primary endpoint | Use all verified clips. Average clips within class, 49 classes within signer, frozen signers within seed, then report mean ± sample SD over seeds. |
+| Uncertainty | Seed SD describes optimization variation only, not signer-population uncertainty. |
+| Task | 49-way classification of an isolated, manually bounded gesture from an unseen signer. Not spotting, continuous recognition, or webcam accuracy. |
+| Annotation staffing | Two different qualified reviewers for every proposal; a named adjudicator resolves completed-pass disagreements only. |
+| Feature cache | 16 frames, 224 px, MediaPipe 0.10.14 and detector settings are locked; every source and cache is hash checked. |
+| Model training | BiLSTM and AdamW settings, 40 epochs, 40 episodes, 5 support, 2 query, and seeds 17/42/73 are locked. |
 
-MediaPipe has **not** been used. No webcam demo exists. No landmark model has been trained.
+Hierarchy lock: `09a2b7b2cb3a580c6cf3e3cd0c952a04ec4a793863ab27212c0cdeb55c5ab009` in `configs/v2_protocol.json`. This local hash should be anchored by a Git commit/tag before real annotation begins.
 
----
+## Stop conditions
 
-## Why the RGB CNN–Transformer is not the path
+- No V2 training, prototype construction, feature comparison, or checkpoint selection until `configs/v2_protocol.json` has `"frozen": true`.
+- Never use `configs/signer_split.json` for V2.
+- Never train on S5, S14, S4, or S6, even when one is incomplete.
+- Never use model results to choose which signer becomes test.
+- Never force detector proposals to equal 13 vowels or 36 consonants.
+- Never run Stage 4 when `confirmatory_49way` is false.
+- Never describe Stage 4 as population-level evidence from signers; the fixed test cohort remains small.
 
-On the honest NSL23 isolated subset:
+## Route to the publishable Version 2 paper
 
-- Single-frame CNN: **5.8% ± 0.8%**
-- CNN–BiLSTM: **7.0% ± 2.1%**
-- CNN–Transformer: **6.3% ± 0.8%**
+1. Reviewer calibration on disposable S3 proposals.
+2. Lock the final annotation policy in Git before real outcomes.
+3. Independent full pass 1 and pass 2.
+4. Save the hash-bound pre-adjudication agreement artifact; adjudicate disagreements.
+5. Coverage, frozen source inventory, and protocol hashes.
+6. Build every stage manifest with `scripts/prepare_v2_manifests.py`.
+7. Build the frozen three-view landmark cache with `scripts/extract_v2_landmarks.py`.
+8. Stage 2 diagnostic.
+9. Three-trial Stage 3, or the preregistered skip when S3 is incomplete.
+10. Freeze `configs/v2_model_spec.json`.
+11. Train three final checkpoints on non-test data only.
+12. Run the evaluation-only Stage 4 batch once.
+13. Write the V2 manuscript around Stage 4, including annotation agreement and per-tester results.
+14. Only afterward run enrollment, top-k, broader LOSO, or webcam engineering analyses.
 
-The temporal heads reached **100% training accuracy** and did not transfer to unseen signers. Most NSL23 alphabet classes are **static handshapes**. Frozen ImageNet RGB features do not describe those shapes well. A Transformer on 16 full frames is also the opposite of a cheap webcam model.
+## Current paper
 
-Keep those runs. They are the **control**: RGB video models failed this protocol. Do not write a paper that claims the hybrid won.
+`manuscript/nsl23_low_resource.pdf` remains the Version 1 exploratory report on 375 clips. Its text now explicitly states that S1/S2 informed follow-on representation choices. It can support the project history, but the intended publishable headline is the pre-specified Version 2 Stage 4 endpoint—or no confirmatory headline if the annotation coverage gate fails.
 
----
-
-## The shift (one experiment)
-
-Stay on **NSL23**. Stay on the **same 375 clips** and the **same S1/S2 signer-held-out folds**.
-
-Add a **hand-landmark** pipeline:
-
-1. Sample the same 16 frames already cached.
-2. Run **MediaPipe Hands** on those frames (CPU is enough; that is the low-resource point).
-3. Train a **small** classifier on the landmark sequence (MLP or BiLSTM on 21×3 coordinates, not another large RGB Transformer).
-4. Compare it with the three RGB models already finished.
-5. If landmarks beat RGB, implement a **webcam sliding-window** demo and measure **frames per second on this Mac** (and later a cheap CPU/Colab if needed).
-
-MediaPipe is allowed. It is a tool. Shrestha et al. (2024) used it on **their** letter data, not on public NSL23 video with a documented signer split. Poudel et al. fine-tuned a CNN on **still images they collected**, not on NSL23 video. The V1 landmark test on NSL23 is **closed**: MediaPipe Hands 0.10.14 on the 375 clips, prototypical xyz+angles at 59.4% ± 3.3%, webcam loop 33–42 FPS. Version 2 does not reopen that comparison; it expands the sample.
-
----
-
-## Two numbers, because they answer different questions
-
-The webcam product and the scientific claim are not the same split.
-
-| Question | Split | Why it matters |
-|---|---|---|
-| Can this help a **new person** (future translator)? | Keep **S1 / S2 held out** | This is the hard, honest number. Do not drop it. |
-| Can a **learner** practice letters on a webcam? | Signer-dependent or few-shot enrollment | This is the realistic alphabet-tutor setting. High accuracy is allowed if named correctly. |
-
-A real-time demo without an unseen-signer number would repeat the overclaim we already rejected. An unseen-signer number without a webcam timing would not be the product paper you wanted.
-
-**Call it real-time only after** a live or simulated stream is timed (capture → landmarks → predict → optional smoothing), in ms/frame or FPS, on the target machine. Offline clip throughput is not webcam FPS.
-
----
-
-## Recommended path (do this, in order)
-
-1. Extract MediaPipe landmarks on the existing primary clips. Log failed detections; do not silently impute junk.
-2. Train the landmark model on the frozen folds (`configs/isolated_twofold_protocol.json`). Same seeds if practical: 17, 42, 73.
-3. Fill a comparison table: RGB CNN / BiLSTM / Transformer vs landmark MLP / landmark BiLSTM. Accuracy, macro-F1, CPU latency.
-4. Only if landmarks are clearly better than RGB: build a webcam loop (deque of recent landmark frames, predict every *k* frames). Time it on this Mac.
-5. Then write the paper / TeX from those artifacts.
-
-Do **not** start the manuscript rewrite until step 3 exists. Do **not** collect a new dataset unless landmarks still fail and the limitation is “too few signers,” in which case the paper can stop at the benchmark plus that limit.
-
----
-
-## What uniqueness is allowed to mean
-
-Allowed:
-
-- First documented isolated-sign, signer-held-out protocol on public NSL23 video.
-- First pose-vs-RGB comparison on that protocol.
-- A measured low-resource webcam prototype, if it actually runs.
-
-Not allowed:
-
-- “NSL23 is our dataset.”
-- “Our CNN–Transformer is better.”
-- “We beat Poudel 90%” (different data, images, split).
-- “Real-time” without a streaming measurement.
-
----
-
-## Decision rule after the landmark run
-
-- **Landmarks beat RGB and a webcam loop is fast enough:** the paper is a low-resource NSL23 alphabet recognizer, with RGB hybrids as the failed alternative.
-- **Landmarks beat RGB but still fail unseen signers:** the paper is the benchmark plus a tutor-mode (same-user) webcam tool. Say so. Do not call it a translator.
-- **Landmarks do not beat RGB:** stop adding architectures. The contribution is the NSL23 isolated protocol and the negative result. Real-time webcam is then out of scope for this dataset subset.
-
-Version 1 followed that path. Version 2 is in `VERSION2.md`.
+Detailed protocol: [`VERSION2.md`](VERSION2.md). Historical V1 rationale: [`PAPER_DIRECTION_V1.md`](PAPER_DIRECTION_V1.md). Frozen V1 experiment: [`PROTOCOL.md`](PROTOCOL.md).

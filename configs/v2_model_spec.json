@@ -1,0 +1,25 @@
+{
+  "frozen": false,
+  "protocol_sha256": null,
+  "model_spec_sha256": null,
+  "selected_trial": null,
+  "feature_mode": null,
+  "selection_source": null,
+  "epochs": 40,
+  "episodes": 40,
+  "support": 5,
+  "query": 2,
+  "hidden_dim": 64,
+  "layers": 1,
+  "dropout": 0.3,
+  "learning_rate": 0.0003,
+  "weight_decay": 0.0001,
+  "num_frames": 16,
+  "seeds": [
+    17,
+    42,
+    73
+  ],
+  "final_retrain": "train only on all permitted non-test data",
+  "stage4": "evaluation only from the three frozen checkpoints"
+}

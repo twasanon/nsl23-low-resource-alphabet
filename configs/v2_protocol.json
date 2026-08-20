@@ -3,38 +3,229 @@
   "created_before_any_v2_training": true,
   "frozen": false,
   "frozen_date": null,
+  "hierarchy_sha256": "09a2b7b2cb3a580c6cf3e3cd0c952a04ec4a793863ab27212c0cdeb55c5ab009",
   "segments_sha256": null,
   "coverage_sha256": null,
+  "agreement_sha256": null,
+  "source_inventory_sha256": null,
+  "manifest_sha256": null,
+  "classes_sha256": null,
   "protocol_sha256": null,
-  "test_hierarchy": ["S5", "S14", "S4", "S6"],
-  "preferred_test": ["S5", "S14"],
-  "test_fallback": ["S4", "S6"],
-  "validation_hierarchy": ["S3"],
-  "locked_development": ["S1", "S2"],
+  "test_hierarchy": [
+    "S5",
+    "S14",
+    "S4",
+    "S6"
+  ],
+  "preferred_test": [
+    "S5",
+    "S14"
+  ],
+  "test_fallback": [
+    "S4",
+    "S6"
+  ],
+  "test_assignment": {
+    "rule": "freeze every complete signer in test_hierarchy; never release a test-hierarchy signer into development",
+    "minimum_complete_testers_for_stage4": 2,
+    "selection_uses_model_results": false
+  },
+  "validation_hierarchy": [
+    "S3"
+  ],
+  "locked_development": [
+    "S1",
+    "S2"
+  ],
+  "development_policy": {
+    "complete_s3_role": "validation",
+    "if_s3_incomplete": "skip Stage 3; any verified non-test S3 clips may augment training",
+    "other_incomplete_non_test_signers": "verified clips and original isolated clips may augment training",
+    "test_hierarchy_is_always_excluded": true
+  },
+  "obsolete_split": "configs/signer_split.json puts S5 and S14 in train and must not be used for Version 2",
   "assigned_roles": {
     "frozen_test": [],
     "validation": [],
-    "development": ["S1", "S2"],
-    "held_as_fallback": ["S4", "S6"],
-    "development_consonant_only": ["S7", "S8", "S10", "S11", "S12"],
+    "development": [
+      "S1",
+      "S2"
+    ],
+    "held_as_fallback": [
+      "S5",
+      "S14",
+      "S4",
+      "S6"
+    ],
+    "development_augmentation": [
+      "S7",
+      "S8",
+      "S10",
+      "S11",
+      "S12"
+    ],
     "incomplete": []
+  },
+  "annotation_gate": {
+    "passes": 2,
+    "pass2_hides": [
+      "pass1_decision",
+      "pass1_class",
+      "pass1_bounds",
+      "tape_order_class_hint"
+    ],
+    "pass2_starts_from": "original_proposal_bounds",
+    "pass1_class_hint": "tape-order-assisted and explicitly non-authoritative",
+    "pass2_class_hint": "hidden",
+    "record_per_pass": [
+      "reviewer",
+      "timestamp_utc",
+      "class",
+      "start_frame",
+      "end_frame",
+      "start_time_s",
+      "end_time_s",
+      "decision"
+    ],
+    "agreement": "same canonical class and temporal IoU >= 0.5, else adjudication",
+    "test_hierarchy_requires_two_reviewers": true,
+    "all_proposals_require_two_different_reviewers": true,
+    "development_may_use_one_reviewer": false,
+    "freeze_requires_both_passes": true,
+    "freeze_requires_every_proposal_two_completed_passes": true,
+    "adjudication_requires_two_completed_passes": true,
+    "agreement_reported_before_adjudication": true,
+    "agreement_artifact_is_hash_bound_at_freeze": true,
+    "manual_insert_policy": "a pass-1 discovery missed by the detector remains flagged as manual_insert and receives pass-2 verification; it is not described as independently discovered",
+    "annotation_boundary_rule": "start at first intentional movement into the sign; end after the final intentional hold or motion, before transition to the next sign"
+  },
+  "feature_extraction": {
+    "frames_per_clip": 16,
+    "image_size": 224,
+    "frame_sampling": "uniform temporal bin centers over the frozen manual bounds",
+    "mediapipe_version": "0.10.14",
+    "static_image_mode": true,
+    "max_num_hands": 2,
+    "model_complexity": 1,
+    "min_detection_confidence": 0.35,
+    "min_tracking_confidence": 0.35,
+    "hand_selection": "highest handedness-classification confidence, with image/world landmark indices kept paired"
+  },
+  "model_training": {
+    "encoder": "one-layer bidirectional LandmarkBiLSTM with temporal mean pooling and layer normalization",
+    "hidden_dim": 64,
+    "layers": 1,
+    "dropout": 0.3,
+    "epochs": 40,
+    "episodes_per_epoch": 40,
+    "support_per_class": 5,
+    "query_per_class": 2,
+    "sample_with_replacement_when_needed": true,
+    "optimizer": "AdamW",
+    "learning_rate": 0.0003,
+    "weight_decay": 0.0001,
+    "deterministic_algorithms": true
+  },
+  "isolated_task": "49-way classification given an isolated, manually bounded gesture from an unseen signer. Not spotting, continuous recognition, or live webcam accuracy.",
+  "estimand": {
+    "primary": "mean across seeds of the equal-weight mean of per-signer macro-recall",
+    "within_signer_rule": "use every verified clip; compute recall within each class, then average the 49 classes equally",
+    "across_signer_rule": "average every frozen tester equally",
+    "seed_aggregation": "compute the primary independently for seeds 17, 42, 73; report mean and sample SD across seeds",
+    "uncertainty_interpretation": "seed SD describes optimization variation only; it is not a confidence interval for a signer population",
+    "required_companion": [
+      "per_tester_macro_recall",
+      "per_tester_top1"
+    ],
+    "secondary": "clip_pooled_top1",
+    "seeds": [
+      17,
+      42,
+      73
+    ],
+    "batch": "one evaluation-only batch from three frozen checkpoints; no retraining or adaptation afterward",
+    "descriptive_not_causal": true
   },
   "stage2": {
     "name": "data_only_s1_s2_diagnostic",
     "model": "prototypical xyz+angle BiLSTM",
     "script": "scripts/train_protonet.py",
-    "feature_mode": "raw_angle",
-    "evaluate_on": ["S1", "S2"],
-    "compare_to": "59.4% ± 3.3% prototypical xyz+angles on 375 isolated clips, heldout_s1 / heldout_s2",
-    "never_evaluate": "frozen testers assigned at freeze (preferred S5/S14, else S4 then S6)"
+    "feature_mode": "image_xyz_angle",
+    "evaluate_on": [
+      "S1",
+      "S2"
+    ],
+    "exclude_from_train": [
+      "frozen testers",
+      "held_as_fallback",
+      "validation",
+      "the fold held-out signer from every source"
+    ],
+    "compare_to": "59.4% \u00b1 3.3% prototypical xyz+angles on 375 isolated clips, heldout_s1 / heldout_s2",
+    "never_evaluate": [
+      "S5",
+      "S14",
+      "S4",
+      "S6"
+    ]
   },
   "stage3": {
-    "use": "development + validation only",
+    "budget": 3,
+    "trials": [
+      {
+        "id": "image_xyz_angle",
+        "description": "wrist-centered, palm-scale-normalized image xyz plus 20 joint angles and a detection flag"
+      },
+      {
+        "id": "world_xyz",
+        "description": "MediaPipe world landmarks, wrist-centered and scaled by wrist-to-middle-MCP distance, plus a detection flag"
+      },
+      {
+        "id": "palm_canonical_world_xyz",
+        "description": "world_xyz rotated into orthonormal palm axes defined by wrist, middle MCP, index MCP, and pinky MCP, plus a detection flag"
+      }
+    ],
+    "folds": [
+      "S1",
+      "S2",
+      "S3"
+    ],
+    "epochs": 40,
+    "selection_metric": "mean across seeds and S1/S2/S3 LOSO folds of per-signer 49-class macro-recall using every evaluation clip",
+    "tie_break": [
+      "mean LOSO clip-pooled top-1",
+      "prefer control"
+    ],
+    "if_s3_incomplete": "skip architecture search; carry Stage 2 spec",
+    "excluded_from_budget": [
+      "Poudel",
+      "ST-GCN",
+      "metric learning",
+      "RGB fusion"
+    ],
     "never_look_at_test_predictions": true
+  },
+  "final_retrain": {
+    "required": true,
+    "include_validation": true,
+    "exclude": "frozen testers",
+    "epochs": 40,
+    "seeds": [
+      17,
+      42,
+      73
+    ],
+    "no_test_early_stopping": true
   },
   "stage4_final_test": {
     "evaluate_once": true,
-    "report": ["per_tester", "pooled"],
-    "descriptive_not_causal": "A prepared vs unprepared accuracy gap is not a causal environment effect; signer and condition change together."
-  }
+    "primary": "all-clips hierarchical macro-recall: clips within class, classes within signer, signers within seed, then mean across seeds",
+    "report": [
+      "per_tester",
+      "primary_mean",
+      "clip_pooled_secondary"
+    ],
+    "descriptive_not_causal": "A prepared vs unprepared accuracy gap is not a causal environment effect."
+  },
+  "fallback_paper": "If fewer than two complete 49-way testers: V1 exploratory benchmark plus the verified annotation resource. No confirmatory 49-way claim."
 }

@@ -54,8 +54,8 @@ def main() -> None:
         "S2": "development",
         "S4": "held_as_fallback",
         "S6": "held_as_fallback",
-        "S9": "development_consonant_only",
-        "S13": "development_consonant_only",
+        "S9": "development_augmentation",
+        "S13": "development_augmentation",
     }
     with args.output.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=fieldnames)

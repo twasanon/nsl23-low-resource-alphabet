@@ -1,14 +1,15 @@
 # NSL23 CNN Temporal Benchmark: Reproducibility Guide
 
-This project implements the frozen protocol described in `PROTOCOL.md`. It compares a middle-frame MobileNetV2 classifier, a CNN–BiLSTM, and a CNN–Transformer using only original individually labelled NSL23 clips. The primary evaluation holds out S1 and S2 in separate complete-alphabet folds and repeats each architecture with seeds 17, 42, and 73.
+This guide reproduces the frozen Version 1 protocol described in `PROTOCOL.md`. It compares a middle-frame MobileNetV2 classifier, a CNN–BiLSTM, and a CNN–Transformer using only original individually labelled NSL23 clips. Each run holds out S1 or S2 and repeats each architecture with seeds 17, 42, and 73. Because the same S1/S2 folds later informed representation and loss choices, the resulting percentages are exploratory cross-signer development evidence, not an untouched confirmatory test. The prospective Version 2 route is in `VERSION2.md`.
 
 ## Scientific boundary
 
 - Primary data: 375 original isolated clips, 49 classes, 7 available training/test signers.
 - Excluded: 23 aggregate recordings without released gesture timestamps and 234 cropped/preprocessed files (two exclusion categories overlap).
-- Test design: two unseen signers, 98 clips per signer, one bright and one dark clip per class.
+- Evaluation design: two run-wise unseen signers, 98 clips per signer, one bright and one dark clip per class.
 - Selection: fixed 30th epoch; no validation set, early stopping, or test-driven tuning.
 - Generalization: the results apply to these two held-out participants and recording conditions, not the signer population, continuous signing, or deployment.
+- Study-level boundary: S1/S2 informed follow-on analyses, so Version 1 must not be described as untouched confirmation.
 
 `CLAIM_LEDGER.md` maps every permitted manuscript claim to its evidence and lists prohibited overclaims.
 

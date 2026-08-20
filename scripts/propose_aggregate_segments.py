@@ -21,6 +21,7 @@ from nsl23.landmarks import make_detector
 from nsl23.v2_annotation import (
     SEGMENT_FIELDS,
     TAPE_OUTCOME_FIELDS,
+    empty_segment,
     migrate_row,
     segment_id,
     sha256_file,
@@ -187,7 +188,8 @@ def main() -> None:
             status = "count_mismatch_pending_review"
         for index, (start_t, end_t, start_f, end_f) in enumerate(holds):
             hint = class_list[index] if index < expected else ""
-            rows.append(
+            rec = empty_segment()
+            rec.update(
                 {
                     "segment_id": segment_id(tape["video_id"], index),
                     "source_video": tape["video_id"],
@@ -199,6 +201,7 @@ def main() -> None:
                     "start_time_s": f"{start_t:.4f}",
                     "end_time_s": f"{end_t:.4f}",
                     "fps": tape["fps"],
+                    "duration_seconds": tape["duration_seconds"],
                     "condition": tape["condition"],
                     "lighting": tape["lighting"],
                     "capture_device": tape["capture_device"],
@@ -207,14 +210,16 @@ def main() -> None:
                     "hold_index": str(index),
                     "n_holds_detected": str(n_holds),
                     "expected_class_hint": hint,
-                    "review_pass_1": "",
-                    "review_pass_2": "",
+                    "proposal_start_frame": str(start_f),
+                    "proposal_end_frame": str(end_f),
+                    "proposal_start_time_s": f"{start_t:.4f}",
+                    "proposal_end_time_s": f"{end_t:.4f}",
                     "include_in_v2": "false",
-                    "exclusion_reason": "",
                     "notes": note,
                     "source_path": tape["source_path"],
                 }
             )
+            rows.append(rec)
         outcomes.append(
             {
                 "source_video": tape["video_id"],

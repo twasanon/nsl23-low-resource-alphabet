@@ -6,6 +6,7 @@ import argparse
 import csv
 import hashlib
 import json
+import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
@@ -149,9 +150,20 @@ def main() -> None:
     parser.add_argument("--summary", type=Path, required=True)
     args = parser.parse_args()
 
+    if args.split_config.name == "signer_split.json":
+        print(
+            "WARNING: configs/signer_split.json is obsolete for Version 2 "
+            "(S5 and S14 are in train). Use scripts/build_v2_samples.py after freeze.",
+            file=sys.stderr,
+        )
+
+    segment_rows = read_csv(args.segments)
+    if segment_rows and "include_in_v2" in segment_rows[0]:
+        raise SystemExit("V2 segments.csv cannot be used with samples.py. Use scripts/build_v2_samples.py.")
+
     config = json.loads(args.classes.read_text(encoding="utf-8"))
     labels = config["consonants"] + config["vowels"]
-    samples = build_samples(read_csv(args.manifest), read_csv(args.segments))
+    samples = build_samples(read_csv(args.manifest), segment_rows)
     apply_split(samples, json.loads(args.split_config.read_text(encoding="utf-8")))
 
     args.output.parent.mkdir(parents=True, exist_ok=True)

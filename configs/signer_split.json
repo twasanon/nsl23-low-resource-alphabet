@@ -20,5 +20,7 @@
     "S3"
   ],
   "rationale": "The fixed split is signer-disjoint and reserves complete vowel coverage for validation and test. S2 contributes indoor unprepared bright/dark samples; S3 contributes prepared and real-world unprepared samples, which permits a descriptive condition analysis without selecting the split from model results.",
-  "frozen_before_training": true
+  "frozen_before_training": true,
+  "obsolete_for_v2": true,
+  "v2_warning": "This split puts S5 and S14 in train. Version 2 must use scripts/build_v2_samples.py after configs/v2_protocol.json is frozen."
 }

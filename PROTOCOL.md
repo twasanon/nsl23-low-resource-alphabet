@@ -2,6 +2,8 @@
 
 Status: frozen before primary model training on 2026-08-15.
 
+Interpretation note (2026-08-20): this file faithfully records the run-wise split used for Version 1, but S1/S2 later informed the landmark, angle, prototypical, crop, fusion, and enrollment follow-ons. “Held out” below therefore means absent from a particular training run. The final 59.4% result is exploratory cross-signer development evidence, not an untouched study-level confirmation. The prospective confirmatory route is locked separately in `VERSION2.md`.
+
 ## Research question
 
 On original, individually labelled NSL23 alphabet clips, does temporal aggregation with a BiLSTM or Transformer improve unseen-signer classification over a middle-frame MobileNetV2 baseline when the spatial encoder, input sampling, training schedule, and evaluation labels are held constant?
@@ -93,4 +95,3 @@ Same 375 clips and S1/S2 folds. Does not replace the frozen xyz 30-run matrix.
 - Enrollment: `enroll_closed_other_lighting` is the 49-way 1-shot protocol. Do not headline `enroll_replace_class`.
 - Alternative exams (`scripts/evaluate_alternative_protocols.py`): top-3/top-5, 36-way consonants, 5-way 1-shot (500 episodes). Same proto checkpoints. Do not quote 5-way as 49-way accuracy.
 - Webcam default: prototypical xyz+angle checkpoint, nearest class mean.
-

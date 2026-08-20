@@ -14,6 +14,7 @@ from nsl23.v2_annotation import (
     TAPE_OUTCOME_FIELDS,
     TEST_FALLBACK,
     PREFERRED_TEST,
+    REVIEW_DECISIONS,
     assign_testers,
     read_segments,
     resolve_roles,
@@ -116,12 +117,10 @@ def main() -> None:
         signer = row["signer"]
         if signer in roles:
             row["eligible_role"] = roles[signer]
-        elif signer in TEST_FALLBACK:
-            row["eligible_role"] = "held_as_fallback"
-        elif signer in PREFERRED_TEST:
+        elif signer in (*PREFERRED_TEST, *TEST_FALLBACK):
             row["eligible_role"] = "sealed_test_candidate"
-        elif int(row["consonants"]) > 0 and row["complete_49"] == "false":
-            row["eligible_role"] = "development_consonant_only"
+        elif int(row["total_classes"]) > 0 and row["complete_49"] == "false":
+            row["eligible_role"] = "development_augmentation"
         else:
             row["eligible_role"] = "incomplete"
     write_csv(args.output, list(table[0].keys()) if table else ["signer"], table)
@@ -134,7 +133,7 @@ def main() -> None:
             f"{row['complete_49']}\t{row['eligible_role']}"
         )
     print("\nProvisional testers (completeness only, not frozen yet):", ", ".join(testers) or "(none — annotation incomplete)")
-    print("S4 and S6 stay held_as_fallback until freeze. Do not train on them.")
+    print("Every S5/S14/S4/S6 candidate stays sealed permanently; complete candidates become testers.")
     print("Stage 2, when it happens, evaluates S1/S2 only. Do not score S5/S14 until Stage 4.")
     if outcomes:
         print("\nTape\tSigner\tType\tExpected\tHolds\tVerified\tStatus")
@@ -146,7 +145,17 @@ def main() -> None:
             )
     n_prop = len(segments)
     n_v2 = sum(row.get("include_in_v2") == "true" for row in segments)
-    print(f"\nProposed holds: {n_prop}. Pass-2 include_in_v2: {n_v2}.")
+    n_pass1 = sum(row.get("review_pass_1") in REVIEW_DECISIONS for row in segments)
+    n_pass2 = sum(row.get("review_pass_2") in REVIEW_DECISIONS for row in segments)
+    n_both = sum(
+        row.get("review_pass_1") in REVIEW_DECISIONS
+        and row.get("review_pass_2") in REVIEW_DECISIONS
+        for row in segments
+    )
+    print(
+        f"\nProposals: {n_prop}. Pass 1 complete: {n_pass1}. "
+        f"Pass 2 complete: {n_pass2}. Both complete: {n_both}. Verified include_in_v2: {n_v2}."
+    )
     print("572 is an annotation ceiling, not recovered data.")
     print("Do not freeze or train until pass-2 annotation is finished.")
 

@@ -2,8 +2,12 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 export PYTHONPATH=src
-python scripts/write_latex_tables.py
-python scripts/generate_publication_figures.py
+PAPER_PYTHON="${PAPER_PYTHON:-.venv/bin/python}"
+if [[ ! -x "$PAPER_PYTHON" ]]; then
+  PAPER_PYTHON="$(command -v python3)"
+fi
+"$PAPER_PYTHON" scripts/write_latex_tables.py
+"$PAPER_PYTHON" scripts/generate_publication_figures.py
 cp artifacts/figures/figure_1_study_flow.pdf manuscript/figures/
 cp artifacts/figures/figure_2_architectures.pdf manuscript/figures/
 cp artifacts/figures/figure_3_primary_performance.pdf manuscript/figures/
