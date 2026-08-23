@@ -58,7 +58,7 @@ def main() -> None:
         "S13": "development_augmentation",
     }
     with args.output.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer = csv.DictWriter(handle, fieldnames=fieldnames, lineterminator="\n")
         writer.writeheader()
         for row in sorted(original, key=lambda item: (int(item["signer"][1:]), item["sign_type"], item["relative_path"])):
             expected = 13 if row["sign_type"] == "vowel" else 36

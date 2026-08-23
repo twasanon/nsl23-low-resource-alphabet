@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "snapshot_sha256": "512c9ded600038a0bf310d820a13310ccecf3c0b3a9df90f92be42549c8221e5",
+  "git_revision": "0eb1ff20337b584a5a7e4b06d5e4d5a350915fc7",
+  "git_tag": "v1-protocol-freeze",
+  "note": "All 15 files in the dated pre-run snapshot match this Git tree byte-for-byte. This mapping was reconstructed after the run because the original snapshot recorded git_revision as null; the snapshot timestamp and hashes remain unchanged."
+}

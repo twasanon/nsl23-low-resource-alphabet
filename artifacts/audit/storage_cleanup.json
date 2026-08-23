@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "created_at_utc": "2026-08-23T20:23:00.339668+00:00",
+  "action": "removed_checksum_verified_duplicate_archives",
+  "source_doi": "10.5281/zenodo.10478554",
+  "source_record": "https://zenodo.org/records/10478554",
+  "license": "CC BY 4.0",
+  "extracted_manifest_rows": 630,
+  "all_extracted_sources_present": true,
+  "archives": [
+    {
+      "name": "NSL_Vowel.zip",
+      "bytes": 622466937,
+      "expected_md5": "82aab6ac857ffe641f4a5815389a244c",
+      "exists_before": true,
+      "size_ok": true,
+      "observed_md5": "82aab6ac857ffe641f4a5815389a244c",
+      "hash_ok": true
+    },
+    {
+      "name": "NSL_Consonant_Part_1.zip",
+      "bytes": 3455940835,
+      "expected_md5": "03e831f7b69599794402e1297915849e",
+      "exists_before": true,
+      "size_ok": true,
+      "observed_md5": "03e831f7b69599794402e1297915849e",
+      "hash_ok": true
+    },
+    {
+      "name": "NSL_Consonant_Part_2.zip",
+      "bytes": 3792081528,
+      "expected_md5": "52be2e9182c799b8de5623ec3d169b36",
+      "exists_before": true,
+      "size_ok": true,
+      "observed_md5": "52be2e9182c799b8de5623ec3d169b36",
+      "hash_ok": true
+    },
+    {
+      "name": "NSL_Consonant_Part_3.zip",
+      "bytes": 2465088463,
+      "expected_md5": "dc410b3aaceb764783ea054382c23d15",
+      "exists_before": true,
+      "size_ok": true,
+      "observed_md5": "dc410b3aaceb764783ea054382c23d15",
+      "hash_ok": true
+    }
+  ],
+  "removed_bytes": 10335577763,
+  "removed_gib": 9.626,
+  "recoverability": "The four ZIPs can be downloaded again from the recorded Zenodo DOI; extracted media was retained.",
+  "workspace_bytes_after": {
+    "data_extracted": 10371951081,
+    "data_raw_archives": 0,
+    "frame_cache_primary": 903216000,
+    "hand_crop_cache_primary": 903216000
+  }
+}

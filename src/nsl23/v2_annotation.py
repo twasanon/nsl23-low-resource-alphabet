@@ -12,6 +12,8 @@ import tempfile
 from datetime import datetime
 from pathlib import Path
 
+from .paths import resolve_repo_path
+
 SEGMENT_FIELDS = [
     "segment_id",
     "source_video",
@@ -262,7 +264,7 @@ def migrate_row(row: dict[str, str], hashes: dict[str, str]) -> dict[str, str]:
     hold_index = int(row.get("hold_index") or 0)
     digest = row.get("source_video_hash") or hashes.get(source_video, "")
     if not digest and source_path:
-        path = Path(source_path)
+        path = resolve_repo_path(source_path)
         if path.exists():
             digest = sha256_file(path)
             hashes[source_video] = digest
@@ -419,7 +421,7 @@ def validate_verified_row(
         errors.append("missing_source_hash")
     elif not SHA256_RE.fullmatch(recorded_hash):
         errors.append("invalid_source_hash")
-    source_path = Path(row.get("source_path") or "")
+    source_path = resolve_repo_path(row.get("source_path") or "")
     if not source_path.is_file():
         errors.append("missing_source_video")
     elif recorded_hash:
@@ -477,7 +479,12 @@ def write_csv(
     temporary = Path(temporary_name)
     try:
         with os.fdopen(descriptor, "w", newline="", encoding="utf-8") as handle:
-            writer = csv.DictWriter(handle, fieldnames=fieldnames, extrasaction="ignore")
+            writer = csv.DictWriter(
+                handle,
+                fieldnames=fieldnames,
+                extrasaction="ignore",
+                lineterminator="\n",
+            )
             writer.writeheader()
             writer.writerows(rows)
             handle.flush()

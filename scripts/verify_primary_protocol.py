@@ -7,9 +7,14 @@ import argparse
 import csv
 import hashlib
 import json
+import sys
 from pathlib import Path
 
 import numpy as np
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+from nsl23.freeze import load_snapshot, verify_snapshot
+from nsl23.paths import resolve_repo_path
 
 
 def read_csv(path: Path) -> list[dict[str, str]]:
@@ -31,30 +36,40 @@ def md5(path: Path) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
+    parser.add_argument("--root", type=Path, default=Path(__file__).resolve().parents[1])
     parser.add_argument("--manifest", type=Path, default=Path("data/manifests/nsl23_manifest_all.csv"))
     parser.add_argument("--fold-dir", type=Path, default=Path("data/manifests/folds"))
     parser.add_argument("--classes", type=Path, default=Path("configs/nsl23_classes.json"))
     parser.add_argument("--archive-audit", type=Path, default=Path("artifacts/audit/archive_checksums.json"))
     parser.add_argument("--verify-archive-hashes", action="store_true")
+    parser.add_argument(
+        "--verify-v1-freeze",
+        action="store_true",
+        help="Also verify the 15 immutable inputs against their bound historical Git tree.",
+    )
     args = parser.parse_args()
+    root = args.root.resolve()
 
-    class_config = json.loads(args.classes.read_text(encoding="utf-8"))
+    def rooted(path: Path) -> Path:
+        return path if path.is_absolute() else root / path
+
+    class_config = json.loads(rooted(args.classes).read_text(encoding="utf-8"))
     labels = class_config["consonants"] + class_config["vowels"]
     assert len(labels) == 49 and len(set(labels)) == 49
 
-    manifest = read_csv(args.manifest)
+    manifest = read_csv(rooted(args.manifest))
     assert len(manifest) == 630
     assert sum(truthy(row["decode_ok"]) for row in manifest) == 630
     assert sum(truthy(row["is_aggregate"]) for row in manifest) == 23
     assert sum(not truthy(row["is_aggregate"]) for row in manifest) == 607
     assert sum(truthy(row["is_cropped"]) for row in manifest) == 234
     assert sum(truthy(row["usable_as_isolated_clip"]) for row in manifest) == 375
-    assert all(Path(row["source_path"]).exists() for row in manifest)
+    assert all(resolve_repo_path(row["source_path"], root).exists() for row in manifest)
 
     cache_paths: set[str] = set()
     fold_report = {}
     for fold_name, heldout in (("heldout_s1", "S1"), ("heldout_s2", "S2")):
-        path = args.fold_dir / f"{fold_name}_cached.csv"
+        path = rooted(args.fold_dir) / f"{fold_name}_cached.csv"
         rows = read_csv(path)
         train = [row for row in rows if row["split"] == "train"]
         test = [row for row in rows if row["split"] == "test"]
@@ -66,7 +81,7 @@ def main() -> None:
         assert sum(row["lighting"] == "bright" for row in test) == 49
         assert sum(row["lighting"] == "dark" for row in test) == 49
         for row in rows:
-            cache = Path(row["frame_cache_path"])
+            cache = resolve_repo_path(row["frame_cache_path"], root)
             assert cache.exists()
             array = np.load(cache, mmap_mode="r", allow_pickle=False)
             assert array.shape == (16, 224, 224, 3) and array.dtype == np.uint8
@@ -74,12 +89,25 @@ def main() -> None:
         fold_report[fold_name] = {"train": len(train), "test": len(test), "test_signer": heldout}
     assert len(cache_paths) == 375
 
-    archive_report = json.loads(args.archive_audit.read_text(encoding="utf-8"))
+    archive_report = json.loads(rooted(args.archive_audit).read_text(encoding="utf-8"))
     if args.verify_archive_hashes:
         for item in archive_report["files"]:
-            path = Path("Details Dataset.docx") if item["name"].endswith(".docx") else Path("data/raw_archives") / item["name"]
+            path = root / "Details Dataset.docx" if item["name"].endswith(".docx") else root / "data/raw_archives" / item["name"]
             assert path.stat().st_size == item["bytes"]
             assert md5(path) == item["md5"]
+
+    freeze_report = None
+    if args.verify_v1_freeze:
+        snapshot = load_snapshot(root / "artifacts/audit/protocol_freeze.json")
+        source = json.loads(
+            (root / "artifacts/audit/protocol_freeze_source.json").read_text(encoding="utf-8")
+        )
+        if source.get("snapshot_sha256") != snapshot["snapshot_sha256"]:
+            raise AssertionError("V1 freeze source map does not match the snapshot")
+        freeze_report = verify_snapshot(
+            root, snapshot, mode="git", revision=source["git_revision"]
+        )
+        assert freeze_report["status"] == "pass"
 
     report = {
         "status": "pass",
@@ -91,6 +119,7 @@ def main() -> None:
         "unique_frame_caches": len(cache_paths),
         "folds": fold_report,
         "archive_hashes_recomputed": args.verify_archive_hashes,
+        "v1_freeze": freeze_report,
     }
     print(json.dumps(report, indent=2))
 

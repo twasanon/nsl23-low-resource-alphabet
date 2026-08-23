@@ -1,6 +1,7 @@
 # Version 2 aggregate annotation
 
 Read [`ANNOTATION_GUIDE.md`](ANNOTATION_GUIDE.md) before opening the review interface.
+Use [`REVIEWER_HANDOFF.md`](REVIEWER_HANDOFF.md) when preparing instructions or files for an outside reviewer.
 
 Motion proposals are not labels. Pass 1 may show a non-authoritative tape-order hint. Pass 2 starts from the original proposal and hides pass-1 outputs and the hint. Every proposal requires two different named, NSL-knowledgeable reviewers.
 

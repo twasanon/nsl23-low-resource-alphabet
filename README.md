@@ -8,7 +8,7 @@ Paper:
 
 This repository is a secondary analysis of the public **NSL23** alphabet videos (Sunuwar, Borah, and Kharga, 2024). The recordings are not ours. Download them from [Zenodo record 10478554](https://zenodo.org/records/10478554) (DOI [10.5281/zenodo.10478554](https://doi.org/10.5281/zenodo.10478554), CC BY 4.0). Git does not contain the zips, extracted `.MOV` files, or the RGB frame cache.
 
-**Current direction:** [`PAPER_DIRECTION.md`](PAPER_DIRECTION.md). The PDF below is a Version 1 exploratory report; its 59.4% S1/S2 result is development evidence because those signers informed follow-on model choices. Do not train Version 2 until the annotation protocol and artifacts are frozen. If you are coordinating manual review, start with [`annotations/v2/ANNOTATION_GUIDE.md`](annotations/v2/ANNOTATION_GUIDE.md).
+**Current direction:** [`PAPER_DIRECTION.md`](PAPER_DIRECTION.md). The PDF below is a Version 1 exploratory report; its 59.4% S1/S2 result is development evidence because those signers informed follow-on model choices. Do not train Version 2 until the annotation protocol and artifacts are frozen. If you are coordinating manual review, start with [`annotations/v2/ANNOTATION_GUIDE.md`](annotations/v2/ANNOTATION_GUIDE.md); use [`annotations/v2/REVIEWER_HANDOFF.md`](annotations/v2/REVIEWER_HANDOFF.md) for an outside reviewer.
 
 ## What the paper claims
 
@@ -21,10 +21,10 @@ On 375 original isolated clips, with signers S1 and S2 held out in turn (196 poo
 | CNN–Transformer | 6.3% ± 0.8% | 4.4% ± 1.3% |
 | Landmark MLP (xyz) | 18.0% ± 2.1% | 11.1% ± 1.8% |
 | Landmark BiLSTM (xyz, softmax) | 24.8% ± 4.0% | 16.8% ± 3.8% |
-| Hand-crop CNN | 19.2% ± 1.3% | 15.9% ± 0.7% |
-| xyz+angle BiLSTM (softmax) | 37.9% ± 2.4% | 30.1% ± 2.6% |
-| xyz Proto-BiLSTM | 55.8% ± 1.8% | 50.6% ± 2.4% |
-| **xyz+angle Proto-BiLSTM** | **59.4% ± 3.3%** | **54.7% ± 4.2%** |
+| Hand-crop CNN | 19.2% ± 1.3% | 16.9% ± 0.9% |
+| xyz+angle BiLSTM (softmax) | 37.9% ± 2.4% | 31.5% ± 3.4% |
+| xyz Proto-BiLSTM | 55.8% ± 1.8% | 53.4% ± 2.8% |
+| **xyz+angle Proto-BiLSTM** | **59.4% ± 3.3%** | **57.4% ± 3.6%** |
 
 Chance for 49 classes is 2.0%. The prototypical encoder’s consonant accuracy is 61.8% ± 5.7% (the xyz softmax BiLSTM was 10.0% ± 3.9% on consonants). Closed 1-shot enrollment on the test signer’s other lighting is 76.2%–78.2% for the softmax BiLSTMs; that is a tutor protocol, not the unseen-signer exam. On the same prototypical encoder, top-3 is 85.5% ± 6.0% and a 5-way 1-shot protocol is 90.6% ± 2.5% (chance 20%). Those are different exams.
 
@@ -88,10 +88,11 @@ cd manuscript && tectonic -X compile nsl23_low_resource.tex
 - `CLAIM_LEDGER.md` — what the text is allowed to say
 - `NSL23_Low_Resource_Colab.ipynb` — tables + landmark replay
 - `src/nsl23/` — dataset, models, training
-- `artifacts/results/` — 30-run summaries
+- `artifacts/results/` — primary and follow-on summaries derived from 60 runs
 - `artifacts/runs/primary/` — checkpoints and per-run predictions
 - `VERSION2.md` — prospective annotation, split, model-selection, and final-evaluation protocol
 - `annotations/v2/ANNOTATION_GUIDE.md` — simple human-review instructions and role separation
+- `annotations/v2/REVIEWER_HANDOFF.md` — exact workload, invitation text, decisions, and blinded pass-2 transfer
 
 ## Citation of the dataset
 

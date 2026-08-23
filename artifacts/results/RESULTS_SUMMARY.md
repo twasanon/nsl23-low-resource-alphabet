@@ -95,10 +95,10 @@ See `artifacts/results/improvements/summary.json`. Pooled unseen-signer accuracy
 | Model | Accuracy | Macro-F1 | Consonants | Vowels |
 |---|---:|---:|---:|---:|
 | xyz BiLSTM (CE, frozen control) | 24.8% ± 4.0% | 16.8% ± 3.8% | 10.0% ± 3.9% | 66.0% ± 4.0% |
-| Hand-crop CNN | 19.2% ± 1.3% | 15.9% ± 0.7% | 15.5% ± 0.8% | 29.5% ± 2.9% |
-| xyz+angle BiLSTM (CE) | 37.9% ± 2.4% | 30.1% ± 2.6% | 28.7% ± 4.5% | 63.5% ± 3.8% |
-| xyz Proto-BiLSTM | 55.8% ± 1.8% | 50.6% ± 2.4% | 58.3% ± 2.5% | 48.7% ± 5.9% |
-| xyz+angle Proto-BiLSTM | 59.4% ± 3.3% | 54.7% ± 4.2% | 61.8% ± 5.7% | 52.6% ± 4.8% |
+| Hand-crop CNN | 19.2% ± 1.3% | 16.9% ± 0.9% | 15.5% ± 0.8% | 29.5% ± 2.9% |
+| xyz+angle BiLSTM (CE) | 37.9% ± 2.4% | 31.5% ± 3.4% | 28.7% ± 4.5% | 63.5% ± 3.8% |
+| xyz Proto-BiLSTM | 55.8% ± 1.8% | 53.4% ± 2.8% | 58.3% ± 2.5% | 48.7% ± 5.9% |
+| xyz+angle Proto-BiLSTM | 59.4% ± 3.3% | 57.4% ± 3.6% | 61.8% ± 5.7% | 52.6% ± 4.8% |
 
 Closed 1-shot (other lighting of the held-out signer): xyz BiLSTM 76.2% ± 4.2%; xyz+angle BiLSTM 78.2% ± 2.8%; prototypical encoder 73.0% ± 1.5%. Do not report `enroll_replace_class` as 1-shot accuracy.
 

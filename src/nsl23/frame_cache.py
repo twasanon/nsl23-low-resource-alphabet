@@ -11,6 +11,8 @@ import av
 import numpy as np
 from PIL import Image
 
+from .paths import portable_path, resolve_repo_path
+
 
 def read_csv(path: Path) -> list[dict[str, str]]:
     with path.open(newline="", encoding="utf-8") as handle:
@@ -138,19 +140,19 @@ def main() -> None:
 
     for index, (source, group) in enumerate(sorted(grouped.items()), start=1):
         print(f"[{index}/{len(grouped)}] {source}", flush=True)
-        cache_source_group(Path(source), group, args.output_dir, args.num_frames, args.image_size, args.overwrite)
+        cache_source_group(resolve_repo_path(source), group, args.output_dir, args.num_frames, args.image_size, args.overwrite)
 
     for row in rows:
         cache_path = (args.output_dir / f"{row['sample_id']}.npy").resolve()
         if not cache_path.exists():
             raise FileNotFoundError(cache_path)
-        row["frame_cache_path"] = str(cache_path)
+        row["frame_cache_path"] = portable_path(cache_path)
         row["num_frames"] = args.num_frames
         row["image_size"] = args.image_size
 
     args.updated_manifest.parent.mkdir(parents=True, exist_ok=True)
     with args.updated_manifest.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
+        writer = csv.DictWriter(handle, fieldnames=list(rows[0]), lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
     print(f"Cached {len(rows)} samples from {len(grouped)} source videos")

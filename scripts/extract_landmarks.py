@@ -11,6 +11,7 @@ from pathlib import Path
 import numpy as np
 
 from nsl23.landmarks import LANDMARK_DIM, cache_path, extract_clip_landmarks, make_detector
+from nsl23.paths import portable_path, resolve_repo_path
 
 
 def read_rows(path: Path) -> list[dict[str, str]]:
@@ -22,7 +23,9 @@ def write_rows(path: Path, rows: list[dict[str, str]]) -> None:
     if not rows:
         raise ValueError(f"No rows for {path}")
     with path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(rows[0].keys()))
+        writer = csv.DictWriter(
+            handle, fieldnames=list(rows[0].keys()), lineterminator="\n"
+        )
         writer.writeheader()
         writer.writerows(rows)
 
@@ -53,7 +56,7 @@ def main() -> None:
                     array = np.load(destination, allow_pickle=False)
                     detected = int((array[:, -1] > 0.5).sum())
                 else:
-                    frames = np.load(row["frame_cache_path"], allow_pickle=False)
+                    frames = np.load(resolve_repo_path(row["frame_cache_path"]), allow_pickle=False)
                     array, detected = extract_clip_landmarks(frames, detector)
                     if array.shape[-1] != LANDMARK_DIM:
                         raise RuntimeError(f"Bad landmark width {array.shape} for {sample_id}")
@@ -61,7 +64,7 @@ def main() -> None:
                 summary["detected_frames"] = int(summary["detected_frames"]) + detected
                 if detected == 0:
                     summary["clips_with_no_detection"] = int(summary["clips_with_no_detection"]) + 1
-                row["landmark_cache_path"] = str(destination.resolve())
+                row["landmark_cache_path"] = portable_path(destination)
                 summary["clips"] = int(summary["clips"]) + 1
                 summary["frames"] = int(summary["frames"]) + int(array.shape[0])
             write_rows(manifest, rows)

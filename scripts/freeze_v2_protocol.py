@@ -37,6 +37,7 @@ from nsl23.v2_annotation import (
     write_csv,
 )
 from nsl23.v2_protocol import protocol_sha256, validate_hierarchy_lock
+from nsl23.paths import resolve_repo_path
 
 ROOT = Path(__file__).resolve().parents[1]
 PROTOCOL = ROOT / "configs/v2_protocol.json"
@@ -87,13 +88,13 @@ def build_source_inventory(
             }:
                 continue
             relative = row["relative_path"]
-            path = Path(row["source_path"])
+            path = resolve_repo_path(row["source_path"], ROOT)
             if relative in sources and sources[relative] != path:
                 raise SystemExit(f"Source inventory path collision: {relative}")
             sources[relative] = path
     for row in verified:
         relative = row["source_video"]
-        path = Path(row["source_path"])
+        path = resolve_repo_path(row["source_path"], ROOT)
         if relative in sources and sources[relative] != path:
             raise SystemExit(f"Source inventory path collision: {relative}")
         sources[relative] = path
@@ -269,7 +270,7 @@ def main() -> None:
         if row.get("include_in_v2") != "true":
             continue
         duration = float(tapes.get(row["source_video"], {}).get("duration_seconds") or row.get("duration_seconds") or 0)
-        source_path = Path(row.get("source_path") or "")
+        source_path = resolve_repo_path(row.get("source_path") or "", ROOT)
         source_key = str(source_path)
         if source_key not in source_hashes and source_path.is_file():
             source_hashes[source_key] = sha256_file(source_path)

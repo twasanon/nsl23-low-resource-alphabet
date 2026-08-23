@@ -36,6 +36,21 @@ def sign_type_from_predictions(path: Path) -> dict[str, float]:
     return out
 
 
+def pooled_macro_f1(paths: list[Path], classes: int = 49) -> float:
+    frame = pd.concat([pd.read_csv(path) for path in paths], ignore_index=True)
+    values = []
+    for klass in range(classes):
+        true = frame["true_index"].astype(int) == klass
+        predicted = frame["predicted_index"].astype(int) == klass
+        tp = int((true & predicted).sum())
+        fp = int((~true & predicted).sum())
+        fn = int((true & ~predicted).sum())
+        precision = tp / (tp + fp) if tp + fp else 0.0
+        recall = tp / (tp + fn) if tp + fn else 0.0
+        values.append(2 * precision * recall / (precision + recall) if precision + recall else 0.0)
+    return float(np.mean(values))
+
+
 def collect_runs(run_dir: Path) -> dict:
     models: dict[str, list[dict]] = defaultdict(list)
     for fold in FOLDS:
@@ -57,6 +72,7 @@ def collect_runs(run_dir: Path) -> dict:
                     "macro_f1": float(metrics.get("test_macro_f1") or metrics.get("macro_f1") or 0.0),
                     "consonant_accuracy": metrics.get("consonant_accuracy") or metrics.get("test_consonant_accuracy"),
                     "vowel_accuracy": metrics.get("vowel_accuracy") or metrics.get("test_vowel_accuracy"),
+                    "prediction_path": str(pred_path) if pred_path.is_file() else "",
                 }
                 if pred_path.is_file():
                     extra = sign_type_from_predictions(pred_path)
@@ -72,7 +88,12 @@ def collect_runs(run_dir: Path) -> dict:
             if len(seed_rows) != 2:
                 continue
             pooled["accuracy"].append(mean(row["accuracy"] for row in seed_rows))
-            pooled["macro_f1"].append(mean(row["macro_f1"] for row in seed_rows))
+            prediction_paths = [Path(row["prediction_path"]) for row in seed_rows if row["prediction_path"]]
+            pooled["macro_f1"].append(
+                pooled_macro_f1(prediction_paths)
+                if len(prediction_paths) == 2
+                else mean(row["macro_f1"] for row in seed_rows)
+            )
             if all(row.get("consonant_accuracy") is not None for row in seed_rows):
                 pooled["consonant_accuracy"].append(mean(row["consonant_accuracy"] for row in seed_rows))
             if all(row.get("vowel_accuracy") is not None for row in seed_rows):

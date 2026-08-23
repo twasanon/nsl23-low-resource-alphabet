@@ -14,6 +14,7 @@ import torch
 
 from nsl23.landmarks import extract_clip_landmarks, make_detector
 from nsl23.models import build_model
+from nsl23.paths import resolve_repo_path
 
 
 def percentile(values: list[float], q: float) -> float:
@@ -43,7 +44,7 @@ def main() -> None:
 
     with args.manifest.open(newline="", encoding="utf-8") as handle:
         rows = [row for row in csv.DictReader(handle) if row["split"] == "test"][: args.e2e_clips]
-    sample = np.load(rows[0]["landmark_cache_path"])
+    sample = np.load(resolve_repo_path(rows[0]["landmark_cache_path"]))
     tensor = torch.from_numpy(sample).unsqueeze(0)
 
     with torch.no_grad():
@@ -59,7 +60,7 @@ def main() -> None:
     e2e_times = []
     try:
         for row in rows:
-            frames = np.load(row["frame_cache_path"])
+            frames = np.load(resolve_repo_path(row["frame_cache_path"]))
             start = time.perf_counter()
             landmarks, _ = extract_clip_landmarks(frames, detector)
             clip = torch.from_numpy(landmarks).unsqueeze(0)

@@ -12,6 +12,8 @@ import numpy as np
 import torch
 from torch.utils.data import DataLoader, Dataset
 
+from .paths import resolve_repo_path
+
 
 IMAGENET_MEAN = torch.tensor([0.485, 0.456, 0.406], dtype=torch.float32).view(1, 3, 1, 1)
 IMAGENET_STD = torch.tensor([0.229, 0.224, 0.225], dtype=torch.float32).view(1, 3, 1, 1)
@@ -65,9 +67,10 @@ class CachedClipDataset(Dataset[dict[str, Any]]):
 
     def __getitem__(self, index: int) -> dict[str, Any]:
         row = self.rows[index]
-        array = np.load(row["frame_cache_path"], allow_pickle=False)
+        cache_path = resolve_repo_path(row["frame_cache_path"])
+        array = np.load(cache_path, allow_pickle=False)
         if array.dtype != np.uint8 or array.ndim != 4 or array.shape[-1] != 3:
-            raise RuntimeError(f"Invalid frame cache {row['frame_cache_path']}: {array.shape} {array.dtype}")
+            raise RuntimeError(f"Invalid frame cache {cache_path}: {array.shape} {array.dtype}")
         frames = torch.from_numpy(array.copy()).permute(0, 3, 1, 2).float().div_(255.0)
         if self.training:
             frames = self._augment(frames)

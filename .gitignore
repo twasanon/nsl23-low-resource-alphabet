@@ -22,6 +22,7 @@ annotations/v2/pilot_segments.csv
 annotations/v2/pilot_agreement.json
 annotations/v2/*.bak
 artifacts/v2_review/
+artifacts/reviewer_packages/
 data/landmark_cache_v2/
 tmp/
 *.mov

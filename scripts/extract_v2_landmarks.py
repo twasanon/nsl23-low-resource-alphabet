@@ -23,6 +23,9 @@ from nsl23.v2_protocol import (
     load_and_validate_frozen_protocol,
     validate_manifest_provenance,
 )
+from nsl23.paths import resolve_repo_path
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def read_rows(path: Path) -> list[dict[str, str]]:
@@ -167,7 +170,7 @@ def main() -> None:
     processed = 0
     try:
         for source_index, (source, rows) in enumerate(sorted(grouped.items()), start=1):
-            source_path = Path(source)
+            source_path = resolve_repo_path(source, ROOT)
             if not source_path.is_file():
                 raise FileNotFoundError(source_path)
             source_hash = sha256_file(source_path)

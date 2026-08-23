@@ -27,6 +27,9 @@ from nsl23.v2_annotation import (
     sha256_file,
     write_csv,
 )
+from nsl23.paths import resolve_repo_path
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def moving_average(values: np.ndarray, window: int) -> np.ndarray:
@@ -153,7 +156,7 @@ def main() -> None:
     args.cache.mkdir(parents=True, exist_ok=True)
 
     for tape in tapes:
-        path = Path(tape["source_path"])
+        path = resolve_repo_path(tape["source_path"], ROOT)
         fps = float(tape["fps"])
         expected = int(tape["expected_gesture_count"])
         class_list = labels["vowels"] if tape["sign_type"] == "vowel" else labels["consonants"]

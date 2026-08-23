@@ -16,6 +16,7 @@ import torch
 from .dataset import IMAGENET_MEAN, IMAGENET_STD, load_labels, read_rows
 from .frame_cache import decode_targets, target_times
 from .models import build_model, parameter_counts
+from .paths import resolve_repo_path
 from .train import environment_snapshot, file_hash, select_device, synchronize
 
 
@@ -28,7 +29,7 @@ def cached_tensor(path: Path) -> torch.Tensor:
 def source_tensor(row: dict[str, str], num_frames: int, image_size: int) -> torch.Tensor:
     times = target_times(float(row["start_seconds"]), float(row["end_seconds"]), num_frames)
     requests = [(float(value), row["sample_id"], index) for index, value in enumerate(times)]
-    decoded = decode_targets(Path(row["source_path"]), requests, image_size)[row["sample_id"]]
+    decoded = decode_targets(resolve_repo_path(row["source_path"]), requests, image_size)[row["sample_id"]]
     array = np.stack([decoded[index] for index in range(num_frames)])
     frames = torch.from_numpy(array).permute(0, 3, 1, 2).float().div_(255.0)
     return ((frames - IMAGENET_MEAN) / IMAGENET_STD).unsqueeze(0)
@@ -71,7 +72,7 @@ def main() -> None:
     runtime_config = config["runtime"]
     warmup = int(runtime_config["batch1_warmup"])
     iterations = int(runtime_config["batch1_iterations"])
-    input_tensor = cached_tensor(Path(rows[0]["frame_cache_path"])).to(device)
+    input_tensor = cached_tensor(resolve_repo_path(rows[0]["frame_cache_path"])).to(device)
     model_times: list[float] = []
     with torch.inference_mode():
         for _ in range(warmup):

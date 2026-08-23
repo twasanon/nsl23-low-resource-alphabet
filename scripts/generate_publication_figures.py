@@ -30,6 +30,13 @@ MODEL_LABELS = {
     "landmark_mlp": "Landmark MLP",
     "landmark_bilstm": "Landmark BiLSTM",
 }
+PLOT_LABELS = {
+    "single_frame_cnn": "Single-frame\nCNN",
+    "cnn_bilstm": "CNN–\nBiLSTM",
+    "cnn_transformer": "CNN–\nTransformer",
+    "landmark_mlp": "Landmark\nMLP",
+    "landmark_bilstm": "Landmark\nBiLSTM",
+}
 COLORS = {
     "single_frame_cnn": "#0072B2",
     "cnn_bilstm": "#D55E00",
@@ -200,7 +207,7 @@ def primary_performance(results_dir: Path, output_dir: Path) -> None:
             jitter = rng.uniform(-0.08, 0.08, size=len(values))
             ax.scatter(index + jitter, values, color="#111111", s=18, zorder=5, linewidth=0.3, edgecolor="white")
             ax.text(index, mean + sd + 0.012, f"{mean:.3f}", ha="center", va="bottom", fontsize=7)
-        ax.set_xticks(range(len(MODEL_ORDER)), [MODEL_LABELS[name].replace(" ", "\n") for name in MODEL_ORDER], fontsize=7)
+        ax.set_xticks(range(len(MODEL_ORDER)), [PLOT_LABELS[name] for name in MODEL_ORDER], fontsize=7)
         ax.set_ylim(0, 0.40)
         ax.set_title(title)
         ax.set_ylabel("Score" if ax is axes[0] else "")
@@ -228,7 +235,7 @@ def lighting_performance(results_dir: Path, output_dir: Path) -> None:
             positions = x + (offset_index - 0.5) * width
             ax.bar(positions, values, width=width, label=lighting.capitalize(), color=COLORS[lighting], alpha=0.78)
             ax.errorbar(positions, values, yerr=errors, fmt="none", color="#222222", capsize=2.5, linewidth=0.9)
-        ax.set_xticks(x, [MODEL_LABELS[name].replace(" ", "\n") for name in MODEL_ORDER], fontsize=7)
+        ax.set_xticks(x, [PLOT_LABELS[name] for name in MODEL_ORDER], fontsize=7)
         ax.set_ylim(0, 0.40)
         ax.set_title(title)
         ax.set_ylabel("Score" if ax is axes[0] else "")
@@ -304,7 +311,6 @@ def main() -> None:
         args.results_dir / "training_histories_all.csv",
         args.results_dir / "pooled_out_of_fold_by_seed.csv",
         args.results_dir / "condition_summary.csv",
-        args.results_dir / "confusion_cnn_transformer_mean_normalized.csv",
         args.results_dir / "confusion_landmark_bilstm_mean_normalized.csv",
         args.results_dir / "per_class_summary.csv",
     ]
@@ -327,14 +333,7 @@ def main() -> None:
         "Landmark BiLSTM per-class recall (mean ± SD over three seeds)",
         COLORS["landmark_bilstm"],
     )
-    confusion_heatmap(
-        args.results_dir,
-        args.output_dir,
-        "cnn_transformer",
-        "figure_8_transformer_confusion",
-        "CNN–Transformer confusion matrix averaged over three seeds and two held-out folds",
-    )
-    print(json.dumps({"status": "pass", "figures": 8, "output_dir": str(args.output_dir)}))
+    print(json.dumps({"status": "pass", "figures": 7, "output_dir": str(args.output_dir)}))
 
 
 if __name__ == "__main__":

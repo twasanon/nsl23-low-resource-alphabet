@@ -118,7 +118,7 @@ def main() -> None:
             "",
             r"\begin{table}[t]",
             r"\centering",
-            r"\caption{Consonant versus vowel accuracy on the pooled out-of-fold clips.}",
+            r"\caption{Consonant versus vowel performance on the pooled out-of-fold clips. Accuracy uses all clips in the named sign type; F1 is macro-averaged only over classes supported within that sign-type subset (36 consonants or 13 vowels), not over all 49 classes.}",
             r"\label{tab:signtype}",
             r"\small",
             r"\begin{tabular}{lcccc}",

@@ -6,11 +6,17 @@ from __future__ import annotations
 import argparse
 import csv
 import re
+import sys
 from collections import defaultdict
 from pathlib import Path
 
 import av
 from PIL import Image, ImageDraw
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+from nsl23.paths import resolve_repo_path
+
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def thumbnail(frame: av.VideoFrame) -> Image.Image:
@@ -72,7 +78,7 @@ def main() -> None:
     n_pages = 0
     for video_id, items in grouped.items():
         items = sorted(items, key=lambda row: int(row["hold_index"]))
-        path = Path(items[0]["source_path"])
+        path = resolve_repo_path(items[0]["source_path"], ROOT)
         targets = []
         for row in items:
             start = float(row["start_time"])

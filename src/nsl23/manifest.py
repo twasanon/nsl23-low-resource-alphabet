@@ -13,6 +13,8 @@ from typing import Any
 
 import av
 
+from .paths import portable_path
+
 
 VIDEO_SUFFIXES = {".mov", ".mp4", ".m4v"}
 SIGNER_RE = re.compile(r"(?:^|_)(S\d{1,2})(?:_|$)", re.IGNORECASE)
@@ -213,7 +215,7 @@ def build_record(path: Path, root: Path, config: dict[str, Any]) -> VideoRecord:
 
     usable = not reasons
     return VideoRecord(
-        source_path=str(path.resolve()),
+        source_path=portable_path(path),
         relative_path=str(relative),
         source_zip=infer_source_zip(path),
         signer=signer,
@@ -292,7 +294,7 @@ def main() -> None:
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=list(asdict(records[0])))
+        writer = csv.DictWriter(handle, fieldnames=list(asdict(records[0])), lineterminator="\n")
         writer.writeheader()
         writer.writerows(asdict(record) for record in records)
 

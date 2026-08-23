@@ -1,8 +1,8 @@
 # NSL23 paper direction
 
-**Present status (20 August 2026):** Version 1 is frozen. Version 2 is the scientific direction. **Do not train Version 2.** The repository contains 691 motion proposals, zero completed review passes, zero verified segments, and no frozen V2 sample manifests.
+**Present status (23 August 2026):** Version 1 is frozen. Version 2 is the scientific direction. **Do not train Version 2.** The repository contains 691 motion proposals, zero completed review passes, zero verified segments, and no frozen V2 sample manifests. The 21-tape review set is 22.13 minutes of source video (3.47 GiB), and the outside-review export/import path is implemented and tested.
 
-The protocol and executable gates are now aligned. Human annotation is the immediate gate, but it must be performed by people who can identify the NSL alphabet. See [`annotations/v2/ANNOTATION_GUIDE.md`](annotations/v2/ANNOTATION_GUIDE.md).
+The protocol and executable gates are now aligned. Human annotation is the immediate gate, but it must be performed by people who can identify the NSL alphabet. See [`annotations/v2/ANNOTATION_GUIDE.md`](annotations/v2/ANNOTATION_GUIDE.md). For recruitment, workload, decision definitions, exact tapes, and safe file transfer, use [`annotations/v2/REVIEWER_HANDOFF.md`](annotations/v2/REVIEWER_HANDOFF.md).
 
 ## What you personally need to do
 
@@ -27,7 +27,7 @@ Real pass 2, with a different person for every tape:
 python scripts/review_aggregates.py --mode pass2 --reviewer "REVIEWER B" --port 8765
 ```
 
-Pass 2 starts from the original proposal and hides pass-1 decisions, class, bounds, and the tape-order class hint. Both reviewers must also sweep each full source tape for detector misses. Save the hash-bound pre-adjudication agreement report before resolving conflicts.
+If reviewer B works on another computer, do not send the master CSV. After pass 1 is complete, run `python scripts/export_v2_pass2.py`; import the returned file with `scripts/import_v2_pass2.py`. Pass 2 starts from the original proposal and hides pass-1 decisions, class, bounds, and the tape-order class hint. Both reviewers must also sweep each full source tape for detector misses. Save the hash-bound pre-adjudication agreement report before resolving conflicts.
 
 ## Locked scientific decisions
 
@@ -48,7 +48,7 @@ Pass 2 starts from the original proposal and hides pass-1 decisions, class, boun
 | Feature cache | 16 frames, 224 px, MediaPipe 0.10.14 and detector settings are locked; every source and cache is hash checked. |
 | Model training | BiLSTM and AdamW settings, 40 epochs, 40 episodes, 5 support, 2 query, and seeds 17/42/73 are locked. |
 
-Hierarchy lock: `09a2b7b2cb3a580c6cf3e3cd0c952a04ec4a793863ab27212c0cdeb55c5ab009` in `configs/v2_protocol.json`. This local hash should be anchored by a Git commit/tag before real annotation begins.
+Hierarchy lock: `09a2b7b2cb3a580c6cf3e3cd0c952a04ec4a793863ab27212c0cdeb55c5ab009` in `configs/v2_protocol.json`. The final pre-annotation commit and tag must retain this value; if policy changes before the real review, create a new lock instead of silently moving the old tag.
 
 ## Stop conditions
 

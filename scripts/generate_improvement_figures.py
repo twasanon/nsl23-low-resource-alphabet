@@ -53,8 +53,23 @@ def pm(mean: float, sd: float) -> str:
     return f"{100.0 * mean:.1f} $\\pm$ {100.0 * sd:.1f}"
 
 
+def pooled_macro_f1(frame: pd.DataFrame, classes: int = 49) -> float:
+    values = []
+    for klass in range(classes):
+        true = frame["true_index"].astype(int) == klass
+        predicted = frame["predicted_index"].astype(int) == klass
+        tp = int((true & predicted).sum())
+        fp = int((~true & predicted).sum())
+        fn = int((true & ~predicted).sum())
+        precision = tp / (tp + fp) if tp + fp else 0.0
+        recall = tp / (tp + fn) if tp + fn else 0.0
+        values.append(2 * precision * recall / (precision + recall) if precision + recall else 0.0)
+    return float(np.mean(values))
+
+
 def collect_model(run_dir: Path, model: str) -> dict[str, tuple[float, float, list[float]]]:
     acc, f1, cons, vow = [], [], [], []
+    prediction_frames: dict[int, list[pd.DataFrame]] = defaultdict(list)
     for path in sorted(run_dir.glob(f"*/{model}/*/metrics.json")):
         payload = json.loads(path.read_text())
         seed = int(path.parts[-2].split("_")[1])
@@ -64,6 +79,7 @@ def collect_model(run_dir: Path, model: str) -> dict[str, tuple[float, float, li
         vow_v = payload.get("vowel_accuracy") or payload.get("test_vowel_accuracy")
         if pred.is_file():
             frame = pd.read_csv(pred)
+            prediction_frames[seed].append(frame)
             accuracy = float(frame["correct"].mean())
             cons_v = float(frame.loc[frame["sign_type"] == "consonant", "correct"].mean())
             vow_v = float(frame.loc[frame["sign_type"] == "vowel", "correct"].mean())
@@ -73,9 +89,20 @@ def collect_model(run_dir: Path, model: str) -> dict[str, tuple[float, float, li
             cons.append((seed, float(cons_v)))
         if vow_v is not None:
             vow.append((seed, float(vow_v)))
+    if set(prediction_frames) == {17, 42, 73} and all(
+        len(frames) == 2 for frames in prediction_frames.values()
+    ):
+        f1_values = [
+            pooled_macro_f1(pd.concat(prediction_frames[seed], ignore_index=True))
+            for seed in (17, 42, 73)
+        ]
+        f1_array = np.asarray(f1_values, dtype=float)
+        f1_summary = (float(f1_array.mean()), float(f1_array.std(ddof=1)), f1_values)
+    else:
+        f1_summary = seed_pool(f1)
     return {
         "accuracy": seed_pool(acc),
-        "macro_f1": seed_pool(f1),
+        "macro_f1": f1_summary,
         "consonant": seed_pool(cons) if cons else (float("nan"), 0.0, []),
         "vowel": seed_pool(vow) if vow else (float("nan"), 0.0, []),
     }

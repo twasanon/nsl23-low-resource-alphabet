@@ -1,6 +1,6 @@
 # NSL23 CNN Temporal Benchmark: Reproducibility Guide
 
-This guide reproduces the frozen Version 1 protocol described in `PROTOCOL.md`. It compares a middle-frame MobileNetV2 classifier, a CNN–BiLSTM, and a CNN–Transformer using only original individually labelled NSL23 clips. Each run holds out S1 or S2 and repeats each architecture with seeds 17, 42, and 73. Because the same S1/S2 folds later informed representation and loss choices, the resulting percentages are exploratory cross-signer development evidence, not an untouched confirmatory test. The prospective Version 2 route is in `VERSION2.md`.
+This guide reproduces the frozen Version 1 protocol described in `PROTOCOL.md`. The 30-run primary matrix compares three frozen-RGB models and two wrist-relative landmark controls using only original individually labelled NSL23 clips. A separate 30-run follow-on matrix evaluates hand crops, joint angles, and prototypical training. Each run holds out S1 or S2 and repeats each architecture with seeds 17, 42, and 73. Because the same S1/S2 folds informed the follow-on representation and loss choices, all resulting percentages are exploratory cross-signer development evidence, not an untouched confirmatory test. The prospective Version 2 route is in `VERSION2.md`.
 
 ## Scientific boundary
 
@@ -39,6 +39,18 @@ After extraction below `data/extracted/`, verify the local reference data, cache
 ```bash
 python scripts/verify_primary_protocol.py --verify-archive-hashes
 ```
+
+The active manifests contain repository-relative paths, so the checks work after cloning or moving the project. After the four ZIPs have passed their hashes and all 630 extracted files are present, `python scripts/manage_workspace_storage.py --remove-verified-archives` can remove the duplicate ZIP copies and record a recovery receipt. They remain downloadable from the recorded DOI.
+
+Verify the immutable V1 snapshot against its exact historical Git tree:
+
+```bash
+python scripts/verify_protocol_freeze.py
+# optional diagnostic: expected to report later V2/current-tree drift
+python scripts/verify_protocol_freeze.py --mode worktree
+```
+
+All 15 frozen inputs match commit `0eb1ff2` byte-for-byte. The dated snapshot is the chronology record; tag `v1-protocol-freeze` is a human-readable pointer to that tree.
 
 The verification is intentionally strict: it asserts 630 decodable source videos, 375 eligible primary clips, 23 aggregate exclusions, 234 cropped/preprocessed flags, 375 distinct frame caches, exact fold sizes, full 49-class coverage, and archive hashes.
 
@@ -95,7 +107,7 @@ python scripts/run_primary_experiments.py --output-dir artifacts/runs/primary
 
 The runner is resumable. It skips a run only when that run's `metrics.json` exists. Each completed directory also contains its checkpoint, 30-epoch training history, per-clip predictions, per-class metrics, both confusion matrices, and environment snapshot.
 
-Validate and aggregate all 18 runs:
+Validate and aggregate all 30 runs (five models × two folds × three seeds):
 
 ```bash
 python scripts/summarize_primary_results.py
@@ -113,6 +125,21 @@ python scripts/run_runtime_benchmarks.py
 ```
 
 This pre-specified benchmark uses the seed-42 checkpoint from the S2-held-out fold for each architecture. It reports synchronized batch-one model-only latency and end-to-end original-video latency separately. It does not measure a streaming pipeline.
+
+## Follow-on exploratory matrix
+
+The follow-on experiments reuse the same two folds and three seeds. They are model-development evidence, not a second independent test. The cross-entropy angle/crop runs and prototypical runs can be resumed with:
+
+```bash
+python scripts/run_improvement_experiments.py
+# Run train_protonet.py once per fold/seed for raw_angle and xyz, as listed in PROTOCOL.md.
+python scripts/summarize_improvements.py
+python scripts/evaluate_alternative_protocols.py
+python scripts/generate_improvement_figures.py
+python scripts/write_latex_tables.py
+```
+
+The summary code pools the 98 S1 and 98 S2 predictions within each seed before computing nonlinear metrics such as macro-F1. It then reports the mean and sample SD over seeds 17, 42, and 73.
 
 ## Notebook
 
@@ -137,8 +164,25 @@ python -c "import nbformat; n=nbformat.read('NSL23_CNN_Transformer_Reproducibili
 - `artifacts/runtime/runtime_summary.csv`: model-only and end-to-end latency.
 - `artifacts/figures/`: PNG (350 dpi) and vector PDF versions of publication figures.
 - `artifacts/audit/protocol_freeze.json`: exact primary-input hashes recorded before full training.
+- `artifacts/audit/protocol_freeze_source.json`: independently reconstructed binding from that snapshot to the matching Git tree and tag.
+- `artifacts/audit/full_paper_audit.json`: machine-readable recomputation of primary, follow-on, fusion, enrollment, alternative-protocol, dataset, V2-gate, and bibliography checks.
+- `artifacts/results/improvements/`: follow-on and secondary-exam summaries; the compact ZIP also contains the per-run predictions needed to recompute pooled macro-F1.
 
 The manuscript is generated from these artifacts; no table or figure contains manually entered result values.
+
+## Final integrity suite and compact bundle
+
+```bash
+python scripts/verify_protocol_freeze.py
+python scripts/verify_primary_protocol.py --verify-v1-freeze
+python scripts/audit_paper_numbers.py
+python -m unittest discover -s tests -p 'test_*.py' -v
+python scripts/validate_primary_claims.py
+python scripts/build_analysis_provenance.py
+python scripts/build_reproducibility_bundle.py
+```
+
+The provenance manifest hashes both 30-run matrices and all 60 checkpoints. The deterministic compact ZIP omits source video and checkpoints, but includes the manuscript inputs, aggregate tables, secondary-exam JSON, and all primary/follow-on per-run predictions and metrics needed for numerical verification without retraining.
 
 ## Rebuild the Word files
 

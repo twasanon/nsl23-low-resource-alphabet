@@ -12,6 +12,7 @@ import cv2
 import numpy as np
 
 from nsl23.landmarks import make_detector
+from nsl23.paths import resolve_repo_path
 
 
 def crop_hand(frame: np.ndarray, detector, size: int, padding: float) -> np.ndarray:
@@ -74,7 +75,7 @@ def main() -> None:
                 if destination.exists() and not args.force:
                     written += 1
                     continue
-                frames = np.load(row["frame_cache_path"], allow_pickle=False)
+                frames = np.load(resolve_repo_path(row["frame_cache_path"]), allow_pickle=False)
                 crops = np.stack([crop_hand(frame, detector, args.size, args.padding) for frame in frames], axis=0)
                 if not crops.any():
                     missing_frames += 1

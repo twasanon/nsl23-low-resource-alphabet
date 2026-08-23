@@ -26,6 +26,13 @@ For every proposal, pass 1 and pass 2 must be two different named, NSL-knowledge
 - Sweep the full source tape during each pass; do not inspect only the short proposal windows.
 - Never force a tape to contain exactly 13 vowels or 36 consonants. Record what is genuinely visible.
 
+Use the four decisions consistently:
+
+- **Accept:** complete and clearly identifiable; correct the bounds first.
+- **Reject:** false proposal, transition, duplicate, idle motion, or no target sign.
+- **Incomplete:** a real sign appears but the complete gesture cannot be recovered from the source tape.
+- **Ambiguous:** the complete gesture is visible but cannot be assigned to one class confidently.
+
 A sign manually inserted during pass 1 is shown to pass 2 as a new proposal with its class hidden. That gives it independent second verification, but not independent discovery. The `manual_insert` flag is retained and must be reported; do not describe such rows as independently discovered by both reviewers.
 
 ## Calibration before the real review
@@ -56,6 +63,8 @@ python scripts/review_aggregates.py --mode pass2 --reviewer "REVIEWER B" --port 
 ```
 
 The tool records only the selected role. It writes atomically and keeps the immediately previous file as `annotations/v2/segments.csv.bak`. Do not run two review servers against the same CSV simultaneously.
+
+For a reviewer on another computer, do not send the master `segments.csv`, because it contains pass-1 outputs. Follow [`REVIEWER_HANDOFF.md`](REVIEWER_HANDOFF.md) and use `export_v2_pass2.py` / `import_v2_pass2.py`. The review server has no authentication and must not be exposed to the public internet.
 
 Before adjudication, preserve the independent agreement results. This command refuses incomplete passes or existing adjudication:
 

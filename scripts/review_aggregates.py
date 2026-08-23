@@ -34,6 +34,7 @@ from nsl23.v2_annotation import (
     segment_id as make_segment_id,
     write_csv,
 )
+from nsl23.paths import resolve_repo_path
 
 ROOT = Path(__file__).resolve().parents[1]
 SEGMENTS = ROOT / "annotations/v2/segments.csv"
@@ -148,7 +149,7 @@ def window_mp4(row: dict[str, str], start: float | None = None, end: float | Non
     out = WINDOWS / f"{row['segment_id']}_{win0:.2f}_{win1:.2f}.mp4"
     if out.exists() and out.stat().st_size > 1000:
         return out
-    src = Path(row["source_path"])
+    src = resolve_repo_path(row["source_path"], ROOT)
     cmd = [
         "ffmpeg",
         "-hide_banner",
@@ -229,7 +230,10 @@ def class_select(sign_type: str, current: str, hint: str) -> str:
     options = ['<option value="">(unset)</option>']
     for label in alphabet(sign_type):
         selected = " selected" if label == chosen else ""
-        options.append(f'<option value="{html.escape(label)}"{selected}>{html.escape(label)}</option>')
+        display = CLASSES.get("display_names", {}).get(label, label)
+        options.append(
+            f'<option value="{html.escape(label)}"{selected}>{html.escape(display)}</option>'
+        )
     return f'<select name="klass">{"".join(options)}</select>'
 
 
@@ -314,6 +318,13 @@ def review_body(
     banner.append(
         '<div class="banner">Pass 1 and pass 2 must be completed by two different named, '
         "NSL-knowledgeable reviewers. Freeze rejects same-person double review.</div>"
+    )
+    banner.append(
+        '<div class="card"><strong>Decision meanings:</strong> '
+        '<strong>Accept</strong> = a complete, clearly identifiable target sign (correct the bounds first); '
+        '<strong>Reject</strong> = false detector proposal, transition, duplicate, or no target sign; '
+        '<strong>Incomplete</strong> = a real sign is present but its complete gesture cannot be recovered from the tape; '
+        '<strong>Ambiguous</strong> = the gesture is complete but you cannot assign one class confidently.</div>'
     )
     if signer in FROZEN:
         banner.append(
@@ -568,7 +579,7 @@ class Handler(BaseHTTPRequestHandler):
             if not tape:
                 self.send_error(404)
                 return
-            path = Path(tape["source_path"])
+            path = resolve_repo_path(tape["source_path"], ROOT)
             if not path.is_file():
                 self.send_error(404, "Source tape is missing")
                 return

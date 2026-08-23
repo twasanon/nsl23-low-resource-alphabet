@@ -1,15 +1,16 @@
 {
   "schema_version": 1,
-  "generated_at_utc": "2026-08-16T00:46:40.780304+00:00",
+  "generated_at_utc": "2026-08-23T21:10:26.075732+00:00",
   "source_dataset": "NSL23 version 2, DOI 10.5281/zenodo.10478554",
   "protocol_snapshot_sha256": "512c9ded600038a0bf310d820a13310ccecf3c0b3a9df90f92be42549c8221e5",
-  "primary_runs": 18,
-  "checkpoint_files": 18,
+  "primary_runs": 30,
+  "follow_on_runs": 30,
+  "checkpoint_files": 60,
   "files": [
     {
       "path": "CLAIM_LEDGER.md",
-      "bytes": 6355,
-      "sha256": "c12c168f575152111deda555495106b5c62acc10d2056d57d071092ea242647d"
+      "bytes": 9259,
+      "sha256": "21b98ef8f00d389d84d966d3d8ade19589d4dfc1a85ea4ffbac5a42a85cfe93b"
     },
     {
       "path": "NSL23_CNN_Transformer_Reproducibility.ipynb",
@@ -17,14 +18,24 @@
       "sha256": "7d91f85505cbb2508b6f0e850b787862b4aaea1755f5d8fdfc4ca1b4d8a3d5ca"
     },
     {
+      "path": "PAPER_DIRECTION.md",
+      "bytes": 6556,
+      "sha256": "6cd05badaeb71df9a685da199b092f686d04dbba45a961b497893620e68bd386"
+    },
+    {
       "path": "PROTOCOL.md",
-      "bytes": 6482,
-      "sha256": "34d435a068533966686bbae4637048fa6e0292942eeda06ae324a9c92c54a26c"
+      "bytes": 8800,
+      "sha256": "3e08208a6aefd0fa7d58aaa1e1f52c7c9c703b138e112b991322b550876d6e11"
     },
     {
       "path": "README_REPRODUCIBILITY.md",
-      "bytes": 7224,
-      "sha256": "1f93fda79b4cfa272614431bbf189c99e88cd4333853c25bc1714e9909116b41"
+      "bytes": 10497,
+      "sha256": "d7ebbd73e724ed6b4b45f9089a3a20e6d71596f81fa198307cf9e0b87f4155af"
+    },
+    {
+      "path": "VERSION2.md",
+      "bytes": 11268,
+      "sha256": "3a369f6294c6f944b7750cbe93d7d6dc2d1cd0f0a1c266bd20934df37630ae2a"
     },
     {
       "path": "annotations/aggregate_source_review.csv",
@@ -33,8 +44,33 @@
     },
     {
       "path": "annotations/segments_vowel_provisional.csv",
-      "bytes": 36853,
-      "sha256": "04fbf8d1969572727756168d059f1c4c7b69c57b6915fc5894f09ee7399e7ae6"
+      "bytes": 33849,
+      "sha256": "ad5d07a49e741ba16e5109f4029f7a0cc9933a68f6fc99685b30031940e06776"
+    },
+    {
+      "path": "annotations/v2/coverage.csv",
+      "bytes": 692,
+      "sha256": "17634abb9f24c92ec683aee5661253737ca5da3c0dd809d6785a2837830d2adc"
+    },
+    {
+      "path": "annotations/v2/pilot_segments.csv",
+      "bytes": 14886,
+      "sha256": "29da1b177f3534c7f82f3362d166807b8a20171ff42ea19022969be9448b5f8d"
+    },
+    {
+      "path": "annotations/v2/segments.csv",
+      "bytes": 381183,
+      "sha256": "92ff6f904d17dfb267c983bbeaff864063f41e161e2aa078f5213bbc3ca4ccdd"
+    },
+    {
+      "path": "annotations/v2/tape_outcomes.csv",
+      "bytes": 8152,
+      "sha256": "dedd00c9495572d3ac60cdacaf4753c9db6614b17f9356da30b8a9ac5e6c3ef8"
+    },
+    {
+      "path": "annotations/v2/tapes.csv",
+      "bytes": 5387,
+      "sha256": "929236defcb099b5b51ad93b022b97750f37f88435dcda60b24edd61f4a3317b"
     },
     {
       "path": "artifacts/audit/aggregate_exclusions.csv",
@@ -52,6 +88,11 @@
       "sha256": "811c6e4aed47c21cf4714ec85e9b4ca21b96995ab779fe6e505a1587b6778343"
     },
     {
+      "path": "artifacts/audit/full_paper_audit.json",
+      "bytes": 7393,
+      "sha256": "1ef3d94243800b9d49b573c2294f6598819ad4b89dc4a4f21c0164f6975198b5"
+    },
+    {
       "path": "artifacts/audit/isolated_twofold_summary.json",
       "bytes": 1201,
       "sha256": "314d2913db0a224b63ebe5f4ef333aaf3f8bf9884df675ae4165db568d6cc2da"
@@ -67,9 +108,19 @@
       "sha256": "ef22f4af7c4cdbdb4380d16fb370d1a9062faa0b0ed424f6afefd27dee6d75b3"
     },
     {
+      "path": "artifacts/audit/protocol_freeze_source.json",
+      "bytes": 461,
+      "sha256": "651bc186b44b0050e1a7ca8b15d57a0beacc9e99713935456273c2c4b1acb3a5"
+    },
+    {
       "path": "artifacts/audit/runtime_hardware.json",
       "bytes": 346,
       "sha256": "b96d4f8bb08acdb9c1f3861176804a7632e678ab5aa37f13d9783e144e887687"
+    },
+    {
+      "path": "artifacts/audit/storage_cleanup.json",
+      "bytes": 1793,
+      "sha256": "aeebd3087bf81697c551ccb5e53302214f3038e258cb404fcac83d45eb81fb58"
     },
     {
       "path": "artifacts/audit/test_access_timeline.json",
@@ -77,89 +128,129 @@
       "sha256": "f98f407334bb3764e9e4e27c0a726458c886e76f7fd3e1c4a5059be21c7a5ea8"
     },
     {
+      "path": "artifacts/figures/figure_10_enrollment.pdf",
+      "bytes": 19006,
+      "sha256": "7e3a5fdd0219bf0f718d5eb7ec057c6bb887ae06323c8a31d79eca0923f4bcb4"
+    },
+    {
+      "path": "artifacts/figures/figure_10_enrollment.png",
+      "bytes": 79567,
+      "sha256": "b6045d6864137b2f6bdb5b1573b0afd3ae42778897f83890545222ddebd45ed3"
+    },
+    {
+      "path": "artifacts/figures/figure_11_proto_bilstm_confusion.pdf",
+      "bytes": 53542,
+      "sha256": "f4253176d394f7f9ef161c39b2779bc0ed000b393cc9cb6101717dff9521455d"
+    },
+    {
+      "path": "artifacts/figures/figure_11_proto_bilstm_confusion.png",
+      "bytes": 127485,
+      "sha256": "1e7a32f00868569dfca802c914596d1f9a972297ed869d1fab7a6b210bc59df1"
+    },
+    {
+      "path": "artifacts/figures/figure_12_protocol_ladder.pdf",
+      "bytes": 20268,
+      "sha256": "ea2ffdd7d91593d328b63038c9b3d458d5f18a04c7863afbad5a7f1e77840302"
+    },
+    {
+      "path": "artifacts/figures/figure_12_protocol_ladder.png",
+      "bytes": 96518,
+      "sha256": "4ab4ae7763bace5ebaf6d3cd0fd0a4e40129ea4de4b58a120984e759eddb87fe"
+    },
+    {
       "path": "artifacts/figures/figure_1_study_flow.pdf",
-      "bytes": 29567,
-      "sha256": "f9372a04a736b1330c86c4ef36525a12aebf2bd092d58edf4cbd2f38a183135a"
+      "bytes": 28480,
+      "sha256": "d5df2b98295323a8d0a0164631fef10d43d72e64466ee4a9f938cad5c7cb3700"
     },
     {
       "path": "artifacts/figures/figure_1_study_flow.png",
-      "bytes": 189996,
-      "sha256": "d3b64a7a8cf84fe5f3af456e258e4b0dc1136b9e00135d218694a3226e9b9b44"
+      "bytes": 188685,
+      "sha256": "777aa9a54b35c877a193cd5f83272660172db9ec6888735dfafad81ef7e4a467"
     },
     {
       "path": "artifacts/figures/figure_2_architectures.pdf",
-      "bytes": 31200,
-      "sha256": "798d3cdd8778b880c0eeea2b1d925b89d84fcd49ecc615f54830cb412be60250"
+      "bytes": 35726,
+      "sha256": "ce97e98f9270227cbf94048553a0f365891dad2d7ee70aca6f33792090f67ecd"
     },
     {
       "path": "artifacts/figures/figure_2_architectures.png",
-      "bytes": 210436,
-      "sha256": "2b7df8881e5cfa3466793c9b86739aab0b99236d14d8456bbc903f76e774e648"
+      "bytes": 236322,
+      "sha256": "5d0297718c30b4354ed8223632c944a5d83f3299e20814478ce4bb00973664cc"
     },
     {
       "path": "artifacts/figures/figure_3_primary_performance.pdf",
-      "bytes": 23966,
-      "sha256": "8a9374e61f455641dc512d8e2cb0b9b235c6287af3c76b6a59ca39dc7641a05f"
+      "bytes": 26858,
+      "sha256": "5136d2686edb2634394c537ece69b98216b6b425d90ef2cc91dad690bdde63f4"
     },
     {
       "path": "artifacts/figures/figure_3_primary_performance.png",
-      "bytes": 110104,
-      "sha256": "793cc0ec10b239552da027e089dbc2fdc88708fd80b7bc84f2f3a326ecf121b8"
+      "bytes": 135789,
+      "sha256": "4b3c12bbfb9eaa48c577b6308db76fa273428243722cfa8c74f25272fd35c5df"
     },
     {
       "path": "artifacts/figures/figure_4_training_curves.pdf",
-      "bytes": 22975,
-      "sha256": "073c822fa7365cbcece6889ee733033956783e07e8c91c704dc34a7a644d4156"
+      "bytes": 27687,
+      "sha256": "550f08afd3a4ae4125c7766dab94624fc775fdf4d55ae7f0dcea07126e1b491a"
     },
     {
       "path": "artifacts/figures/figure_4_training_curves.png",
-      "bytes": 207624,
-      "sha256": "2b6e15e0602351ecd64b9a3665eb19d590e0a9e82ba4ea2bc00827bb70d04e51"
+      "bytes": 292867,
+      "sha256": "6e2ea7b47f4fe1f596d6ff39d01073586f8b2114d13242ecfc804300d1d3e123"
     },
     {
       "path": "artifacts/figures/figure_5_lighting_performance.pdf",
-      "bytes": 20641,
-      "sha256": "f8df824c2b52cfe2a2c8c246ef946ab9d590921f8ba8a3f62a933a6bf177daa1"
+      "bytes": 22175,
+      "sha256": "8c1b8f530c7fcd32db5e00fb984b4e0e5f9940c56dcb0047491948be24e769e3"
     },
     {
       "path": "artifacts/figures/figure_5_lighting_performance.png",
-      "bytes": 91734,
-      "sha256": "e923c7bf7db5e981dee884cd514a1f9c780ab7fcf0714957ff67468fd2ddc922"
+      "bytes": 106261,
+      "sha256": "603afe45a0274461f9ef579fd584ca07ddab042423928119cde141d36ace8a5b"
     },
     {
-      "path": "artifacts/figures/figure_6_transformer_confusion.pdf",
-      "bytes": 53532,
-      "sha256": "797931e4acc030532fbe372e06d9fc5d10f8c40921365f42fc895f8dd5704c48"
+      "path": "artifacts/figures/figure_6_landmark_bilstm_confusion.pdf",
+      "bytes": 53066,
+      "sha256": "18c2a51dd28431ebc8fda999c0c6d7b2747513ef2c572b259b9108bacfc0f67b"
     },
     {
-      "path": "artifacts/figures/figure_6_transformer_confusion.png",
-      "bytes": 126721,
-      "sha256": "01e3d160acdc77843dfbe4408f44681955bdae35b4c2e12624d7b4acfa788af5"
+      "path": "artifacts/figures/figure_6_landmark_bilstm_confusion.png",
+      "bytes": 127278,
+      "sha256": "bf593aaee01bc35fd05f17092bd02f81efed22e09e854a1d7ca41dea776c222e"
     },
     {
-      "path": "artifacts/figures/figure_7_transformer_per_class_recall.pdf",
-      "bytes": 25697,
-      "sha256": "5ccb95b1b3e58e8c2db844a87976ce710f077b1a9557b716d3368e0620e7053d"
+      "path": "artifacts/figures/figure_7_landmark_bilstm_per_class_recall.pdf",
+      "bytes": 24923,
+      "sha256": "6eaf5bbf71a9bdb47c5d84aebcdafd11886f81b3ff67c4c7bdece6598840cc18"
     },
     {
-      "path": "artifacts/figures/figure_7_transformer_per_class_recall.png",
-      "bytes": 127032,
-      "sha256": "0cab84f109462019c46dce18d2958cd6d3b1d94343fe9d12651fe5fdb63bed35"
+      "path": "artifacts/figures/figure_7_landmark_bilstm_per_class_recall.png",
+      "bytes": 128200,
+      "sha256": "f44e8e11b5297f433f0b96efb1c4bfeef2c33b0ab2615c051c667e9b4753c6d9"
+    },
+    {
+      "path": "artifacts/figures/figure_9_zero_shot_improvements.pdf",
+      "bytes": 22610,
+      "sha256": "3984b3f7c67b80067f83b8f3af91bd18f4b4fb3c946dcb685bbc041314b428de"
+    },
+    {
+      "path": "artifacts/figures/figure_9_zero_shot_improvements.png",
+      "bytes": 122865,
+      "sha256": "901ae26262799bdfbd87a1a48133f9efd0f74d4b75218a719591f6fe0552a11c"
     },
     {
       "path": "artifacts/results/RESULTS_SUMMARY.md",
-      "bytes": 3592,
-      "sha256": "5a090f9799f7d077ca4219e52baa3cd9244053597678e58b1b8af3e61e899aef"
+      "bytes": 5926,
+      "sha256": "ac65b77555ad1e6742fb40d12b2076db61d302c8082bc0c2442b96cd897f6f6a"
     },
     {
       "path": "artifacts/results/condition_by_seed.csv",
-      "bytes": 2400,
-      "sha256": "cab11d627be51c357831f3101313a5fb02cada5736042578baa2d1014ebabbaf"
+      "bytes": 3910,
+      "sha256": "3f6f8bfd87fba19d1e1c971a69f7407b0c2a946e2a5fe18dba95fc3b25ca6101"
     },
     {
       "path": "artifacts/results/condition_summary.csv",
-      "bytes": 2891,
-      "sha256": "d6fca6f24b615e27d36e66217a77899cc4febfcbcfe666d85789b9eae809bfce"
+      "bytes": 4577,
+      "sha256": "dce523b3fd05ec0645eb94916ee7cebb81ff7ca3d20da9b83c32e49cb6066bf6"
     },
     {
       "path": "artifacts/results/confusion_cnn_bilstm_mean_normalized.csv",
@@ -182,6 +273,26 @@
       "sha256": "5df3be0b6bb9757ba0df7ac1e84dcf01666030244bf1761bac4d2b5f3b84583a"
     },
     {
+      "path": "artifacts/results/confusion_landmark_bilstm_mean_normalized.csv",
+      "bytes": 12022,
+      "sha256": "0e3b23046e52364c0ab9ee20b160663f5a26c2713a00f03d21732205aec56dc4"
+    },
+    {
+      "path": "artifacts/results/confusion_landmark_bilstm_sum_counts.csv",
+      "bytes": 5171,
+      "sha256": "b2d3ecbe8c80f83230d57b473971aac3c71cc8994c11b55fae7728d78bb64a60"
+    },
+    {
+      "path": "artifacts/results/confusion_landmark_mlp_mean_normalized.csv",
+      "bytes": 12773,
+      "sha256": "afdb0c43682e388dd5c721d85cd9b7b73a703f6007490dbde5eead6e8f319aa4"
+    },
+    {
+      "path": "artifacts/results/confusion_landmark_mlp_sum_counts.csv",
+      "bytes": 5163,
+      "sha256": "cbba7011a1f3f34c5300442c905c15a7a5e0ff1132fbeaa1a81c76c3da01e60e"
+    },
+    {
       "path": "artifacts/results/confusion_single_frame_cnn_mean_normalized.csv",
       "bytes": 13235,
       "sha256": "71e95b46d4c7d059e271d87e0ce7ebddc1fdc19c3d1f011a565ce70c31051f54"
@@ -193,63 +304,228 @@
     },
     {
       "path": "artifacts/results/fold_summary.csv",
-      "bytes": 3071,
-      "sha256": "05d074dd14d4f6e790e6d84dab68e2cddacc710c7427940e7163464368fe02e9"
+      "bytes": 4777,
+      "sha256": "6dfe61346abb39594f16c904583643b9fceff22a8177da366f92f99aaabe5704"
+    },
+    {
+      "path": "artifacts/results/improvements/alternative_protocols.json",
+      "bytes": 3139,
+      "sha256": "0bb4ab30c14bce631cc9146c1b3caa7056916e2d33c7157436471151f5ab8c05"
+    },
+    {
+      "path": "artifacts/results/improvements/confusion_proto_bilstm_mean_normalized.csv",
+      "bytes": 12278,
+      "sha256": "fa857f5d09d689ee67c8b5b4c0a5ad3271979f0bbcf04573b63d71ec9e1c4e4d"
+    },
+    {
+      "path": "artifacts/results/improvements/enrollment_heldout_s1_seed17.json",
+      "bytes": 1705,
+      "sha256": "f602a4fd0c2771d7a192e4a3dc9b9973b9100989502f3f4752c2fe0ea560a69b"
+    },
+    {
+      "path": "artifacts/results/improvements/enrollment_heldout_s1_seed42.json",
+      "bytes": 1674,
+      "sha256": "60533ac5ac674d07d8cc14a1e9139c3f171a1ee33cda0cea563de9b0f023bcd0"
+    },
+    {
+      "path": "artifacts/results/improvements/enrollment_heldout_s1_seed73.json",
+      "bytes": 1723,
+      "sha256": "d7e66efa29438f4d9c54d14a7d353a00f00881c040c509d62d93ad3afbad7d3a"
+    },
+    {
+      "path": "artifacts/results/improvements/enrollment_heldout_s2_seed17.json",
+      "bytes": 1718,
+      "sha256": "843fba3c5e1415de490dabb6c4e66b310b4755ec5a804dbb7d1b29b39354801e"
+    },
+    {
+      "path": "artifacts/results/improvements/enrollment_heldout_s2_seed42.json",
+      "bytes": 1721,
+      "sha256": "48204b283afb64a77d6b1ccf0e013232ec58ff904c28e51a4e22e36881344be4"
+    },
+    {
+      "path": "artifacts/results/improvements/enrollment_heldout_s2_seed73.json",
+      "bytes": 1713,
+      "sha256": "b262e084a5938fbf359e79813f3b791e0f56728acef851556cca9c5fb4ab0a5d"
+    },
+    {
+      "path": "artifacts/results/improvements/enrollment_proto_heldout_s1_seed17.json",
+      "bytes": 1288,
+      "sha256": "b83aaa18f60c0bfc761ca13188737f3d87d8bc07af0cec9981fb665f9703e80a"
+    },
+    {
+      "path": "artifacts/results/improvements/enrollment_proto_heldout_s1_seed42.json",
+      "bytes": 1273,
+      "sha256": "72fe83186cf4878bfbd3531e9d072212124390804236e7e0939a95fa40a8cea6"
+    },
+    {
+      "path": "artifacts/results/improvements/enrollment_proto_heldout_s1_seed73.json",
+      "bytes": 1303,
+      "sha256": "fc7a7f53f6bbbc2bcf3a7c2ea37881547978acfb7107375dcd6c7ee10249f501"
+    },
+    {
+      "path": "artifacts/results/improvements/enrollment_proto_heldout_s2_seed17.json",
+      "bytes": 1262,
+      "sha256": "3fb05e1d235d2c501384d608479373622166771d73778adf6ee9a2090a2726de"
+    },
+    {
+      "path": "artifacts/results/improvements/enrollment_proto_heldout_s2_seed42.json",
+      "bytes": 1288,
+      "sha256": "b818b4c66e6422522fb25f76b6a9293960b696787ee61f2ff5f84df6e12e7450"
+    },
+    {
+      "path": "artifacts/results/improvements/enrollment_proto_heldout_s2_seed73.json",
+      "bytes": 1304,
+      "sha256": "72eef2b4943ddd8c3daa87bf0a3fd4637787dee42b7511d9d8cee30bd8d795f6"
+    },
+    {
+      "path": "artifacts/results/improvements/enrollment_rawangle_bilstm_heldout_s1_seed17.json",
+      "bytes": 1739,
+      "sha256": "252ca16085e7445e952ba35dade1a3b1718ec5aa04041821abf9e515f6f4852f"
+    },
+    {
+      "path": "artifacts/results/improvements/enrollment_rawangle_bilstm_heldout_s1_seed42.json",
+      "bytes": 1741,
+      "sha256": "84a2f36d8f804a6b30ab6a66e2ca6299a626a1bd21abe041c0a4d32d381b2528"
+    },
+    {
+      "path": "artifacts/results/improvements/enrollment_rawangle_bilstm_heldout_s1_seed73.json",
+      "bytes": 1711,
+      "sha256": "709c647e546e8e0a6ae0b6e8d9e8883f1a5a81ebdb1793adc82c9a71317631a3"
+    },
+    {
+      "path": "artifacts/results/improvements/enrollment_rawangle_bilstm_heldout_s2_seed17.json",
+      "bytes": 1737,
+      "sha256": "6f84eb80f57d14a27ccf7c3562af21189f8be7d4e30df7426f8784af389ef992"
+    },
+    {
+      "path": "artifacts/results/improvements/enrollment_rawangle_bilstm_heldout_s2_seed42.json",
+      "bytes": 1750,
+      "sha256": "c7fd4d4376df22f1181e468458971b87861996f57b3d2a707ea8075cdc39c588"
+    },
+    {
+      "path": "artifacts/results/improvements/enrollment_rawangle_bilstm_heldout_s2_seed73.json",
+      "bytes": 1753,
+      "sha256": "b37edb11c7d4ee48c8440aa54435248e60a7145db525106f4316d90e81394830"
+    },
+    {
+      "path": "artifacts/results/improvements/fusion_proto_heldout_s1_seed17.json",
+      "bytes": 467,
+      "sha256": "561645fa1c6d4262fd639b70d904703df68949ea93d902a44b374d49f09be0cd"
+    },
+    {
+      "path": "artifacts/results/improvements/fusion_proto_heldout_s1_seed42.json",
+      "bytes": 467,
+      "sha256": "6b21e06266edac84208624788e54b1f8c0b3d0426758aa6887fb8378e92ee20e"
+    },
+    {
+      "path": "artifacts/results/improvements/fusion_proto_heldout_s1_seed73.json",
+      "bytes": 483,
+      "sha256": "95859845e428884240ecd096e7fc84bef59f2125a621063fe4b2fad31f2c665a"
+    },
+    {
+      "path": "artifacts/results/improvements/fusion_proto_heldout_s2_seed17.json",
+      "bytes": 483,
+      "sha256": "199779180435f99a078a73429253315dabf45b55e84c77071f8f76421c9a6281"
+    },
+    {
+      "path": "artifacts/results/improvements/fusion_proto_heldout_s2_seed42.json",
+      "bytes": 469,
+      "sha256": "0a8f3e626c493d6e3112192094d8dd6cf767759ab603713e58ec977e01e15f67"
+    },
+    {
+      "path": "artifacts/results/improvements/fusion_proto_heldout_s2_seed73.json",
+      "bytes": 483,
+      "sha256": "fed731c4837472b3ed7ab3b3dc9fa65ba9f43a992508b722a6ffb5f97a0a9c02"
+    },
+    {
+      "path": "artifacts/results/improvements/fusion_rawangle_heldout_s1_seed17.json",
+      "bytes": 485,
+      "sha256": "0ce355fb06258a9dba9895444766b79a87f0d1094bd808a3f38a4799f87d384f"
+    },
+    {
+      "path": "artifacts/results/improvements/fusion_rawangle_heldout_s1_seed42.json",
+      "bytes": 485,
+      "sha256": "ae223841c0dd2f78c9a12ae5d29b606f8b10d8ada8603319ebabdc6152c13ba1"
+    },
+    {
+      "path": "artifacts/results/improvements/fusion_rawangle_heldout_s1_seed73.json",
+      "bytes": 487,
+      "sha256": "5bdbcd76557241ee0c76186d185b5ffda03e7f7dd3d3b9a0b4291d310aa83bbf"
+    },
+    {
+      "path": "artifacts/results/improvements/fusion_rawangle_heldout_s2_seed17.json",
+      "bytes": 486,
+      "sha256": "d51a7371241df7c56529006fb47e16ceeff8fc17c5b86a60c3df00365c187e41"
+    },
+    {
+      "path": "artifacts/results/improvements/fusion_rawangle_heldout_s2_seed42.json",
+      "bytes": 485,
+      "sha256": "8c3c6fb92696f22888dd6fcfadd1bb3d8db3b296f71e975ed9f7d25f644a2278"
+    },
+    {
+      "path": "artifacts/results/improvements/fusion_rawangle_heldout_s2_seed73.json",
+      "bytes": 485,
+      "sha256": "9aa439dab666287c276502cdb0b6b91080aff66b91699a37a4e7c0db780867e8"
+    },
+    {
+      "path": "artifacts/results/improvements/summary.json",
+      "bytes": 7293,
+      "sha256": "a55d52554b2d983b744ee845ba566949486260eccb902a6d1caa589bf0f188fe"
     },
     {
       "path": "artifacts/results/model_summary.csv",
-      "bytes": 1603,
-      "sha256": "f3c3ef158c29b83a1c41e4b58a4b938857f4c6dcaedce3e1253038f968cb5f6f"
+      "bytes": 2435,
+      "sha256": "2c27c276f779f4802d31cab685da16bca62c49c754c4048d0a733dc795457e53"
     },
     {
       "path": "artifacts/results/paired_differences_by_seed.csv",
-      "bytes": 3244,
-      "sha256": "a215905b638fb403589a0e553ab1189d0478b64ef5e4de253734caf6c868e475"
+      "bytes": 7544,
+      "sha256": "e516c932898916461e0e630ef603ed2de50078b57565cf2b52ef71a1e0dafca2"
     },
     {
       "path": "artifacts/results/paired_differences_summary.csv",
-      "bytes": 2081,
-      "sha256": "b07397c7d64675f1b52ea6c799b0ee3c11376ba9bf889bfd4f101c18c81bb156"
+      "bytes": 4699,
+      "sha256": "dea76c0090d6c24fba9ce5688480653eeb9c924f6a22fcda53c4ad1cd19f4d46"
     },
     {
       "path": "artifacts/results/per_class_by_seed.csv",
-      "bytes": 22796,
-      "sha256": "adca4d339b9d9fc6cbcaab2b74800ed332203e6064dc5f8221f4a1ae9212e90b"
+      "bytes": 38512,
+      "sha256": "084b3aeee7b653e6dcb4719125bb15f5e4cdcef9fc6ff31c7392109c833f443a"
     },
     {
       "path": "artifacts/results/per_class_summary.csv",
-      "bytes": 17463,
-      "sha256": "c319f223b79e9017d107ff53c1971068fc5e07893552937ea014c28e4f93307e"
+      "bytes": 30447,
+      "sha256": "5d83462bdd388c92000ba95acbf1e4d0bc8190384c6a763f40a3b512409e786a"
     },
     {
       "path": "artifacts/results/pooled_out_of_fold_by_seed.csv",
-      "bytes": 1977,
-      "sha256": "a056a05654913dccafe82f74b7486dea658bd4f332b1ad4a69d5b4345fe5daea"
+      "bytes": 3153,
+      "sha256": "8a25c0e229bee27cd0f72b27fc31214d82b7ce982aeaa57a5b191fcafbf8aab7"
     },
     {
       "path": "artifacts/results/predictions_all.csv",
-      "bytes": 382097,
-      "sha256": "888773e6172cf4e5dfd4c8d589a9d974e9a645df758866897b08c11786d1fa34"
+      "bytes": 636348,
+      "sha256": "d1eee6e3d0a7d62d7fa817aaf5586956755c27f4a9ad5e6eaa133b44e471379d"
     },
     {
       "path": "artifacts/results/primary_results_summary.json",
-      "bytes": 3506,
-      "sha256": "4a70f01b8bf14642859df0acb50350a9f77e0245e980855ae0b6dd6ac8bb4e4e"
+      "bytes": 5515,
+      "sha256": "8608a9950e9674f78f90927334c70c82e119962686591820fcc4ff8d37a6893c"
     },
     {
       "path": "artifacts/results/run_metrics.csv",
-      "bytes": 10725,
-      "sha256": "6a4107f6d2c86397636d074c7bd90f526531bd16e8efb65fac40f8f814539855"
+      "bytes": 17499,
+      "sha256": "ada9819998352b9baed10b64f3549402568a915d0c757da2369a64825e5b60d5"
     },
     {
       "path": "artifacts/results/sign_type_by_seed.csv",
-      "bytes": 2142,
-      "sha256": "ed0b7835f739aa5ae0736de99f0496a0ca96875d25d0adfdd784d3e72f6df7aa"
+      "bytes": 3434,
+      "sha256": "121330f776bacce29047f2ef06b0edcbaba7d3a5da9d56058322ad259846f834"
     },
     {
       "path": "artifacts/results/sign_type_summary.csv",
-      "bytes": 2582,
-      "sha256": "a4a7a9ba742f7201cd2122c9fca370d5591a66412c8efb05f56c270a4c33f2b6"
+      "bytes": 3916,
+      "sha256": "acf519edd2d986838c7b66ac4b5c9f58604c5e162f873c89600b97f9fe03cd30"
     },
     {
       "path": "artifacts/results/top_confusions_cnn_bilstm.csv",
@@ -262,19 +538,989 @@
       "sha256": "838e01bec5f4eda8767c2868d942b5f0e4610bae6d35908b1248713340957ee4"
     },
     {
+      "path": "artifacts/results/top_confusions_landmark_bilstm.csv",
+      "bytes": 1097,
+      "sha256": "2f2d362c68cb9852eb54fe320cf946bd310d97990c600344ccb1ecd5283ed45f"
+    },
+    {
+      "path": "artifacts/results/top_confusions_landmark_mlp.csv",
+      "bytes": 1049,
+      "sha256": "13531b2b44ef812f4a6bcc3aefb6e13c7fcf52f60444208de6ec9f8c8c209fb2"
+    },
+    {
       "path": "artifacts/results/top_confusions_single_frame_cnn.csv",
       "bytes": 1261,
       "sha256": "b962e8e56c5618e07b33f73c85ba926dd1e7bc27f35eb3301203a9c85b6055bb"
     },
     {
       "path": "artifacts/results/training_histories_all.csv",
-      "bytes": 64648,
-      "sha256": "d0a96eae281ceffb92c2e68ef7cd6c7f9c35c1645e6155b3595ef1d3b8f3f7bf"
+      "bytes": 110766,
+      "sha256": "d7c45984a96a842e43f3ee42a4b5b689e6aafcbffdc264a0ff1f5789c8cc1d77"
     },
     {
       "path": "artifacts/results/training_runtime.csv",
-      "bytes": 1221,
-      "sha256": "b586c443b65bfa3d86c24d2d6cc6f3c40f0a77d8caae847a20be5cc0a4940344"
+      "bytes": 2029,
+      "sha256": "d806466ef9e220073d423e871a5169b463b93db4fdb2a626e32a76e3cdfbb49e"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/crop_cnn/seed_17/best_checkpoint.pt",
+      "bytes": 9386961,
+      "sha256": "f9d54d63fbab32640b2093ae35a9ef406d2077434e40cd9f3add7204aa764274"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/crop_cnn/seed_17/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "10713c477553b44feb153159bb32a0d42a1787d0726cd3d404c34ca47251c883"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/crop_cnn/seed_17/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "5044e5da9662bcf7a52881208c83b9b4c8ad7e7cb9d6fcc36b46163deeb256e6"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/crop_cnn/seed_17/environment.json",
+      "bytes": 304,
+      "sha256": "5455752681ab941b5977ad2ce6ce16c063a0459eee249b59c7b5c7b834e7f868"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/crop_cnn/seed_17/metrics.json",
+      "bytes": 1233,
+      "sha256": "3becbb4c8b1ed0252864ec636afecc1e57b8033b5caa17ab62679c4773929c37"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/crop_cnn/seed_17/per_class_metrics.csv",
+      "bytes": 1243,
+      "sha256": "2f4fed28439620a4b541d10f3081c7893b4cc199e64484e9b67eef15d2d437be"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/crop_cnn/seed_17/test_predictions.csv",
+      "bytes": 21079,
+      "sha256": "318a17c328669d4e9fbb6e3ac3e6525a320fe26e5014297b22891be97ec62ae9"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/crop_cnn/seed_17/training_history.csv",
+      "bytes": 3242,
+      "sha256": "7825a7f093b80678ecf4d874fad8b0c8eb9c2ca1a6c2328b2310c5beb970a36a"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/crop_cnn/seed_42/best_checkpoint.pt",
+      "bytes": 9386961,
+      "sha256": "0706889bb7cdb9e8183d99fe16c41608a4c63e911dcef983545873283ddeb184"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/crop_cnn/seed_42/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "d5de8ce72dd602809e347b40612e6dd7ac1bd0a0a7a3124e1591b6cc60d1e339"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/crop_cnn/seed_42/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "b0e5a9ea06f214f7739fde6a304a0d95146f39dc68a4ebbdd4de863607ae16bb"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/crop_cnn/seed_42/environment.json",
+      "bytes": 304,
+      "sha256": "5455752681ab941b5977ad2ce6ce16c063a0459eee249b59c7b5c7b834e7f868"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/crop_cnn/seed_42/metrics.json",
+      "bytes": 1234,
+      "sha256": "b11cb3780dd9570c8228eb966836f9cbd0894f7080461fe5049d80ef6a7941f1"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/crop_cnn/seed_42/per_class_metrics.csv",
+      "bytes": 1231,
+      "sha256": "1139ba542a4382e81acad6bebbfe469bd4fdb626a43faf86bb2df13bd76c011d"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/crop_cnn/seed_42/test_predictions.csv",
+      "bytes": 21076,
+      "sha256": "37c823795d51e202ec649b82310daf3b3d9c03fd6fcfe7fc9b011cdd878feb42"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/crop_cnn/seed_42/training_history.csv",
+      "bytes": 3233,
+      "sha256": "36c120b224611cd88d97134f4be4c9374ea8b3906adf9c21abe8fbcda7928c75"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/crop_cnn/seed_73/best_checkpoint.pt",
+      "bytes": 9386961,
+      "sha256": "54e1287a2c645f5bc15effa6f9585519089e8f09c75fa8a615b939e52a6d9d38"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/crop_cnn/seed_73/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "e685741dcfe15be219de84fa98ec322736457493a14dc6f5496079bfd9749a62"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/crop_cnn/seed_73/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "2cd98b323387dd33d1a88f0ec1aa1cbf4aa439cd42b064da9e8e9843a1b141ad"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/crop_cnn/seed_73/environment.json",
+      "bytes": 304,
+      "sha256": "5455752681ab941b5977ad2ce6ce16c063a0459eee249b59c7b5c7b834e7f868"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/crop_cnn/seed_73/metrics.json",
+      "bytes": 1229,
+      "sha256": "fcd3d81961f717662846a873af52ae4a385a0d6f99a75c7c927b185039799c28"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/crop_cnn/seed_73/per_class_metrics.csv",
+      "bytes": 1280,
+      "sha256": "a9c5a7742354e4e9c490b151ae3c58a6b5df093521e6fd0455d7e0a6d72d256b"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/crop_cnn/seed_73/test_predictions.csv",
+      "bytes": 21068,
+      "sha256": "cf5a967da252b34c4b2591edcdd020e1108eaefc6ce5ffafa56ab8d5f37bcfa7"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/crop_cnn/seed_73/training_history.csv",
+      "bytes": 3251,
+      "sha256": "3f22ab7dbd347346b8dcfa09f4e259e31ee362e2934c879c74926832ea7f74c9"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_bilstm/seed_17/best_checkpoint.pt",
+      "bytes": 341588,
+      "sha256": "4d66dd3ab409d1baf769ebf27dbadd87470b48d221a54ffb5855219e4f1f9798"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_bilstm/seed_17/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "07e01253b6d592e4280dd6a4bd59bd6fec1f17efd429cf54f74b60df76d51970"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_bilstm/seed_17/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "a979bfb94d0d371bddcc2063ddfa25771261335f74125d85618bf65bd2f3b1fe"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_bilstm/seed_17/environment.json",
+      "bytes": 299,
+      "sha256": "0e1a067943eb9d2b0515353480994bac23ef249e479cf38cee9ce5efbf77e754"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_bilstm/seed_17/metrics.json",
+      "bytes": 1235,
+      "sha256": "1016829cd474272ed24537fd525aec9038b96598857de976a111ef9c16673683"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_bilstm/seed_17/per_class_metrics.csv",
+      "bytes": 1430,
+      "sha256": "4a3395bba932d6b0570f064a1f16361255b0c32a8a2fc46a2814dc3dc5481c3a"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_bilstm/seed_17/test_predictions.csv",
+      "bytes": 21746,
+      "sha256": "819997993a56e84f94781d9c0834e415c15aa4392e1dccf3381834d044b7c768"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_bilstm/seed_17/training_history.csv",
+      "bytes": 3266,
+      "sha256": "12045c71fb8865667ade443e26392d698330b225895c8e6ed0a75248142a9c52"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_bilstm/seed_42/best_checkpoint.pt",
+      "bytes": 341588,
+      "sha256": "06b90be8b4ccc0d641e181f60c5799b97670ec92f814ffd4af1c794747a352d7"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_bilstm/seed_42/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "8847e1f5b26542c285c31da9d70cf1b240e4a17ecfb98a2dc05a069beb83dcc0"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_bilstm/seed_42/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "edf68e596ff79283c11025b20fd77e6562aa3880554969f8cf54ad961859b4e0"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_bilstm/seed_42/environment.json",
+      "bytes": 299,
+      "sha256": "0e1a067943eb9d2b0515353480994bac23ef249e479cf38cee9ce5efbf77e754"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_bilstm/seed_42/metrics.json",
+      "bytes": 1241,
+      "sha256": "e4e95bfd879f273cfcf1fd3dbff8902fc96f483031c80b7a1130523379258223"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_bilstm/seed_42/per_class_metrics.csv",
+      "bytes": 1337,
+      "sha256": "5e494d14962d40d14d782fbc8184260730754beac776873fdfc533fc5c231421"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_bilstm/seed_42/test_predictions.csv",
+      "bytes": 21726,
+      "sha256": "6e2ddc613306c6132d707bae0350537e5be194f3caf1fb4616cddbd023191549"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_bilstm/seed_42/training_history.csv",
+      "bytes": 3263,
+      "sha256": "5c934e34aabf7b0f781d309a41711bdfcc9ac2ad6e9ba5ad044aef978c6a9c23"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_bilstm/seed_73/best_checkpoint.pt",
+      "bytes": 341588,
+      "sha256": "14b4d1ac1ce94b8beaf8cd046e034409de793e8aa92502e076de1152fcee502d"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_bilstm/seed_73/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "b75b33d39e39c102a59bcf2a1d5257ed073cec9e5ca2972d480fe15c6472e8a3"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_bilstm/seed_73/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "87b3309de4804292c65a3b49cf2afec3a16f8db339aa8e6c7d84e1fd204139a4"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_bilstm/seed_73/environment.json",
+      "bytes": 299,
+      "sha256": "0e1a067943eb9d2b0515353480994bac23ef249e479cf38cee9ce5efbf77e754"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_bilstm/seed_73/metrics.json",
+      "bytes": 1241,
+      "sha256": "7aa23ad57b7b37d414a774974801ee8af23d3f7f0c13a6d337f7f46f86381883"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_bilstm/seed_73/per_class_metrics.csv",
+      "bytes": 1382,
+      "sha256": "790f8ad12c627d75f37444b9c5203f73998f73792046d707c3643b0c507474ef"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_bilstm/seed_73/test_predictions.csv",
+      "bytes": 21717,
+      "sha256": "b0c319872a39792b5e72c284da0bdd26beaa29ae90f20f065f284be31442dfbf"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_bilstm/seed_73/training_history.csv",
+      "bytes": 3259,
+      "sha256": "7e858f3995d506dbbcf025051d52d14edeb2b9d92f995a04e4b9a4c7e291ded9"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_mlp/seed_17/best_checkpoint.pt",
+      "bytes": 1540537,
+      "sha256": "54b178ac064798b7cb6eb40d97c01e6b433889f570c4d6e64ace5fe64b91a1ba"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_mlp/seed_17/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "f8a9a9c0d1997453cb18a1a54620bcf7bdd41f91efeebf1603a32bad80c40e5b"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_mlp/seed_17/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "8403f015758055f0c476abd313d88f2f47f98d0196b3daa438e684ee6e0ced41"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_mlp/seed_17/environment.json",
+      "bytes": 299,
+      "sha256": "0e1a067943eb9d2b0515353480994bac23ef249e479cf38cee9ce5efbf77e754"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_mlp/seed_17/metrics.json",
+      "bytes": 1237,
+      "sha256": "c58bbc91be8b02f5945448a6200b1e6f93059c960f0993ecab0d7b44dacbc57d"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_mlp/seed_17/per_class_metrics.csv",
+      "bytes": 1326,
+      "sha256": "a14cf502287c11b458a0e5281d1d649a6bbd927e9bc44dc08ed14c0cf0533312"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_mlp/seed_17/test_predictions.csv",
+      "bytes": 21419,
+      "sha256": "f2d852218b1baf763721a8754a4a690ce763abd1b2895d05f99c78f19a974829"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_mlp/seed_17/training_history.csv",
+      "bytes": 3293,
+      "sha256": "6abb5e8562dce59f3edfba79a2cf4b4ab22de431e67e8d9c9f23f64ed93d55fc"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_mlp/seed_42/best_checkpoint.pt",
+      "bytes": 1540537,
+      "sha256": "e8d97f7862dcf116b6388b17972ef11638f21bac06ae10161288656e77ace018"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_mlp/seed_42/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "5de338a74c3ba59f88bb3170049da85965195ae8d03ecfc7683efdf3e0a0aaeb"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_mlp/seed_42/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "fd82ce4a3e9df77aed6473926f2bf542d93e65ac1dc07552c4dc10d861666a39"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_mlp/seed_42/environment.json",
+      "bytes": 299,
+      "sha256": "0e1a067943eb9d2b0515353480994bac23ef249e479cf38cee9ce5efbf77e754"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_mlp/seed_42/metrics.json",
+      "bytes": 1242,
+      "sha256": "c7e549fd8cc0eee2c27c03078a0a7b312244cf8fc473fc1ccc1920a69d5bc878"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_mlp/seed_42/per_class_metrics.csv",
+      "bytes": 1328,
+      "sha256": "c61cad7dbf722b2f43d9a5f10800a719664c3320dbb2716b6a45e0d7498648a0"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_mlp/seed_42/test_predictions.csv",
+      "bytes": 21435,
+      "sha256": "a7cb1b3266daf1e5312917487a24d20987b7390dba4076f64b681daa99d69e41"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_mlp/seed_42/training_history.csv",
+      "bytes": 3284,
+      "sha256": "026ec5555862d0f9087c153c74c5a43a06d6c9a262ac36cd52a78247695d0495"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_mlp/seed_73/best_checkpoint.pt",
+      "bytes": 1540537,
+      "sha256": "568269de1592ab8432b433127b234d3f959149c5a6658e722f0c76e8e09da144"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_mlp/seed_73/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "53b020ad1c5169611153876742819c7d190f0a66d045d690c1c549deed77ff5e"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_mlp/seed_73/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "648d7e5c45b4dd497c9e35fd391c5363b6f2e06cf0478f4a34030630dce4c08d"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_mlp/seed_73/environment.json",
+      "bytes": 299,
+      "sha256": "0e1a067943eb9d2b0515353480994bac23ef249e479cf38cee9ce5efbf77e754"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_mlp/seed_73/metrics.json",
+      "bytes": 1237,
+      "sha256": "e0507d00cdffd59ca725dd24077237eb468cd9c8a43d25b948f26c1857fa71ab"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_mlp/seed_73/per_class_metrics.csv",
+      "bytes": 1354,
+      "sha256": "be5fb5e97d8e702cc700c9710889febbce5122a025f0c28c65b59ff43700d2c5"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_mlp/seed_73/test_predictions.csv",
+      "bytes": 21476,
+      "sha256": "6e2cb2cec244b741b946c60c0aedbba4591ba3110b790153eced0fed0add2558"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/landmark_mlp/seed_73/training_history.csv",
+      "bytes": 3292,
+      "sha256": "b8f11cf871b44175206a5a87aeddc87a21ff5d4d7d2bd55580c6c4d71aef3b91"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/proto_bilstm/seed_17/best_checkpoint.pt",
+      "bytes": 364564,
+      "sha256": "ca767df2c41a47dc6a4afbefc161ce3496296ef2c44f7ef47a0fb573d6f825db"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/proto_bilstm/seed_17/metrics.json",
+      "bytes": 226,
+      "sha256": "34209351122333a3ef112cee45040f1ceb4d7d3136cf14c910936f7fa278f857"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/proto_bilstm/seed_17/test_predictions.csv",
+      "bytes": 8129,
+      "sha256": "61017c4c8aa0cfb6e0fd9383fae852b24b07b7bbcfc9c32812d6710ed86e2bd1"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/proto_bilstm/seed_17/training_history.csv",
+      "bytes": 983,
+      "sha256": "ded9e9aae12db352a87a576bc396506a47abc0da736285f06c905e6f07cdad69"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/proto_bilstm/seed_42/best_checkpoint.pt",
+      "bytes": 364564,
+      "sha256": "c25b3d043f5988633826590725ac28dce93d636d2588807b1257f08b7c8749e9"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/proto_bilstm/seed_42/metrics.json",
+      "bytes": 227,
+      "sha256": "c3b676199b90a6b62a74d623d04e3b4c65ed01c14dbdc8874ad54fd22fcf35b7"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/proto_bilstm/seed_42/test_predictions.csv",
+      "bytes": 8115,
+      "sha256": "880ca7b0bafa1969735c3714904ab0a49c971c2c36072897febad6b41c9bf0b7"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/proto_bilstm/seed_42/training_history.csv",
+      "bytes": 988,
+      "sha256": "275842147a23bf2a9b1915060b7e35f1d60a4c783cfdf8c3a0badec0a69094b3"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/proto_bilstm/seed_73/best_checkpoint.pt",
+      "bytes": 364564,
+      "sha256": "9b94e4726833469fcc30a87f9cf68e0c5a8c23f4f26979f2b300c424faa01efd"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/proto_bilstm/seed_73/metrics.json",
+      "bytes": 243,
+      "sha256": "95022f7bac25f58b2831a6b95757e1b12707502ee6718c0901fa26b157b1f538"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/proto_bilstm/seed_73/test_predictions.csv",
+      "bytes": 8117,
+      "sha256": "15fbe6c1568efb81ca4ebea505a95733a0948dd91a60b970b7918a930810bcdb"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/proto_bilstm/seed_73/training_history.csv",
+      "bytes": 987,
+      "sha256": "a539bb27bf30ddcffa26e89aa373e14c47ac10eac083cb215a68d21a9e54e577"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/proto_bilstm_xyz/seed_17/best_checkpoint.pt",
+      "bytes": 323604,
+      "sha256": "83f4707a96f8feb5ed4910e878dbac818b1ceb659b9e47c781002cbd63703e05"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/proto_bilstm_xyz/seed_17/metrics.json",
+      "bytes": 260,
+      "sha256": "5abcde38781cb2eb2cb8033ee0cf491f0beac7ca1b3a1da693c8ce06c8701f79"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/proto_bilstm_xyz/seed_17/test_predictions.csv",
+      "bytes": 8134,
+      "sha256": "fb146cbf2c82e514193d0225b37ac91d4a28ab822989de21f34f9015d8dbb86f"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/proto_bilstm_xyz/seed_17/training_history.csv",
+      "bytes": 979,
+      "sha256": "aec48af01a6743dba352c1b84445e734f3dba7bd37b8f011f1aa620a57d37cce"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/proto_bilstm_xyz/seed_42/best_checkpoint.pt",
+      "bytes": 323604,
+      "sha256": "fc49c82ba74d35dd9e3f9066b108a9bd04c63005b4f5b5360cff49f5e2d78cc6"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/proto_bilstm_xyz/seed_42/metrics.json",
+      "bytes": 260,
+      "sha256": "fb560b63dac2018110e37e026cb62edc9287d56fa849ac7cc5c7537f5adf0b55"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/proto_bilstm_xyz/seed_42/test_predictions.csv",
+      "bytes": 8107,
+      "sha256": "d3d33afae333a31945c56a6c49437aa8787bf1de363af596758223cf7dedaaf7"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/proto_bilstm_xyz/seed_42/training_history.csv",
+      "bytes": 972,
+      "sha256": "caccc35743f5bdefdef455b63802fa8e88b2d384ffcc940b48318f4e5bc2c31e"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/proto_bilstm_xyz/seed_73/best_checkpoint.pt",
+      "bytes": 323604,
+      "sha256": "290fd5ebbd18d9e56229cd74595f5120d35fffdade78b69c37f62841e90f7249"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/proto_bilstm_xyz/seed_73/metrics.json",
+      "bytes": 232,
+      "sha256": "e0a833289f3e0a0872701f17622ac1daa8e47ae591c1581083e4ba8338506713"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/proto_bilstm_xyz/seed_73/test_predictions.csv",
+      "bytes": 8123,
+      "sha256": "36746a98db04be1dff5bd35484628af8efe2c41f49d83b6b6f9349170257ce94"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s1/proto_bilstm_xyz/seed_73/training_history.csv",
+      "bytes": 972,
+      "sha256": "2f5c3fc40285d7864bbf5ae175b97ce2eb491918e553fdebee608499bc43cbda"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/crop_cnn/seed_17/best_checkpoint.pt",
+      "bytes": 9386961,
+      "sha256": "2987d4539affb0dc52c67dfdd49e69c976aa4ca129e3aec26112cfd09dc56a99"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/crop_cnn/seed_17/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "d8efeee4cac4e108b63ad3c41a40960396806e78110d0b65e60545fce65af065"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/crop_cnn/seed_17/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "7d96a7d1355ac951fd80e69b294a6a80451446348a5c99af49a70facc6202bc4"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/crop_cnn/seed_17/environment.json",
+      "bytes": 304,
+      "sha256": "5455752681ab941b5977ad2ce6ce16c063a0459eee249b59c7b5c7b834e7f868"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/crop_cnn/seed_17/metrics.json",
+      "bytes": 1229,
+      "sha256": "eebbcfb3bce6e8cf2d243663da18370c9b34ffe23c054c0cff816e24f4e670dd"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/crop_cnn/seed_17/per_class_metrics.csv",
+      "bytes": 1307,
+      "sha256": "f0e57090a99efd7748512917fb19684fe084799b2ef3ebd9e3c574aa96961920"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/crop_cnn/seed_17/test_predictions.csv",
+      "bytes": 21067,
+      "sha256": "f7a90a2f249088ffd7d0f05d18d40ac7feda10154f91eb337b9d0c4d91d7211e"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/crop_cnn/seed_17/training_history.csv",
+      "bytes": 3233,
+      "sha256": "81ee0d9a8828db217139a57f5ba62b6cb89b7c0ff2ddeec86d8efc46d2e1cbf3"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/crop_cnn/seed_42/best_checkpoint.pt",
+      "bytes": 9386961,
+      "sha256": "cea89ecc23e6cf06cd67a4e38b6e47c28655dcafe9d633df3b56277dd267baaa"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/crop_cnn/seed_42/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "5ffb3cfd99bada50cd75898dc2be2df8159bc35fd6614f0c4ae839225cdb0b17"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/crop_cnn/seed_42/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "34af6c12c331f98edfc669fe9397a231c49871c61d47aee5188912b146d226d0"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/crop_cnn/seed_42/environment.json",
+      "bytes": 304,
+      "sha256": "5455752681ab941b5977ad2ce6ce16c063a0459eee249b59c7b5c7b834e7f868"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/crop_cnn/seed_42/metrics.json",
+      "bytes": 1233,
+      "sha256": "93ecca7e5b954c4cf602767bbc79260aefd2b2cd8961a2f4b4939af41f9ed0c5"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/crop_cnn/seed_42/per_class_metrics.csv",
+      "bytes": 1309,
+      "sha256": "1ca0f9255e7846661c1b509a4b63d500359f89b3143364c2990bffe4762cd3a0"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/crop_cnn/seed_42/test_predictions.csv",
+      "bytes": 21053,
+      "sha256": "793c5bb877816fd56088b2a2a6004e28116ad708615381bca51309795679bc35"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/crop_cnn/seed_42/training_history.csv",
+      "bytes": 3241,
+      "sha256": "4cee9ade4f3e504d878630848b818397b17ee2f16e5e1ed5dc54d9b7518b400e"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/crop_cnn/seed_73/best_checkpoint.pt",
+      "bytes": 9386961,
+      "sha256": "c326d6c828b92da9909b03ab372c60f8fa867960e8eba792b095e10185614026"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/crop_cnn/seed_73/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "c9599d8662defa95df58225db98c583fdc03e86fc92f26dd3fe168a96db98609"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/crop_cnn/seed_73/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "a2fbbc3f4bd50561fead12014edd7e8e5313c2212386deb4705e4e7435d21c08"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/crop_cnn/seed_73/environment.json",
+      "bytes": 304,
+      "sha256": "5455752681ab941b5977ad2ce6ce16c063a0459eee249b59c7b5c7b834e7f868"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/crop_cnn/seed_73/metrics.json",
+      "bytes": 1231,
+      "sha256": "d65d1b0f607d5800154e501bea5d32ca1ab2b7e29d0f78b504dfd108f8c66d46"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/crop_cnn/seed_73/per_class_metrics.csv",
+      "bytes": 1326,
+      "sha256": "7050cf70b68eebe7aeb173182ccdf5e292eb5a42195b2011d55562d9d061c36c"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/crop_cnn/seed_73/test_predictions.csv",
+      "bytes": 21053,
+      "sha256": "eb6fbd69f6363a66db73f1c11f944616c7c4c4bd86701f4f4509c19aa6d28e02"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/crop_cnn/seed_73/training_history.csv",
+      "bytes": 3235,
+      "sha256": "0606e333c5fb108a6e8f34eebf96c64d56138a4db0f6a6001865843134da041d"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_bilstm/seed_17/best_checkpoint.pt",
+      "bytes": 341588,
+      "sha256": "c5dd2d93d4c9c6f91cd0d6ba89827c07690a5d513ea9d329bbc06a7d7220638c"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_bilstm/seed_17/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "60c890ae3d02762f0ca7c3d8163d422eddc7376bd6b267bb2eb987f4e8c0ed69"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_bilstm/seed_17/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "a14b0ace66e0365d83f1b03d862a07cee93351b283e416c69b14e8178bd0e55c"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_bilstm/seed_17/environment.json",
+      "bytes": 299,
+      "sha256": "0e1a067943eb9d2b0515353480994bac23ef249e479cf38cee9ce5efbf77e754"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_bilstm/seed_17/metrics.json",
+      "bytes": 1238,
+      "sha256": "4a845af4fbe92df405ed0b0172eb46a5b6d0d4b8de9a67a2b0fe3b10bacf333f"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_bilstm/seed_17/per_class_metrics.csv",
+      "bytes": 1412,
+      "sha256": "e5672388769eb76a5818889334cc4f717ed65ebc276ad93550a8e3c1a1313574"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_bilstm/seed_17/test_predictions.csv",
+      "bytes": 21745,
+      "sha256": "984b51b48be0380bedbc6297b9bab3f92299a8f9c3e614d1781a5bdce70e0c8d"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_bilstm/seed_17/training_history.csv",
+      "bytes": 3262,
+      "sha256": "4b1a328d376a3c166b3654e5a13c72dd3cb9935f90cfb60ec7cd56cc7ca32c5d"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_bilstm/seed_42/best_checkpoint.pt",
+      "bytes": 341588,
+      "sha256": "a7bfd946733283783aa1f39b2cbb910aff28eea3e1790723a3a79883d1266740"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_bilstm/seed_42/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "bcc4b98a0645eaa30213b360089583c1d70a67d8ab1c3258cf6dcf69a3a7442d"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_bilstm/seed_42/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "72bc75382e44ce6558c990691361f1add3388f1a2e31c249a70399466cff5bf5"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_bilstm/seed_42/environment.json",
+      "bytes": 299,
+      "sha256": "0e1a067943eb9d2b0515353480994bac23ef249e479cf38cee9ce5efbf77e754"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_bilstm/seed_42/metrics.json",
+      "bytes": 1238,
+      "sha256": "2c7f72a1652a9c75dda43547f51b3a43d711f72bccea7deaf6a4043dab8a2eec"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_bilstm/seed_42/per_class_metrics.csv",
+      "bytes": 1340,
+      "sha256": "3cce7dceeab7eb3c106e4c81df5e7eb2c75c251b08522f859005df90fc1235ad"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_bilstm/seed_42/test_predictions.csv",
+      "bytes": 21728,
+      "sha256": "ec5783a83387557cf0105c8770421f05ac9d4321b3573f90710dfa1b2fea6d7f"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_bilstm/seed_42/training_history.csv",
+      "bytes": 3266,
+      "sha256": "392bccb40f8f6699880e35d3f7b86d95c9d283dbcee27968e8c5d921a5edba4b"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_bilstm/seed_73/best_checkpoint.pt",
+      "bytes": 341588,
+      "sha256": "11a3696b62a589905abb2f452e502bbd8e470caa39775422238a8b81e6dc61e3"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_bilstm/seed_73/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "acff604f3db088b6602b15456eb519c020929ffa4dc3e33c222e08b71b8b2bec"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_bilstm/seed_73/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "1b099f8620a7f12ab38bd8b2bfcc323934b42ac010e4c6a110dc3f7e6985e7cc"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_bilstm/seed_73/environment.json",
+      "bytes": 299,
+      "sha256": "0e1a067943eb9d2b0515353480994bac23ef249e479cf38cee9ce5efbf77e754"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_bilstm/seed_73/metrics.json",
+      "bytes": 1239,
+      "sha256": "593afb10f7d94dd9bd9dd6fbe218df285888e92aded257ab2bc4dc7da09c49b1"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_bilstm/seed_73/per_class_metrics.csv",
+      "bytes": 1321,
+      "sha256": "81b08d6e21e0e1b2f4658e638c8afc46735ca2e2127dc4298112727b9e895685"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_bilstm/seed_73/test_predictions.csv",
+      "bytes": 21733,
+      "sha256": "ea16d3638f441ae3da260a6415e1e62cc4212f520bee0c514192b9ae4196e2ef"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_bilstm/seed_73/training_history.csv",
+      "bytes": 3269,
+      "sha256": "d8845f28d89c45c3f67962c22778b459290a086866423a1d9d6eca15eef70762"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_mlp/seed_17/best_checkpoint.pt",
+      "bytes": 1540537,
+      "sha256": "5fc0704c35bb9a8358a4ffae5594d4b674817a5f821e14fa92e754a2bdd4e14f"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_mlp/seed_17/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "ade987d0a159ba4db1869b5d420d917377c246880cb2f974f70922d1b229b3a0"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_mlp/seed_17/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "92be02c122c430c607b2c432f266e1ee4e23243855b05816431c04adc9c55307"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_mlp/seed_17/environment.json",
+      "bytes": 299,
+      "sha256": "0e1a067943eb9d2b0515353480994bac23ef249e479cf38cee9ce5efbf77e754"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_mlp/seed_17/metrics.json",
+      "bytes": 1236,
+      "sha256": "1fe4ec9e9f3cfb3bf05948c188cf408fb87a8fd8a4310fe6ff0e1bb3ff7b0348"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_mlp/seed_17/per_class_metrics.csv",
+      "bytes": 1413,
+      "sha256": "257efaecd1cee3ce3b13774e1f738b04fa10b9e38ce11c6f0c6a74f6d00083c3"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_mlp/seed_17/test_predictions.csv",
+      "bytes": 21468,
+      "sha256": "a0fed0523ec399b1e9997e880b5687a4c018ed24cb6751a8ddd9ba43477aca15"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_mlp/seed_17/training_history.csv",
+      "bytes": 3286,
+      "sha256": "5876aff253445252cb49423729d45c8bf874452e10d75c8323545d047bb2fb7e"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_mlp/seed_42/best_checkpoint.pt",
+      "bytes": 1540537,
+      "sha256": "c0a293430800ff53af0b892c1dd30553393fa4b089ceb9e997e66ea93adb066b"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_mlp/seed_42/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "9ca9c65ed9bf6b6240ad264b1d20069801fe880603600cd90c7466649632b012"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_mlp/seed_42/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "b68223659c06f19e0cd9522cfe7710ccf4e0727482b95dfc48416d9b5c80238f"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_mlp/seed_42/environment.json",
+      "bytes": 299,
+      "sha256": "0e1a067943eb9d2b0515353480994bac23ef249e479cf38cee9ce5efbf77e754"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_mlp/seed_42/metrics.json",
+      "bytes": 1237,
+      "sha256": "91dc97d847f2f9b6ffb2015c8f684202b37691193840572846d7481171371e15"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_mlp/seed_42/per_class_metrics.csv",
+      "bytes": 1294,
+      "sha256": "07882965614c920111c0673c704540fe8e5835a2412e0d8f209b60aeec170d1b"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_mlp/seed_42/test_predictions.csv",
+      "bytes": 21475,
+      "sha256": "b2c0f1d84d722eb8ce21736a10dde310b78b04a6d8d036ada162d8d89777d9a8"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_mlp/seed_42/training_history.csv",
+      "bytes": 3285,
+      "sha256": "06fa2ac9b47ee77a7c7dac6a5827248c49f8104ee69350e54a411abb4346ed17"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_mlp/seed_73/best_checkpoint.pt",
+      "bytes": 1540537,
+      "sha256": "20c62b62bc49858b7f5e88f1ee9ad75e48dd8f77a9ec1217420ce0414154846a"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_mlp/seed_73/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "27a0beb3aadf8b4330bd7a92e73bbb2a4cd26891dcec439210d38732b3f21c92"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_mlp/seed_73/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "6c2d958b2f43cd88905d04d1bfe3aded94fc4f58a3329abb99e43d167443f5f2"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_mlp/seed_73/environment.json",
+      "bytes": 299,
+      "sha256": "0e1a067943eb9d2b0515353480994bac23ef249e479cf38cee9ce5efbf77e754"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_mlp/seed_73/metrics.json",
+      "bytes": 1241,
+      "sha256": "9ae91903c4a2fdee42f908760f837aec0f5a251180bf7be04afade6625c9406b"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_mlp/seed_73/per_class_metrics.csv",
+      "bytes": 1339,
+      "sha256": "da5d34e8383ed68928642cef71082a2104fd6be51be3bba035df39989c5118fb"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_mlp/seed_73/test_predictions.csv",
+      "bytes": 21470,
+      "sha256": "5fe3251ea86bd897bb0d4bc1659b14f4df92a620e5a038379065ac8877cdeb51"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/landmark_mlp/seed_73/training_history.csv",
+      "bytes": 3291,
+      "sha256": "807df424e3a3922dedf708cc2b26ac9dd5c001067c3cdc4ca994b3e4a1b44024"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/proto_bilstm/seed_17/best_checkpoint.pt",
+      "bytes": 364564,
+      "sha256": "3bac66cf2c827be370096a455a0f358271d131c5136e5d23b1f14a9b62327a2f"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/proto_bilstm/seed_17/metrics.json",
+      "bytes": 244,
+      "sha256": "1f6c1c83b704c00fd69cd980ffd7a982d0168f07dca0b4d8d905e9e4057170d9"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/proto_bilstm/seed_17/test_predictions.csv",
+      "bytes": 8106,
+      "sha256": "e06a75cbdd8b47614ebe5ff394e67ac000a9cd30ba148017943668fa32a09ad4"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/proto_bilstm/seed_17/training_history.csv",
+      "bytes": 994,
+      "sha256": "ae73fb888a42c0b18fb82f360356e52d52b1dceedefbaec5dff93bbdf1d56ee1"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/proto_bilstm/seed_42/best_checkpoint.pt",
+      "bytes": 364564,
+      "sha256": "4257d788f58e87f5a5541abb3db8ce038dcbe547736afaa92223a27f0a29f2a5"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/proto_bilstm/seed_42/metrics.json",
+      "bytes": 242,
+      "sha256": "8b8b320f88078d9c5bd679d79c86c1f9464cfe149d78383fd738d65fb8a55c29"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/proto_bilstm/seed_42/test_predictions.csv",
+      "bytes": 8113,
+      "sha256": "17592aa46efa87fbe51f33c57d35f0384d11237f37485f31459eb7b329d3d670"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/proto_bilstm/seed_42/training_history.csv",
+      "bytes": 990,
+      "sha256": "4b01488ce6dd8542435b4077360e84d353a6369e373d7aef8b1c93a9fe65198e"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/proto_bilstm/seed_73/best_checkpoint.pt",
+      "bytes": 364564,
+      "sha256": "34aa06b1333b2c8b141615bace6da974ccbdd5fd8950c140fe23ae5ee8e8662c"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/proto_bilstm/seed_73/metrics.json",
+      "bytes": 243,
+      "sha256": "dd0f9957f8623463f46704e4b781687f584577c5fc3ceb76c4987acd7a74516d"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/proto_bilstm/seed_73/test_predictions.csv",
+      "bytes": 8106,
+      "sha256": "3090d347d5e5b0f6d10d3d63fc4db858b39f2bf164ea9640480efc8bb354d5f5"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/proto_bilstm/seed_73/training_history.csv",
+      "bytes": 983,
+      "sha256": "e9c8a29ed4c237aa182502b1a9f82d42929868a76eeea91c37cde416fc944c43"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/proto_bilstm_xyz/seed_17/best_checkpoint.pt",
+      "bytes": 323604,
+      "sha256": "1c2e3ebcfd018f5dd06c77c6ce086e45336a705589de3ee477705fdfc6ce92db"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/proto_bilstm_xyz/seed_17/metrics.json",
+      "bytes": 261,
+      "sha256": "ce92124f5daf07a32bc4cac83fb253b12d9a938f41afe655badb1aa34031a142"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/proto_bilstm_xyz/seed_17/test_predictions.csv",
+      "bytes": 8125,
+      "sha256": "bcc1fc57b966fc559a24907cea310afd4db9e01287ba751e8472c106b7f15c4e"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/proto_bilstm_xyz/seed_17/training_history.csv",
+      "bytes": 971,
+      "sha256": "009178c72a2dfec5bce1bbcd9a1c1d6a77490cbb56f897e7169598fe5a5ce2dd"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/proto_bilstm_xyz/seed_42/best_checkpoint.pt",
+      "bytes": 323604,
+      "sha256": "d7209cf4f7b502ec0d71245f107ba1aa3c5a84c3f61134813559ced77b28edaf"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/proto_bilstm_xyz/seed_42/metrics.json",
+      "bytes": 262,
+      "sha256": "529dfe4170ba1f7722e4742db10e05f5ab62341bfd3c2f0ab3cf529f00db33e5"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/proto_bilstm_xyz/seed_42/test_predictions.csv",
+      "bytes": 8114,
+      "sha256": "9f26e31d773a26af0c9ca540bcc6b6cf649f2f78b50ca79262f8f98a0e2c7130"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/proto_bilstm_xyz/seed_42/training_history.csv",
+      "bytes": 974,
+      "sha256": "55da80d0e6d1b4f63cd37738e3ca332060c89f03a6720fced749a491e097a964"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/proto_bilstm_xyz/seed_73/best_checkpoint.pt",
+      "bytes": 323604,
+      "sha256": "8050ed12858db655d68f3172dea9d962f2042890b1d650b6967fc1e2246d52a0"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/proto_bilstm_xyz/seed_73/metrics.json",
+      "bytes": 260,
+      "sha256": "f1e30a34d48a98291e52bcc545bb3c06a770950d006b6b5a7bf2ec65baf406ab"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/proto_bilstm_xyz/seed_73/test_predictions.csv",
+      "bytes": 8117,
+      "sha256": "e9d0002d165ce494755f22c9d217d69801676dc98e09c3bfe5b70857639b5b08"
+    },
+    {
+      "path": "artifacts/runs/improvements/heldout_s2/proto_bilstm_xyz/seed_73/training_history.csv",
+      "bytes": 976,
+      "sha256": "d37501e550d442882750c8eb6c9fb413867abb0836c16c7883cc1c07ff8e12b3"
     },
     {
       "path": "artifacts/runs/primary/heldout_s1/cnn_bilstm/seed_17/best_checkpoint.pt",
@@ -515,6 +1761,246 @@
       "path": "artifacts/runs/primary/heldout_s1/cnn_transformer/seed_73/training_history.csv",
       "bytes": 2802,
       "sha256": "fbc29de1c4de40f4e9ba9ca68e311b95a91f71f984029494b2a6a9720bc0edf4"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_17/best_checkpoint.pt",
+      "bytes": 300948,
+      "sha256": "d24684832097ffeb235fe3b7259adbb41b2fe2100f8683be8a63e77917f8ed10"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_17/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "4b7e4a3eca03ac2bd2f4810b956b939bdb0897879b2783eab2a27c5fe8e62306"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_17/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "d5cc08337ca1110781c8983ab298f90860331e4b7a9200cbe94b3d7c8a83e69c"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_17/environment.json",
+      "bytes": 299,
+      "sha256": "0e1a067943eb9d2b0515353480994bac23ef249e479cf38cee9ce5efbf77e754"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_17/metrics.json",
+      "bytes": 1239,
+      "sha256": "54f5fdcdec0cdc03972aa3b23f8938e6fa237526d355269a0dd51463d0cfd370"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_17/per_class_metrics.csv",
+      "bytes": 1386,
+      "sha256": "61588925c2329b60ea03351e1aa365473c9ad01110851925c2eccb457095c28c"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_17/test_predictions.csv",
+      "bytes": 21729,
+      "sha256": "692e327292e2457317df1b1675856258067e8927d3a084579a2230ba61ad7d92"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_17/training_history.csv",
+      "bytes": 3290,
+      "sha256": "f55ad197e2ba83690f363c3201ad2cf048678e613558dd34eadd2a5261b340d4"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_42/best_checkpoint.pt",
+      "bytes": 300948,
+      "sha256": "99cb4dd8e656a020015ddececec799332b791641cbfd64d6ea00f37290e50f15"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_42/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "6456ad1fc1b7a51eeb3f1ff04e9f2a7694d20272fbc33339066ac5d4bfb087c1"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_42/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "10ed13cd022202011b549eaefe08edb720644b207d6900bac4cbe7aeb7edd4f2"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_42/environment.json",
+      "bytes": 299,
+      "sha256": "0e1a067943eb9d2b0515353480994bac23ef249e479cf38cee9ce5efbf77e754"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_42/metrics.json",
+      "bytes": 1234,
+      "sha256": "acc29f40465e65997c56af394730acd187f6a9e79599f6f2a861858d485b95c6"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_42/per_class_metrics.csv",
+      "bytes": 1339,
+      "sha256": "6bfd7bb29bd1d32cd8a936eb5c7f7720afc6675e6ff07eb09d9ea2a371a396fa"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_42/test_predictions.csv",
+      "bytes": 21731,
+      "sha256": "4dcfa892592b6ca82198204b45b144ddd8fa3a3c0a30a4024d47998782e8dad6"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_42/training_history.csv",
+      "bytes": 3289,
+      "sha256": "8b80e30cb4a000695fc8d658dbbcfdc3d959f0d2eb3ec141392569732eca07af"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_73/best_checkpoint.pt",
+      "bytes": 300948,
+      "sha256": "fad55812870bbf4345c60200a02e7f1c831031e2c72e1d0a69a6d689f69ee118"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_73/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "d7dd8f10e00409af66bd798cc00b486c286bb8ddf7c8e856866c67467f50ef14"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_73/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "213314632e019e1060403b7306003945d59ed977b47c8b4b3387d72f141971a4"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_73/environment.json",
+      "bytes": 299,
+      "sha256": "0e1a067943eb9d2b0515353480994bac23ef249e479cf38cee9ce5efbf77e754"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_73/metrics.json",
+      "bytes": 1239,
+      "sha256": "37b12ad32e983bcac9a60a1bcb0a6e96167715f77c9c707877a84195192d47af"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_73/per_class_metrics.csv",
+      "bytes": 1312,
+      "sha256": "c35e55d4c40da63cb7432c43f2f97cd3f35ad9847701bad02f6d35b39f8541c6"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_73/test_predictions.csv",
+      "bytes": 21730,
+      "sha256": "837c469d5142a7e2d10b2baca526d094d56c5599bf2e10b55a7192cf876004b0"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_bilstm/seed_73/training_history.csv",
+      "bytes": 3303,
+      "sha256": "960a1d2780082d822ed9da03a36009e8a4439d1a4c80d644dd7aeeca3c6e31db"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_mlp/seed_17/best_checkpoint.pt",
+      "bytes": 1213113,
+      "sha256": "758a48507192fc3999296ac23e01f147c5ca3e2e34588d1ba5a931328932efd4"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_mlp/seed_17/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "dce308752a54753e184c3082665e25105a1903729f14750c668b863fee03db09"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_mlp/seed_17/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "464bd6e60b10e5209c7137d27af5085adb88626a9300c519cfec02dae4b179f4"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_mlp/seed_17/environment.json",
+      "bytes": 299,
+      "sha256": "0e1a067943eb9d2b0515353480994bac23ef249e479cf38cee9ce5efbf77e754"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_mlp/seed_17/metrics.json",
+      "bytes": 1236,
+      "sha256": "d57f6a7864aa461ac3884b73f818a61fb9cac5c986dec67fb9267dd357fa4958"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_mlp/seed_17/per_class_metrics.csv",
+      "bytes": 1312,
+      "sha256": "3b147eb32a7d1c266ea8e0e38175104eeaf1744df04a294f113292496ff376e7"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_mlp/seed_17/test_predictions.csv",
+      "bytes": 21443,
+      "sha256": "b3bcc6ae619b31389ae7470c3bd1bd7aec6a267f3c514d411b725b943cc4174e"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_mlp/seed_17/training_history.csv",
+      "bytes": 3323,
+      "sha256": "aebded73d2cf11a8d93e12d69f93c5e0931b81a2a997a10b3b35714d6c332b6a"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_mlp/seed_42/best_checkpoint.pt",
+      "bytes": 1213113,
+      "sha256": "4a1b42d0f11098aaec9b7f642119921a8d1dada91a62f83d8a12d8ae46c47cd4"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_mlp/seed_42/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "e6f6183089bfe0c02b9d53338db9c11f205ad7b91da4087f8c76d28313de821d"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_mlp/seed_42/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "13765032324190f547945373d0a08cf0841b8a636b5ff7f0a6a3fb20cc7f4ea5"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_mlp/seed_42/environment.json",
+      "bytes": 299,
+      "sha256": "0e1a067943eb9d2b0515353480994bac23ef249e479cf38cee9ce5efbf77e754"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_mlp/seed_42/metrics.json",
+      "bytes": 1236,
+      "sha256": "baea59cf769229395772cc6d052b93447ab7de25f7cfe55addb8ea61232ccedd"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_mlp/seed_42/per_class_metrics.csv",
+      "bytes": 1294,
+      "sha256": "b326cb4b7846adc41228d78887504988076a5801b059397910089ef532f8ee11"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_mlp/seed_42/test_predictions.csv",
+      "bytes": 21417,
+      "sha256": "4044e120042d2c2770ad537c001a85b5a0014084033ffcc4f12dad5b9146d1f7"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_mlp/seed_42/training_history.csv",
+      "bytes": 3318,
+      "sha256": "ec0dca15ee7ba548fa4ea0815729aac578a543bbbe7559467a7ae3fe114b53c7"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_mlp/seed_73/best_checkpoint.pt",
+      "bytes": 1213113,
+      "sha256": "8e56301f2ba13fef53aeea112a8ebcdd182b78674fbec1415913cbc1dbe302b2"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_mlp/seed_73/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "a0b75d591b6af5b3a40e64d4a8b52ad14a59b09d094eed21278461b0df5b57fc"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_mlp/seed_73/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "0f9f94c68ceeab12195a0c2b0bab43c755d9a9ee550af9c4da06e4cd4e1dcbfb"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_mlp/seed_73/environment.json",
+      "bytes": 299,
+      "sha256": "0e1a067943eb9d2b0515353480994bac23ef249e479cf38cee9ce5efbf77e754"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_mlp/seed_73/metrics.json",
+      "bytes": 1235,
+      "sha256": "f6bedbe609d3687fdd42f3076d9aace6467f9d11c9db08f449465953459d40d7"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_mlp/seed_73/per_class_metrics.csv",
+      "bytes": 1247,
+      "sha256": "92a2c855c0a40838145fc6d11a6f518db6b4c0825428b954c89b442206325519"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_mlp/seed_73/test_predictions.csv",
+      "bytes": 21442,
+      "sha256": "cb830305550cf9bec30e02b7f3fa8652508849bf44087fc144e88d5c50650b5a"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s1/landmark_mlp/seed_73/training_history.csv",
+      "bytes": 3318,
+      "sha256": "8c093b1f77c8af174deb3a90eabde2223dc93ba52e3cb6310fa819c9135551b5"
     },
     {
       "path": "artifacts/runs/primary/heldout_s1/single_frame_cnn/seed_17/best_checkpoint.pt",
@@ -877,6 +2363,246 @@
       "sha256": "ce61d63f725be7b8c765f8578ebae2e2417ce2b4668856e7ec37b5d28892aebd"
     },
     {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_bilstm/seed_17/best_checkpoint.pt",
+      "bytes": 300948,
+      "sha256": "49578db4c247d19d39591f4d2f68d523d59e921fea6965100a5852337f7b7282"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_bilstm/seed_17/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "df0cbe83fea13162cbaf506a76ca79c2fd0ec59cffd5be3e18ef7d8c33130f33"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_bilstm/seed_17/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "3be55a5ab1f8c51795c26dcf2de805b50f66cd2b3b955649764d55f6785ba4eb"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_bilstm/seed_17/environment.json",
+      "bytes": 299,
+      "sha256": "0e1a067943eb9d2b0515353480994bac23ef249e479cf38cee9ce5efbf77e754"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_bilstm/seed_17/metrics.json",
+      "bytes": 1238,
+      "sha256": "097c10076ac6bdaf11d930ddec09b75c13b09e23f4b66dc8867920031a9a178c"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_bilstm/seed_17/per_class_metrics.csv",
+      "bytes": 1309,
+      "sha256": "123aafb8760b9fda466955ea5bd699fd31737e9c30ea109cabf47c75af3ade06"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_bilstm/seed_17/test_predictions.csv",
+      "bytes": 21751,
+      "sha256": "5b62277569c3370eab2b6efa79be7592c90f2b75333b6aad4f7bf66d28fa5160"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_bilstm/seed_17/training_history.csv",
+      "bytes": 3289,
+      "sha256": "bc433647af7529fe49391ff15e0ccab7b04af7c693c8ca5df52a9382f05bc607"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_bilstm/seed_42/best_checkpoint.pt",
+      "bytes": 300948,
+      "sha256": "38d36bad044dda01647af7c20c241c2ace85fe415a893d4949ddab5a785c1557"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_bilstm/seed_42/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "56d8dbd51298b079fdc3067f9b663e27aeaa3b277992a511e1c3577060109390"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_bilstm/seed_42/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "de6815634234b1e1a6475a252ba292cbc236e0931016c2b42ad14ea51b8d56e3"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_bilstm/seed_42/environment.json",
+      "bytes": 299,
+      "sha256": "0e1a067943eb9d2b0515353480994bac23ef249e479cf38cee9ce5efbf77e754"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_bilstm/seed_42/metrics.json",
+      "bytes": 1237,
+      "sha256": "59e0ece47638074ab7c65dc0cda858b63d5cb5534247a28ab6b6dc6c2ba59549"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_bilstm/seed_42/per_class_metrics.csv",
+      "bytes": 1372,
+      "sha256": "477da59f5a2839c7e433523eb9d9a5ccb86e485ca94b83dddadcbdb9d3f87603"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_bilstm/seed_42/test_predictions.csv",
+      "bytes": 21717,
+      "sha256": "c6ff3fde2b15206e189a4337e54567f9af98f1ff2c2e37aeb1f0739d832ae975"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_bilstm/seed_42/training_history.csv",
+      "bytes": 3286,
+      "sha256": "4f02d826040e62d1153593f9d61c58cd5915ba69a293df909c8a6fab552aba47"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_bilstm/seed_73/best_checkpoint.pt",
+      "bytes": 300948,
+      "sha256": "fc1bb8ac760141348780b2747079b7e57d27e52d45583bbe5589973832b38d2e"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_bilstm/seed_73/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "25032f0b2bc3518bd3faa710094b2a10a9e4074612d0bae8c07bb197613520d3"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_bilstm/seed_73/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "bbf35ed77abe5de0811ccabb3a46fe4b3dc298392e35715a4b6ab691d6a2722f"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_bilstm/seed_73/environment.json",
+      "bytes": 299,
+      "sha256": "0e1a067943eb9d2b0515353480994bac23ef249e479cf38cee9ce5efbf77e754"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_bilstm/seed_73/metrics.json",
+      "bytes": 1240,
+      "sha256": "dd7e45b5f7ca2ff41c196898293fe5394eda7d266043ccded7ef84789603d540"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_bilstm/seed_73/per_class_metrics.csv",
+      "bytes": 1236,
+      "sha256": "1ddbd3e0bd0da4d87e1392e2452f5e4a52b19ef1ca2ee872ff869b9d547fd508"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_bilstm/seed_73/test_predictions.csv",
+      "bytes": 21761,
+      "sha256": "01acae7500d825705ba597171e549a8149f1bbceea67a273d185686ce388b476"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_bilstm/seed_73/training_history.csv",
+      "bytes": 3304,
+      "sha256": "b6ea865676a7325863e8da07515ced6b8812e21edf0b6ac6d4e24e9ef13d8701"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_mlp/seed_17/best_checkpoint.pt",
+      "bytes": 1213113,
+      "sha256": "6a1370095361be7b734f3086e362db604f8fd59fb444016a4f56ca4519417fcf"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_mlp/seed_17/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "ca580888df2751265898612c8e911909ad0a62db85868845b63d48934aa42155"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_mlp/seed_17/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "979057a4be23ed6c39411d4f67d0a2274a22ac58b75f277782098d2e69a01b87"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_mlp/seed_17/environment.json",
+      "bytes": 299,
+      "sha256": "0e1a067943eb9d2b0515353480994bac23ef249e479cf38cee9ce5efbf77e754"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_mlp/seed_17/metrics.json",
+      "bytes": 1232,
+      "sha256": "66948ef05815b0dd5d3557120980a79d29c34ef6da7da030e862e0c2cfca619b"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_mlp/seed_17/per_class_metrics.csv",
+      "bytes": 1324,
+      "sha256": "2e7083b9fe5c3e2db74d6f9af4737cd86abd6e585d5507ab6205d0a8adab53de"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_mlp/seed_17/test_predictions.csv",
+      "bytes": 21423,
+      "sha256": "a7062101f0e2b1d13f3aa6fbe4eb44a5ae44ce2896c6adc0fd4229b2340c05a5"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_mlp/seed_17/training_history.csv",
+      "bytes": 3318,
+      "sha256": "8bcd4248216df786cfccbb6e81f34fff6472a677446e5ce9d67a0f2ed5c8c6d8"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_mlp/seed_42/best_checkpoint.pt",
+      "bytes": 1213113,
+      "sha256": "ddada414a7047593f3c09a86d18f7b6e70769345ac758722e66cddcf80629bf8"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_mlp/seed_42/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "8e178445a44113c68f9f2d8dcd34874d74fdea29741959258db7879c4513df19"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_mlp/seed_42/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "3da5b9863b1e235b0b5b6d81ed4aa1dcd438756a0c6294dbcddb0de406d589fd"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_mlp/seed_42/environment.json",
+      "bytes": 299,
+      "sha256": "0e1a067943eb9d2b0515353480994bac23ef249e479cf38cee9ce5efbf77e754"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_mlp/seed_42/metrics.json",
+      "bytes": 1235,
+      "sha256": "c4b697db5cfd175c2b2cb69892e21f5daa1d4af26abb7b79f103695a1e1461f2"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_mlp/seed_42/per_class_metrics.csv",
+      "bytes": 1340,
+      "sha256": "0bfebd12f04022d7008144eb3b918893e41579b01d17b9ed32cd28259a7e29c8"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_mlp/seed_42/test_predictions.csv",
+      "bytes": 21451,
+      "sha256": "d5e058ee0213dc234bce1d9e31951c712a40424a449bd2757e96a4100ba8220f"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_mlp/seed_42/training_history.csv",
+      "bytes": 3328,
+      "sha256": "0e884b165aa57232add13767b41a598c71a5eac352a39e3cd17b1c3b77d9ac75"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_mlp/seed_73/best_checkpoint.pt",
+      "bytes": 1213113,
+      "sha256": "c2477d8349340f912fcac3aec2a0c6c00723461076f002a422deac54d2ba98e2"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_mlp/seed_73/confusion_matrix_counts.csv",
+      "bytes": 5211,
+      "sha256": "0caf7145d6bcdadd60f633ac858e9ddf9a024b8473710d301ea94804dcf871f6"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_mlp/seed_73/confusion_matrix_normalized.csv",
+      "bytes": 10013,
+      "sha256": "f5d34c205adfe0073b3ada055cf88152a54a9a74af0e05f8212801b0f9d70e03"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_mlp/seed_73/environment.json",
+      "bytes": 299,
+      "sha256": "0e1a067943eb9d2b0515353480994bac23ef249e479cf38cee9ce5efbf77e754"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_mlp/seed_73/metrics.json",
+      "bytes": 1237,
+      "sha256": "5878de20472678f21cdce476e5299a4082dac834b73bab44565d9581821b0e09"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_mlp/seed_73/per_class_metrics.csv",
+      "bytes": 1356,
+      "sha256": "1b23774b1f547b7e7d7dff1c058ff14dfb3ba53d5140bb2e206d7404fd51581f"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_mlp/seed_73/test_predictions.csv",
+      "bytes": 21439,
+      "sha256": "e89bb50279fa05ff91c9b4db11e3b77385d9d6166444727505c7d72cbe51c934"
+    },
+    {
+      "path": "artifacts/runs/primary/heldout_s2/landmark_mlp/seed_73/training_history.csv",
+      "bytes": 3325,
+      "sha256": "ed9d5edd882958d1bd67aa820151c434e3656e436d3eafc81b972ce8378c88d0"
+    },
+    {
       "path": "artifacts/runs/primary/heldout_s2/single_frame_cnn/seed_17/best_checkpoint.pt",
       "bytes": 9387409,
       "sha256": "ff5fdd64e921bc3fa9ba9fe9e3d06c29a8a7205787848e6f5c51ba00e313b095"
@@ -1027,9 +2753,14 @@
       "sha256": "53d5fd2ccd9326aa8fc1e7c0bfe18c0de39402733ca5ed64d8c6bed1d0579603"
     },
     {
+      "path": "artifacts/runtime/landmark_bilstm/runtime.json",
+      "bytes": 520,
+      "sha256": "d32568967cd0c4a84d928a0084a15ff3e4a8d0dae7086c8cfbcaa167e7b44927"
+    },
+    {
       "path": "artifacts/runtime/runtime_summary.csv",
-      "bytes": 768,
-      "sha256": "bcf2870a0752016c4f4752b96d68a74a6e8faa6e5e09e2e459f14be751c17cc0"
+      "bytes": 941,
+      "sha256": "836969588abd26c2a0d8c2de6229d6f2c1108a2c5b7c0555436f955c9941b504"
     },
     {
       "path": "artifacts/runtime/single_frame_cnn/end_to_end_samples.csv",
@@ -1047,9 +2778,39 @@
       "sha256": "a3794ba2fcb33e5cbc1302aaa3cbce0237537d5d3c64c72db5e5c2e0644e8b90"
     },
     {
+      "path": "artifacts/runtime/webcam_demo.json",
+      "bytes": 382,
+      "sha256": "577d0cf950e2551b50753169af9577ca863b7b4248de6cafebeb6f46b7b84d35"
+    },
+    {
+      "path": "artifacts/runtime/webcam_heldout_s1_A.json",
+      "bytes": 380,
+      "sha256": "73eea73e62d27ea1e3d025b61b639507372e3f5879d29b285df61e28c138499e"
+    },
+    {
+      "path": "artifacts/runtime/webcam_heldout_s1_A_dark.json",
+      "bytes": 380,
+      "sha256": "1dba11ee3173c4937915652669a29d913be6c1441a01265f69382d39231b9d57"
+    },
+    {
+      "path": "artifacts/runtime/webcam_heldout_s2_A.json",
+      "bytes": 381,
+      "sha256": "497b2c16244b8046ee875a57e29b1777c5236807f45095dfed4fb99da0140b54"
+    },
+    {
+      "path": "artifacts/runtime/webcam_proto_heldout_s1_A.json",
+      "bytes": 383,
+      "sha256": "da338800551be7137073aa545c65a7e3e6ff98178b4c050afd55266fc79b7e56"
+    },
+    {
+      "path": "configs/experiment_improvements.json",
+      "bytes": 1615,
+      "sha256": "4004c49131ce382494631625729b2a16fc5563978405962990b75454e2f8e412"
+    },
+    {
       "path": "configs/experiment_local_m4.json",
-      "bytes": 2064,
-      "sha256": "dfa4b95a7cf9466a856280f0b05542922b776b6a45a74ae6fd52a46a749b9025"
+      "bytes": 2267,
+      "sha256": "131e7d8e0dc0e8dc8b7430274a094d9f853a9c10dcc48309e1a96ad09709975a"
     },
     {
       "path": "configs/isolated_twofold_protocol.json",
@@ -1058,13 +2819,48 @@
     },
     {
       "path": "configs/nsl23_classes.json",
-      "bytes": 1557,
-      "sha256": "df16e18056ed9c822241404a5172d5fc8314767b21efc29711a15714f18e76ec"
+      "bytes": 2787,
+      "sha256": "4347dfc35047cff5996121f148e4a02d02f4f54bd20769ebbb1532ee3b3f9d62"
     },
     {
       "path": "configs/signer_split.json",
-      "bytes": 560,
-      "sha256": "8bb121683b1513885f181cb3a6bcb813e74a1c355c8fe052db4a6eb56c03ce63"
+      "bytes": 732,
+      "sha256": "b6f4bdb40c985c36cb76f2bd25667649fc3d30aee01f57f49526c31b10ac06e3"
+    },
+    {
+      "path": "configs/v2_model_spec.json",
+      "bytes": 516,
+      "sha256": "8479854e8b79cd0a402079bc3846120a5492e40c1cf79ca3a4db708ddc96b989"
+    },
+    {
+      "path": "configs/v2_protocol.json",
+      "bytes": 7524,
+      "sha256": "de85c9d83155880a6fbfb20eac5251d39affde5cfcba5a1caa4913b5183ba77f"
+    },
+    {
+      "path": "data/manifests/folds/heldout_s1.csv",
+      "bytes": 129292,
+      "sha256": "087810939ba9dfa7d9b5d4df874b910f112b577fefd1934314f880439f71cbe5"
+    },
+    {
+      "path": "data/manifests/folds/heldout_s1_cached.csv",
+      "bytes": 170601,
+      "sha256": "a7c6140b9bf1c3875f6caa150543a84c65eb58b25f3ff67262c101d2df012d8b"
+    },
+    {
+      "path": "data/manifests/folds/heldout_s2.csv",
+      "bytes": 129292,
+      "sha256": "02578d364aa08992fe6abfb599303ef32ffc5e34648dea03510b3920297d761c"
+    },
+    {
+      "path": "data/manifests/folds/heldout_s2_cached.csv",
+      "bytes": 170601,
+      "sha256": "cfe267dce16d044121565a6cdaff294e2312c662464fe802abf83684d7e38f1b"
+    },
+    {
+      "path": "data/manifests/nsl23_manifest_all.csv",
+      "bytes": 207344,
+      "sha256": "5090519a54cc240f7ccacee270c035d5922dc41dc7e374a9486dd55cc9369758"
     },
     {
       "path": "manuscript/blinded_manuscript.md",
@@ -1093,8 +2889,8 @@
     },
     {
       "path": "requirements.txt",
-      "bytes": 188,
-      "sha256": "bdfcbcb7b1826d6579b589166df027ddda480c2f9759748f97b5d248cf91d83e"
+      "bytes": 239,
+      "sha256": "3d3b991559f55b15506697263adaf93938db9035f19eb6cf06151982a9fd31a6"
     },
     {
       "path": "scripts/assemble_deliverables.py",
@@ -1107,14 +2903,19 @@
       "sha256": "b1607213aacd33f3c1035e2648a3472de2e0033ae4b5f381ac01e06dc4da1897"
     },
     {
+      "path": "scripts/audit_paper_numbers.py",
+      "bytes": 11106,
+      "sha256": "cdeff4c63ce8edd5ba009622c9b0c9c3d092fa1153b1550ef01c337def3491a8"
+    },
+    {
       "path": "scripts/audit_reproducibility_notebook.py",
       "bytes": 2559,
       "sha256": "fa9572d6129c8d1c8a48403880de77f736038aeff54775b7b2a710ddb94baa0a"
     },
     {
       "path": "scripts/build_analysis_provenance.py",
-      "bytes": 4202,
-      "sha256": "5615abb41886e3fbd039c07cb9b279d7db325a1800f8b633baa4acdcf96f409c"
+      "bytes": 5872,
+      "sha256": "ba69b46d5b7d841e8c89743bcd5d9f0ac982c18d7e1b946c9916f1837ad01a59"
     },
     {
       "path": "scripts/build_nccsrj_docx.py",
@@ -1122,9 +2923,19 @@
       "sha256": "b2a88ccccb8a81a599ede27e5fc17d1b373e39f76e16cf6b1bfc80c14d336e89"
     },
     {
+      "path": "scripts/build_paper_explainer.py",
+      "bytes": 88865,
+      "sha256": "51a140cc60d68f496b37532a1a4bcc0d6d339094cb0a349181cb7f1e088f63b9"
+    },
+    {
       "path": "scripts/build_reproducibility_bundle.py",
-      "bytes": 6651,
-      "sha256": "9e424e8c3e4213ff939f03e4368100290a956c84b6e0cc7b37040827b991e24e"
+      "bytes": 9269,
+      "sha256": "5d841661e9a8ac84a8f75d5b227969568d1d6ccc44683bbd8ec45742b8342f37"
+    },
+    {
+      "path": "scripts/build_v2_samples.py",
+      "bytes": 11291,
+      "sha256": "26c3dd5a1cbe015238303fa3131e05091d2cb60d297178a5514f2ad5f6688a1f"
     },
     {
       "path": "scripts/build_verified_segments.py",
@@ -1132,9 +2943,54 @@
       "sha256": "756f33f69dd662c8d0d5653064d8d17478b81388c997a2e541e204ebe61b4dc9"
     },
     {
+      "path": "scripts/evaluate_alternative_protocols.py",
+      "bytes": 7910,
+      "sha256": "2a7352b2ac8acfb5871bfaa0f7ecae54faa1d10098d4fdd35703b6d8e25a5e75"
+    },
+    {
+      "path": "scripts/evaluate_enrollment.py",
+      "bytes": 9856,
+      "sha256": "2aad894c0969d3f4a5192da3e17666a9f0a3bad5d99d0591dd3b39a9f43ce28d"
+    },
+    {
+      "path": "scripts/evaluate_fusion.py",
+      "bytes": 5362,
+      "sha256": "ade4a5f799300089b758fb63d8759b9e102050a453dd69dc573ff0f41e76b9df"
+    },
+    {
+      "path": "scripts/evaluate_v2_stage4.py",
+      "bytes": 13176,
+      "sha256": "e416337eb97382fc892e619a5af80e305bc32d7749d421cfac83e37dc57e2adf"
+    },
+    {
+      "path": "scripts/export_v2_pass2.py",
+      "bytes": 3729,
+      "sha256": "d800458315b5364299e36784f4413919aedbdf4dd3fa6deb2788458d57dafcb9"
+    },
+    {
       "path": "scripts/extract_dataset_inventory.py",
       "bytes": 6144,
       "sha256": "df9460a49aaf0f50f912e20cb8891437d9ed82e4f66086a0c89287504a4c3ac0"
+    },
+    {
+      "path": "scripts/extract_hand_crops.py",
+      "bytes": 3604,
+      "sha256": "ad66abc8d4fa296b5416b4925011430b9e3f76eeee07dd4805f4914be6695410"
+    },
+    {
+      "path": "scripts/extract_landmarks.py",
+      "bytes": 3252,
+      "sha256": "673710879dab67555134d0304467b1e1f6e035f942405838810d8a07290be5d2"
+    },
+    {
+      "path": "scripts/extract_v2_landmarks.py",
+      "bytes": 9915,
+      "sha256": "d240feb2d65bdcc3fdf0388f9897e2352184ffcdbf31fb5eaa6ecce067e5a6c6"
+    },
+    {
+      "path": "scripts/extract_v2_review_tapes.py",
+      "bytes": 3375,
+      "sha256": "a745179fecdec8a236dc3a6d6b1be907617f655ca322d945a80005f53374f4ef"
     },
     {
       "path": "scripts/freeze_protocol.py",
@@ -1142,9 +2998,24 @@
       "sha256": "c597cfbf180bc55ec01228ce007229102fd834a87e4726ced5eeabe6315d9075"
     },
     {
+      "path": "scripts/freeze_v2_model_spec.py",
+      "bytes": 4272,
+      "sha256": "0ae84a322436f63fb73d6f308a00ed4d415dff96b2da0c9b15b15eab82910303"
+    },
+    {
+      "path": "scripts/freeze_v2_protocol.py",
+      "bytes": 13953,
+      "sha256": "f526767a009c675eb2be3fcf319b291c8244fb9dac0d3740f189d487eaeb8393"
+    },
+    {
+      "path": "scripts/generate_improvement_figures.py",
+      "bytes": 18471,
+      "sha256": "31bc80aca610b1d874de366a5d13142149c0ea1a2b59251de27509b2d3e3db7a"
+    },
+    {
       "path": "scripts/generate_publication_figures.py",
-      "bytes": 14336,
-      "sha256": "d49adc13cc2ef291e2ac21687dbab49d0f8b76e6c5b9685888798d79d3309085"
+      "bytes": 15893,
+      "sha256": "8f3378b248ffcb5c1eae9d94b3873a2e86f429172cbe724a7f089975f219cb42"
     },
     {
       "path": "scripts/generate_reproducibility_notebook.py",
@@ -1157,9 +3028,84 @@
       "sha256": "e603ffd306cff7ee70bc46ad42c05d9f6b9491af5232ea3d544a3c76db3eed5e"
     },
     {
+      "path": "scripts/import_v2_pass2.py",
+      "bytes": 3181,
+      "sha256": "6b127c2c0af219ead8250eb25d2453e030285dc94c2b978707d8753449664a54"
+    },
+    {
+      "path": "scripts/list_v2_tapes.py",
+      "bytes": 3039,
+      "sha256": "6403e31db6c08ed285cca58bca0dc5c2a95a10077a80f0c5b9c47c5d0ff5e3bb"
+    },
+    {
+      "path": "scripts/lock_v2_hierarchy.py",
+      "bytes": 1755,
+      "sha256": "836bb7aa52242ffb5a88242211a0636a892c77321fe50fe6e434ea91230b762d"
+    },
+    {
+      "path": "scripts/make_v2_review_pilot.py",
+      "bytes": 2150,
+      "sha256": "3c8914e7ba37701e0e84a912fc2ae7e131e3381e8f5da8557636848dfa4ac768"
+    },
+    {
+      "path": "scripts/manage_workspace_storage.py",
+      "bytes": 4512,
+      "sha256": "08dae3e6503da5f051b0ea7767b5b9cf21c3393ef16cb6042af73656c3eecfa7"
+    },
+    {
+      "path": "scripts/migrate_v2_segment_schema.py",
+      "bytes": 1194,
+      "sha256": "542e8f3dcd1506d18a1231d05b21b4e5251d25404e0967c3ffd9ffee7533659b"
+    },
+    {
+      "path": "scripts/prepare_v2_manifests.py",
+      "bytes": 2190,
+      "sha256": "30567ecc5e3d845eb8d5d7a67e949cf8e9d486f58d32dea3bcd2cab4615cd4d1"
+    },
+    {
+      "path": "scripts/propose_aggregate_segments.py",
+      "bytes": 11061,
+      "sha256": "9d7215a5f30d509a3812e144ae64d9c90385a61ad2083e2a9d9fe48264dc80b7"
+    },
+    {
+      "path": "scripts/render_v2_segment_review.py",
+      "bytes": 4918,
+      "sha256": "6c486c97c9d4f0861b597d07dd8131c9ad07ae2457bc1dea0792309157485104"
+    },
+    {
       "path": "scripts/report_aggregate_exclusions.py",
       "bytes": 2873,
       "sha256": "f3569c55d39534d3f616289a3f85438786e8912a2e0c4a85b321daad6aeb5899"
+    },
+    {
+      "path": "scripts/report_v2_annotation_agreement.py",
+      "bytes": 6823,
+      "sha256": "dfcc26672a9b18cb3c026f3a84eb31d7e87add5b423b4e85c42afd568639863c"
+    },
+    {
+      "path": "scripts/report_v2_coverage.py",
+      "bytes": 6722,
+      "sha256": "236e89d7062fc1f64ea2846d3fa13f982381ec8e6dc1f08ba271f6d2695157ea"
+    },
+    {
+      "path": "scripts/review_aggregates.py",
+      "bytes": 36228,
+      "sha256": "721696722436fa524d424f3cc494eb1179c762199e2f8fb10e9801343bd204c5"
+    },
+    {
+      "path": "scripts/run_improvement_experiments.py",
+      "bytes": 2416,
+      "sha256": "c67ae55bc4ed965a7000abb14119f5d33176c7f5667b176cf6c394cb2fb9315e"
+    },
+    {
+      "path": "scripts/run_landmark_experiments.py",
+      "bytes": 2789,
+      "sha256": "e2ea055a694259b7c949cb3d6ebb4234b9e0d147303f99d38045beb3fe8b0e9f"
+    },
+    {
+      "path": "scripts/run_landmark_runtime.py",
+      "bytes": 3775,
+      "sha256": "6a283f94c2e8aa38f8093b6042172ac16a3baecf910d57b492bd0a05fcd5e57a"
     },
     {
       "path": "scripts/run_primary_experiments.py",
@@ -1172,24 +3118,69 @@
       "sha256": "7e4e7bc68074d10ab05ca776f0918fd6e90b4555b2f94e21dd8c727cd8e75b91"
     },
     {
+      "path": "scripts/run_v2_final_training.py",
+      "bytes": 3009,
+      "sha256": "752d75a450d670b9daa950c518d3548791ea90ed1a81354b9d5bba7dcbfbd64b"
+    },
+    {
+      "path": "scripts/run_v2_stage2.py",
+      "bytes": 2930,
+      "sha256": "43bbcde612f2b3016e733b810c445b8f4b66a6f9f647f156cd9f8be2613ff4ca"
+    },
+    {
+      "path": "scripts/run_v2_stage3.py",
+      "bytes": 3633,
+      "sha256": "75d3c56714aef36e19044145f886eb6cfd6eb39d126b7a2b4cc92a6c7966f224"
+    },
+    {
+      "path": "scripts/summarize_improvements.py",
+      "bytes": 9325,
+      "sha256": "e7acfacb7eb64e301b8b7cec9e1ac2ebc1298ae86f330c233dd3325029978052"
+    },
+    {
       "path": "scripts/summarize_primary_results.py",
-      "bytes": 17465,
-      "sha256": "4a135cc1ec0a068590bc32a029013fff25e422c6528843f3763c2c6b286b53b9"
+      "bytes": 17688,
+      "sha256": "7aae0db691d1f0df9d9ead1b9a900f644ffa95e042792904822b8597355764c5"
+    },
+    {
+      "path": "scripts/summarize_v2_stage3.py",
+      "bytes": 3772,
+      "sha256": "88bcdfc4c000a929ef8364d0b0f9a80766e0bc2459fdf0a40e5626f367cdadec"
+    },
+    {
+      "path": "scripts/train_protonet.py",
+      "bytes": 19105,
+      "sha256": "1c45f698ee7cec0ad31e8d7e07c71bfa5205f44239f0e993c2b8866a8ce970da"
+    },
+    {
+      "path": "scripts/validate_primary_claims.py",
+      "bytes": 3634,
+      "sha256": "0760e1f2595faff172cdc67379c85bbdd46e000c6ea38e07514e4d94fabe1850"
     },
     {
       "path": "scripts/verify_primary_protocol.py",
-      "bytes": 4102,
-      "sha256": "7eddaff58f5b8fe04bb7dabc2924408767bfd28928c4538c24167e7ed81f3ef6"
+      "bytes": 5389,
+      "sha256": "eac249fc932f4c4e16f13597e94c672eb147145a98c47afb5091ee6d8eec651c"
     },
     {
       "path": "scripts/verify_protocol_freeze.py",
-      "bytes": 2008,
-      "sha256": "45376e200d85f0beba95ef1e539855975e456addc8545bb3e360f2c7202aaa94"
+      "bytes": 1962,
+      "sha256": "8766be02e4e8645db39e25c22a92a224867ab77bf022e7a11edc4deb7ca08c1f"
+    },
+    {
+      "path": "scripts/webcam_demo.py",
+      "bytes": 6515,
+      "sha256": "f8fd4cfa8845b0d196a87734d1fc3b518bbbef0258435d81da05226bda1c6ac9"
+    },
+    {
+      "path": "scripts/write_latex_tables.py",
+      "bytes": 7070,
+      "sha256": "b401dbc709464ae26e8f607fc7cdb9986c3256e106def5ba03784d5ab1dbe488"
     },
     {
       "path": "scripts/write_results_summary.py",
-      "bytes": 7641,
-      "sha256": "99cebccd8db0b049df19e204b0389d93775a5821427741aba0043a8673032395"
+      "bytes": 8123,
+      "sha256": "c081a9cf0262defe5de8047ec53bdda12791ee61bfb4c9186582c39929a4a3e8"
     },
     {
       "path": "src/nsl23/__init__.py",
@@ -1198,28 +3189,43 @@
     },
     {
       "path": "src/nsl23/benchmark.py",
-      "bytes": 6584,
-      "sha256": "150c55d07b4624bd627780cb8d387b7e3e5572ca3a383ae99431305570c63b54"
+      "bytes": 6647,
+      "sha256": "3eded497c8fe33e7c1f79d5b48af8731f8d1e34687a44145349100282eae4797"
     },
     {
       "path": "src/nsl23/dataset.py",
-      "bytes": 4941,
-      "sha256": "e65a8be6e462a034ef8e4d8c8859ca15a267f999659d214ffe9fffc05eda329e"
+      "bytes": 12959,
+      "sha256": "cc15dbae27451659ab942e6202395bd76f3a288150e299d6ec9ed7e54f5e1013"
     },
     {
       "path": "src/nsl23/folds.py",
-      "bytes": 6079,
-      "sha256": "07cd37bc3a243e5b60baee53cde1442ecdffa3300501cb2a41d4261507cdd3df"
+      "bytes": 6100,
+      "sha256": "4ae4e2aec50fa4b331111abe05b2b77391f3b8565b1c96660472b3a6ed36ad6c"
     },
     {
       "path": "src/nsl23/frame_cache.py",
-      "bytes": 6514,
-      "sha256": "65a2fc5c78fbcab59a283b6a3fa7fae9f8f81fe2728dd0d128721b0db6cade51"
+      "bytes": 6611,
+      "sha256": "5f4c8d7b1ee1aa8b369834f304f8f06fda28c1215c95a13c34aeba7788ecc898"
+    },
+    {
+      "path": "src/nsl23/freeze.py",
+      "bytes": 3339,
+      "sha256": "ee57d886005c9fc8a64f69c29e92953dc0c30c71bd12f0fc238af0d8f711d5ba"
+    },
+    {
+      "path": "src/nsl23/geometry.py",
+      "bytes": 2993,
+      "sha256": "594737c389960d141a49a797ba6a3f60c612807207affa619d3a4c79f0265496"
+    },
+    {
+      "path": "src/nsl23/landmarks.py",
+      "bytes": 6901,
+      "sha256": "830658897f7b448f3ec11268267e8c7cdcd442c255be03b981aa491cd236908d"
     },
     {
       "path": "src/nsl23/manifest.py",
-      "bytes": 11385,
-      "sha256": "3d80caa6d2bf3aceeed4787380bb111400d9956492c3ff31e29cc2b2bc50849a"
+      "bytes": 11440,
+      "sha256": "a113669333dcedf2db9b7c3481af8b2adc0ce9ca091228ac6c4cd8e5641e70d4"
     },
     {
       "path": "src/nsl23/metrics.py",
@@ -1228,19 +3234,49 @@
     },
     {
       "path": "src/nsl23/models.py",
-      "bytes": 6082,
-      "sha256": "7b12225b986c3701afa251c37eab18c58594af8e63ea023b7a64acd058766a77"
+      "bytes": 8949,
+      "sha256": "3b2efdeda9518d36910952e348a36193f4ff675f677c9d64f91027531d8a257a"
+    },
+    {
+      "path": "src/nsl23/paths.py",
+      "bytes": 789,
+      "sha256": "9e8b4b76cbb28957985338568ca0dd5f280b85fea22d0f84cbad072edcaafe59"
     },
     {
       "path": "src/nsl23/samples.py",
-      "bytes": 7494,
-      "sha256": "86e2039107fdf99358e64806c3ffcfd901616014c7a025967883153b52f62f58"
+      "bytes": 7980,
+      "sha256": "dddedd062e21002b49ffbc2d469f73171ecfc424d0b53b3bf59bfb5f5486b84c"
     },
     {
       "path": "src/nsl23/train.py",
-      "bytes": 16414,
-      "sha256": "84fe009e58dd0b1c3d08c92040c3fcc798d12ac6a46041eab194107a93089bc0"
+      "bytes": 16758,
+      "sha256": "ed9e73e4dcf7efbebec685ac7cf4d77140b8fc8c8d6d038422c3f20b453b088f"
+    },
+    {
+      "path": "src/nsl23/v2_annotation.py",
+      "bytes": 19753,
+      "sha256": "469a2df8efea935499eedd8007a105c82db14744ca117481f085a62cf39827d8"
+    },
+    {
+      "path": "src/nsl23/v2_exchange.py",
+      "bytes": 9052,
+      "sha256": "34e8fbb53964eab6610a8c2df8d48914961d21ed95caabc8af9f20bf3fb02e92"
+    },
+    {
+      "path": "src/nsl23/v2_features.py",
+      "bytes": 4245,
+      "sha256": "c227b4390770954417bb12748fcfa2155df4a43232839b31ef402c8501736ccd"
+    },
+    {
+      "path": "src/nsl23/v2_metrics.py",
+      "bytes": 1774,
+      "sha256": "c947f7d67310a4df43778554ae5efeb2459423193f9c8bc2901b649b91fe3ec3"
+    },
+    {
+      "path": "src/nsl23/v2_protocol.py",
+      "bytes": 7866,
+      "sha256": "778076f166babeeb33213f37d0af0f1afc7561ea7e2cb8b55152a268999af41e"
     }
   ],
-  "provenance_sha256": "3ce41c195315ed0df6afc9a7ce44d3935a1ba504e8cf7241cd32621d2ff65d9d"
+  "provenance_sha256": "beb1b4cdb9d6246aed1ece22430e51e557cac59231b0ad55febea2e286885f84"
 }
