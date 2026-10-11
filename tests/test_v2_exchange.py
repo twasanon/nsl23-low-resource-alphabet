@@ -48,6 +48,20 @@ def master_row() -> dict[str, str]:
 
 
 class V2ExchangeTests(unittest.TestCase):
+    def test_import_rejects_nonfinite_and_negative_bounds(self) -> None:
+        master = master_row()
+        for changes in ({"pass2_end_time_s": "nan"}, {"pass2_end_time_s": "inf"},
+                        {"pass2_start_frame": "-60", "pass2_end_frame": "-30"}):
+            with self.subTest(changes=changes):
+                returned = sealed_pass2_rows([master])[0]
+                returned.update({"review_pass_2": "accepted", "pass2_reviewer": "Reviewer Two",
+                                 "pass2_timestamp": "2026-10-11T11:00:00Z", "pass2_class": "KA",
+                                 "pass2_start_frame": "30", "pass2_end_frame": "60",
+                                 "pass2_start_time_s": "1", "pass2_end_time_s": "2"})
+                returned.update(changes)
+                with self.assertRaisesRegex(ValueError, "pass2_requires_valid_bounds"):
+                    merge_pass2_rows([master], [returned], consonants={"KA"}, vowels={"A"})
+
     def test_sealed_export_contains_no_pass1_or_hint(self) -> None:
         exported = sealed_pass2_rows([master_row()])[0]
         self.assertEqual(exported["class"], "")

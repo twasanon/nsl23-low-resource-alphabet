@@ -1,5 +1,7 @@
 # NSL23 full paper and repository audit — 23 August 2026
 
+> Historical audit. The [11 October scan](FINAL_SCAN_2026-10-11.md) adds checkpoint replay and corrects findings missed here: the 90.6% five-class result is not 1-shot, two mathematical descriptions differed from the code, and the earlier reproduction bundle omitted necessary modules. Read the new report before relying on this audit's readiness assessment.
+
 ## Bottom line
 
 The Version 1 paper is a defensible **exploratory development study**, not a confirmatory estimate for new signers. Its central accuracy result remains correct: the xyz+angle prototypical BiLSTM achieves **59.4% ± 3.3%** accuracy on 196 pooled S1/S2 out-of-fold clips per seed. Dataset counts, folds, accuracies, signer-specific results, enrollment, alternative exams, confusion claims, runtime receipts, and bibliography linkage all trace to real artifacts.

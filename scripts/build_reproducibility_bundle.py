@@ -18,6 +18,7 @@ STATIC_FILES = (
     "PROTOCOL.md",
     "CLAIM_LEDGER.md",
     "README_REPRODUCIBILITY.md",
+    "README.md",
     "requirements.txt",
     "requirements-colab.txt",
     "requirements-documents.txt",
@@ -93,10 +94,21 @@ STATIC_FILES = (
     "artifacts/audit/test_access_timeline.json",
     "artifacts/audit/full_paper_audit.json",
     "docs/FULL_AUDIT_2026-08-23.md",
+    "docs/FINAL_SCAN_2026-10-11.md",
+    "artifacts/audit/checkpoint_replay.json",
     "artifacts/qa/reproducibility_notebook_audit.json",
 )
 
 RESULT_PATTERNS = (
+    "src/nsl23/*.py",
+    "scripts/*.py",
+    "scripts/compile_paper.sh",
+    "configs/*.json",
+    "tests/test_*.py",
+    "annotations/v2/*.md",
+    "manuscript/README.md",
+    "manuscript/generated_protocol_tables.tex",
+    "manuscript/figures/*.pdf",
     "artifacts/results/*.csv",
     "artifacts/results/*.json",
     "artifacts/results/*.md",
@@ -104,8 +116,10 @@ RESULT_PATTERNS = (
     "artifacts/results/improvements/*.json",
     "artifacts/runs/primary/**/metrics.json",
     "artifacts/runs/primary/**/test_predictions.csv",
+    "artifacts/runs/primary/**/training_history.csv",
     "artifacts/runs/improvements/**/metrics.json",
     "artifacts/runs/improvements/**/test_predictions.csv",
+    "artifacts/runs/improvements/**/training_history.csv",
     "artifacts/runtime/runtime_summary.csv",
     "artifacts/figures/*.png",
     "artifacts/figures/*.pdf",
@@ -173,7 +187,7 @@ def public_member_data(root: Path, path: Path, data: bytes) -> bytes:
     if path.as_posix().endswith("manuscript/nsl23_low_resource.tex"):
         text = re.sub(
             r"\\author\{.*?\}\s*\n\s*\\date",
-            lambda _: "\\author{Anonymous}\\n\\n\\date",
+            lambda _: "\\author{Anonymous}\n\n\\date",
             text,
             flags=re.DOTALL,
         )

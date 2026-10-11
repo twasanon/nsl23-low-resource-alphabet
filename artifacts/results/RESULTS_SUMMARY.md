@@ -86,11 +86,9 @@ Differences are paired by seed after pooling the same held-out clips. They are d
 
 ## Interpretation boundary
 
-These are strict unseen-signer results for S1 and S2 under the available complete 49-class bright/dark tests. They do not establish signer-population generalization, outdoor/prepared-condition robustness, continuous-sign recognition, streaming performance, or state-of-the-art status. Clip-level bootstrap intervals in the machine-readable results are descriptive and cannot replace signer-level uncertainty.
+Training excludes the evaluated signer within each fold, but S1/S2 results informed follow-on choices. This is exploratory development evidence, not a confirmatory unseen-signer test. It does not establish signer-population generalization, outdoor/prepared-condition robustness, continuous-sign recognition, streaming performance, or state-of-the-art status. Clip-level bootstrap intervals in the machine-readable results are descriptive and cannot replace signer-level uncertainty.
 
-## Follow-on matrix (same folds, not a replacement)
-
-See `artifacts/results/improvements/summary.json`. Pooled unseen-signer accuracy:
+## Follow-on matrix (same development folds)
 
 | Model | Accuracy | Macro-F1 | Consonants | Vowels |
 |---|---:|---:|---:|---:|
@@ -100,17 +98,23 @@ See `artifacts/results/improvements/summary.json`. Pooled unseen-signer accuracy
 | xyz Proto-BiLSTM | 55.8% ± 1.8% | 53.4% ± 2.8% | 58.3% ± 2.5% | 48.7% ± 5.9% |
 | xyz+angle Proto-BiLSTM | 59.4% ± 3.3% | 57.4% ± 3.6% | 61.8% ± 5.7% | 52.6% ± 4.8% |
 
-Closed 1-shot (other lighting of the held-out signer): xyz BiLSTM 76.2% ± 4.2%; xyz+angle BiLSTM 78.2% ± 2.8%; prototypical encoder 73.0% ± 1.5%. Do not report `enroll_replace_class` as 1-shot accuracy.
+Closed 1-shot uses one other-lighting support clip for every class of the held-out signer:
 
-Same prototypical encoder, other exams (`alternative_protocols.json`):
+- xyz BiLSTM: 76.2% ± 4.2%.
+- xyz+angle BiLSTM: 78.2% ± 2.8%.
+- prototypical encoder: 73.0% ± 1.5%.
 
-| Exam | Chance | Score |
+Do not report `enroll_replace_class` as 1-shot accuracy.
+
+## Same prototypical encoder, different evaluation tasks
+
+| Task | Chance | Score |
 |---|---:|---:|
-| 49-way top-1, unseen (primary) | 2.0% | 59.4% ± 3.3% |
-| 49-way top-3, unseen | 6.1% | 85.5% ± 6.0% |
-| 49-way top-5, unseen | 10.2% | 91.3% ± 4.0% |
-| 36-way consonants, unseen | 2.8% | 65.7% ± 3.6% |
-| 5-way 1-shot, unseen prototypes | 20.0% | 90.6% ± 2.5% |
+| 49-way top-1, unseen development signer | 2.0% | 59.4% ± 3.3% |
+| 49-way top-3, unseen development signer | 6.1% | 85.5% ± 6.0% |
+| 49-way top-5, unseen development signer | 10.2% | 91.3% ± 4.0% |
+| 36-way consonants, unseen development signer | 2.8% | 65.7% ± 3.6% |
+| 5-way restriction, full training-class means (not 1-shot) | 20.0% | 90.6% ± 2.5% |
 | 5-way 1-shot, same signer | 20.0% | 93.3% ± 1.5% |
 
-Do not quote 5-way or top-5 as 49-way alphabet accuracy.
+Do not quote five-class or top-5 scores as 49-way top-1 alphabet accuracy.

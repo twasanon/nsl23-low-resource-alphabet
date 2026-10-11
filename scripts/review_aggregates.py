@@ -344,7 +344,7 @@ def review_body(
         if row.get("proposal_method") == "manual_insert":
             banner.append(
                 '<div class="banner">This proposal was a sign missed by the motion detector and '
-                "manually inserted during pass 1. Its existence and initial window are therefore "
+                "manually inserted by a reviewer. Its existence and initial window are therefore "
                 "second-verified here, not independently discovered. This status is retained for reporting.</div>"
             )
     elif row["sign_type"] != "vowel":
@@ -565,6 +565,12 @@ class Handler(BaseHTTPRequestHandler):
                 return
             start = float(qs["start"][0]) if qs.get("start") else None
             end = float(qs["end"][0]) if qs.get("end") else None
+            if STATE["mode"] == "pass2":
+                row = rows[0]
+                if start is None:
+                    start = float(row.get("pass2_start_time_s") or row["proposal_start_time_s"])
+                if end is None:
+                    end = float(row.get("pass2_end_time_s") or row["proposal_end_time_s"])
             pad = float(qs.get("pad", [str(PAD)])[0])
             try:
                 path = window_mp4(rows[0], start=start, end=end, pad=pad)
@@ -746,7 +752,11 @@ class Handler(BaseHTTPRequestHandler):
                 start_s = start
                 start_f = str(int(round(float(start) * fps)))
             else:
-                start_s, start_f = row["start_time_s"], row["start_frame"]
+                if pass_n == "2":
+                    start_s = row.get("pass2_start_time_s") or row["proposal_start_time_s"]
+                    start_f = row.get("pass2_start_frame") or row["proposal_start_frame"]
+                else:
+                    start_s, start_f = row["start_time_s"], row["start_frame"]
             if end_frame:
                 end_s = f"{int(end_frame) / fps:.4f}"
                 end_f = end_frame
@@ -754,7 +764,11 @@ class Handler(BaseHTTPRequestHandler):
                 end_s = end
                 end_f = str(max(int(start_f) + 1, int(round(float(end) * fps))))
             else:
-                end_s, end_f = row["end_time_s"], row["end_frame"]
+                if pass_n == "2":
+                    end_s = row.get("pass2_end_time_s") or row["proposal_end_time_s"]
+                    end_f = row.get("pass2_end_frame") or row["proposal_end_frame"]
+                else:
+                    end_s, end_f = row["end_time_s"], row["end_frame"]
             prefix = "pass1" if pass_n != "2" else "pass2"
             row[f"review_pass_{'1' if prefix == 'pass1' else '2'}"] = action
             row[f"{prefix}_reviewer"] = str(STATE["reviewer"])

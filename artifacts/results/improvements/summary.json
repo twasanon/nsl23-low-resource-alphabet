@@ -312,6 +312,10 @@
       "closed_1shot_49way": 0.02040816326530612
     },
     "episodes": 500,
-    "model": "proto_bilstm_raw_angle"
+    "model": "proto_bilstm_raw_angle",
+    "support_definitions": {
+      "five_way_unseen": "All training clips per selected class form each mean; five candidate classes.",
+      "five_way_same_signer": "One distinct other-lighting clip per class from the query signer."
+    }
   }
 }

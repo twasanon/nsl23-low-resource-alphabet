@@ -87,6 +87,7 @@ def five_way_same_signer(x: np.ndarray, y: np.ndarray, *, episodes: int, rng: np
 
 
 def five_way_unseen(prototypes: np.ndarray, x: np.ndarray, y: np.ndarray, *, episodes: int, rng: np.random.Generator) -> float:
+    """Restrict candidates to five full training-class means; this is not 1-shot."""
     classes = [c for c in range(prototypes.shape[0]) if (y == c).any()]
     hits = []
     for _ in range(episodes):
@@ -167,6 +168,10 @@ def main() -> None:
     }
     summary["episodes"] = args.episodes
     summary["model"] = "proto_bilstm_raw_angle"
+    summary["support_definitions"] = {
+        "five_way_unseen": "All training clips per selected class form each mean; five candidate classes.",
+        "five_way_same_signer": "One distinct other-lighting clip per class from the query signer.",
+    }
     summary["runs"] = runs
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(summary, indent=2) + "\n")

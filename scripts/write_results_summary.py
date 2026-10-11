@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
 
 import pandas as pd
@@ -152,10 +153,48 @@ def main() -> None:
             "",
             "## Interpretation boundary",
             "",
-            "These are strict unseen-signer results for S1 and S2 under the available complete 49-class bright/dark tests. They do not establish signer-population generalization, outdoor/prepared-condition robustness, continuous-sign recognition, streaming performance, or state-of-the-art status. Clip-level bootstrap intervals in the machine-readable results are descriptive and cannot replace signer-level uncertainty.",
+            "Training excludes the evaluated signer within each fold, but S1/S2 results informed follow-on choices. This is exploratory development evidence, not a confirmatory unseen-signer test. It does not establish signer-population generalization, outdoor/prepared-condition robustness, continuous-sign recognition, streaming performance, or state-of-the-art status. Clip-level bootstrap intervals in the machine-readable results are descriptive and cannot replace signer-level uncertainty.",
             "",
         ]
     )
+    followon_path = args.results_dir / "improvements/summary.json"
+    if followon_path.is_file():
+        followon = json.loads(followon_path.read_text(encoding="utf-8"))
+        lines.extend(["## Follow-on matrix (same development folds)", "",
+                      "| Model | Accuracy | Macro-F1 | Consonants | Vowels |",
+                      "|---|---:|---:|---:|---:|"])
+        control = model.loc["landmark_bilstm"]
+        control_signs = sign_type.loc["landmark_bilstm"]
+        lines.append(
+            f"| xyz BiLSTM (CE, frozen control) | {pm(control.accuracy_mean, control.accuracy_sd)} | "
+            f"{pm(control.macro_f1_mean, control.macro_f1_sd)} | "
+            f"{pm(control_signs.loc['consonant', 'accuracy_mean'], control_signs.loc['consonant', 'accuracy_sd'])} | "
+            f"{pm(control_signs.loc['vowel', 'accuracy_mean'], control_signs.loc['vowel', 'accuracy_sd'])} |"
+        )
+        for key, label in (("crop_cnn", "Hand-crop CNN"), ("landmark_bilstm", "xyz+angle BiLSTM (CE)"),
+                           ("proto_bilstm_xyz", "xyz Proto-BiLSTM"), ("proto_bilstm", "xyz+angle Proto-BiLSTM")):
+            scores = followon["models"][key]
+            cells = [pm(scores[metric]["mean"], scores[metric]["sd"])
+                     for metric in ("accuracy", "macro_f1", "consonant", "vowel")]
+            lines.append(f"| {label} | " + " | ".join(cells) + " |")
+        lines.extend(["", "Closed 1-shot uses one other-lighting support clip for every class of the held-out signer:", ""])
+        for key, label in (("xyz_closed", "xyz BiLSTM"), ("angle_closed", "xyz+angle BiLSTM"),
+                           ("proto_closed", "prototypical encoder")):
+            scores = followon["enrollment"][key]
+            lines.append(f"- {label}: {pm(scores['mean'], scores['sd'])}.")
+        lines.extend(["", "Do not report `enroll_replace_class` as 1-shot accuracy.", ""])
+        alternatives = json.loads((args.results_dir / "improvements/alternative_protocols.json").read_text(encoding="utf-8"))
+        lines.extend(["## Same prototypical encoder, different evaluation tasks", "",
+                      "| Task | Chance | Score |", "|---|---:|---:|"])
+        for key, label in (("top1", "49-way top-1, unseen development signer"),
+                           ("top3", "49-way top-3, unseen development signer"),
+                           ("top5", "49-way top-5, unseen development signer"),
+                           ("consonant_36way", "36-way consonants, unseen development signer"),
+                           ("five_way_unseen", "5-way restriction, full training-class means (not 1-shot)"),
+                           ("five_way_same_signer", "5-way 1-shot, same signer")):
+            scores = alternatives[key]
+            lines.append(f"| {label} | {100 * alternatives['chance'][key]:.1f}% | {pm(scores['mean'], scores['sd'])} |")
+        lines.extend(["", "Do not quote five-class or top-5 scores as 49-way top-1 alphabet accuracy.", ""])
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text("\n".join(lines), encoding="utf-8")
     print(args.output)

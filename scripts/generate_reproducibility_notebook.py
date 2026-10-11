@@ -35,13 +35,15 @@ def main() -> None:
     notebook["cells"] = [
         markdown(
             """
-# NSL23 leakage-resistant CNN temporal benchmark
+# NSL23 exploratory RGB and landmark benchmark
 
-This notebook reproduces the **frozen primary analysis** comparing a single-frame CNN, CNN–BiLSTM, and CNN–Transformer on the public NSL23 Nepali Sign Language alphabet videos. The primary set contains only original, individually labeled clips. Aggregate recordings are excluded because the release provides no gesture timestamps, and cropped/preprocessed derivatives are excluded to avoid source duplication.
+This notebook reproduces the **frozen 30-run primary analysis** comparing a single-frame CNN, CNN–BiLSTM, CNN–Transformer, landmark MLP, and landmark BiLSTM on the public NSL23 Nepali Sign Language alphabet videos. The primary set contains only original, individually labeled clips. Aggregate recordings are excluded because the release provides no gesture timestamps, and cropped/preprocessed derivatives are excluded to avoid source duplication. The later 30-run follow-on matrix, including prototypical training, is a separate workflow documented in `README_REPRODUCIBILITY.md`; this notebook does not train it.
 
 The evaluation uses two complete 49-class signer-held-out folds (S1 and S2), three fixed seeds, 30 fixed epochs, and no validation-driven model selection. Read `PROTOCOL.md` before running. The notebook works from the supplied project folder locally or from the accompanying `NSL23_reproducibility_bundle.zip` in Google Colab.
 
-**Compute/storage:** the official archives total about 9.6 GB and expand to about 9.7 GB. The 16-frame cache requires about 0.9 GB. A full 18-run matrix can take several hours depending on hardware.
+The study is exploratory: S1/S2 results informed the follow-on choices. Freezing these files preserves the reported analysis; it does not turn that development process into a confirmatory test.
+
+**Compute/storage:** the official archives total about 9.6 GB and expand to about 9.7 GB. The 16-frame cache requires about 0.9 GB. A full 30-run matrix can take several hours depending on hardware.
 """
         ),
         markdown(
@@ -61,8 +63,12 @@ PROJECT_ROOT = Path("/content/NSL23_project") if IN_COLAB else Path.cwd()
 RUN_DOWNLOAD = False          # Set True only after confirming ~22 GB free disk space.
 RUN_PREPARE = False           # Build manifest, signer folds, and 16-frame cache.
 RUN_SMOKE_TEST = False
-RUN_FULL_MATRIX = False       # 18 runs: 3 architectures × 2 folds × 3 seeds.
+RUN_FULL_MATRIX = False       # 30 runs: 5 architectures × 2 folds × 3 seeds.
 RUN_BENCHMARKS = False        # Requires completed checkpoints.
+REPRODUCTION_RUN_DIR = Path("artifacts/runs/reproduction_primary")
+RUN_DIR = REPRODUCTION_RUN_DIR if RUN_FULL_MATRIX else Path("artifacts/runs/primary")
+RESULTS_DIR = Path("artifacts/results/reproduction_primary") if RUN_FULL_MATRIX else Path("artifacts/results")
+FIGURES_DIR = Path("artifacts/figures/reproduction_primary") if RUN_FULL_MATRIX else Path("artifacts/figures")
 
 print({"in_colab": IN_COLAB, "project_root": str(PROJECT_ROOT), "python": platform.python_version()})
 """
@@ -242,9 +248,9 @@ if RUN_PREPARE:
         ),
         markdown(
             """
-## 7. Cache 16 frame-bin centers per clip
+## 7. Cache 16 frame-bin centers and hand landmarks per clip
 
-Frames are decoded once with PyAV, sampled at temporal-bin centers, resized without distorting aspect ratio, letterboxed to 224×224, and stored as unsigned 8-bit NumPy arrays. Both fold manifests refer to the same 375 cache files.
+Frames are decoded once with PyAV, sampled at temporal-bin centers, resized without distorting aspect ratio, letterboxed to 224×224, and stored as unsigned 8-bit NumPy arrays. Both fold manifests refer to the same 375 cache files. MediaPipe extraction adds the landmark-cache paths needed by the two landmark models.
 """
         ),
         code(
@@ -256,6 +262,9 @@ if RUN_PREPARE:
              "--output-dir", "data/frame_cache_primary",
              "--updated-manifest", f"data/manifests/folds/{fold}_cached.csv",
              "--num-frames", "16", "--image-size", "224"])
+    run([sys.executable, "scripts/extract_landmarks.py", "--manifests",
+         "data/manifests/folds/heldout_s1_cached.csv",
+         "data/manifests/folds/heldout_s2_cached.csv"])
     run([sys.executable, "scripts/verify_primary_protocol.py"])
 """
         ),
@@ -263,7 +272,7 @@ if RUN_PREPARE:
             """
 ## 8. One-epoch software smoke test
 
-The smoke test checks all three forward/backward paths and artifact exports. Its scores are not scientific results. It uses only fold S1 and one seed, limits training to one epoch, and uses 20 bootstrap replicates to keep the check short.
+The smoke test checks the three RGB forward/backward paths and artifact exports, not the landmark models. Its scores are not scientific results. It uses only fold S1 and one seed, limits training to one epoch, and uses 20 bootstrap replicates to keep the check short.
 """
         ),
         code(
@@ -280,38 +289,44 @@ if RUN_SMOKE_TEST:
             """
 ## 9. Full frozen experiment matrix
 
-Do not modify the configuration after inspecting test results. The experiment runner trains each architecture for exactly 30 epochs and evaluates the held-out signer once after the final checkpoint is fixed. The class-weighted loss is computed from training counts only.
+Do not modify the configuration after inspecting test results. The runners train each of the five primary architectures for exactly 30 epochs and evaluate the held-out signer after the final checkpoint is fixed. The class-weighted loss is computed from training counts only. New runs go into `REPRODUCTION_RUN_DIR`, separate from the reference results. Existing metrics there are skipped; choose another fresh directory for an independent repeat.
 """
         ),
         code(
             """
 if RUN_FULL_MATRIX:
-    run([sys.executable, "scripts/run_primary_experiments.py", "--output-dir", "artifacts/runs/primary"])
+    run([sys.executable, "scripts/run_primary_experiments.py", "--output-dir", RUN_DIR])
+    run([sys.executable, "scripts/run_landmark_experiments.py", "--output-dir", RUN_DIR])
 else:
-    print("Full matrix disabled. Set RUN_FULL_MATRIX=True to reproduce all 18 runs.")
+    print("Full matrix disabled. Set RUN_FULL_MATRIX=True to reproduce all 30 runs.")
 """
         ),
         markdown(
             """
 ## 10. Validate, aggregate, and plot results
 
-Aggregation fails closed unless all 18 run identities, 30-epoch histories, and 98 held-out predictions per run are present. The two held-out folds are pooled within each seed (196 clips), then mean and sample SD are reported across the three seeds. Sample-level bootstrap intervals are descriptive and do not estimate signer-population uncertainty from only two test signers.
+Aggregation fails closed unless all 30 run identities, 30-epoch histories, and 98 held-out predictions per run are present. The compact bundle omits weights, so inspecting its reference results explicitly permits missing checkpoints; new training runs must have checkpoints. The two held-out folds are pooled within each seed (196 clips), then mean and sample SD are reported across the three seeds. Sample-level bootstrap intervals are descriptive and do not estimate signer-population uncertainty from only two test signers.
 """
         ),
         code(
             """
-if Path("artifacts/runs/primary").exists() and len(list(Path("artifacts/runs/primary").glob("**/metrics.json"))) == 18:
-    run([sys.executable, "scripts/summarize_primary_results.py"])
-    run([sys.executable, "scripts/generate_publication_figures.py"])
-    display(pandas.read_csv("artifacts/results/model_summary.csv"))
+if RUN_DIR.exists() and len(list(RUN_DIR.glob("**/metrics.json"))) == 30:
+    summary_command = [sys.executable, "scripts/summarize_primary_results.py", "--run-dir", RUN_DIR,
+                       "--output-dir", RESULTS_DIR]
+    if not RUN_FULL_MATRIX:
+        summary_command.append("--allow-missing-checkpoints")
+    run(summary_command)
+    run([sys.executable, "scripts/generate_publication_figures.py", "--results-dir", RESULTS_DIR,
+         "--output-dir", FIGURES_DIR])
+    display(pandas.read_csv(RESULTS_DIR / "model_summary.csv"))
 else:
-    print("Complete the 18-run matrix before aggregation.")
+    print("Complete the 30-run matrix before aggregation.")
 """
         ),
         code(
             """
 from IPython.display import Image, display
-for figure in sorted(Path("artifacts/figures").glob("figure_[1-7]*.png")):
+for figure in sorted(FIGURES_DIR.glob("figure_[1-7]*.png")):
     print(figure.name)
     display(Image(filename=str(figure), width=900))
 """
@@ -326,7 +341,8 @@ The benchmark reports two explicitly synchronized quantities: model-only forward
         code(
             """
 if RUN_BENCHMARKS:
-    run([sys.executable, "scripts/run_runtime_benchmarks.py"])
+    run([sys.executable, "scripts/run_runtime_benchmarks.py", "--run-dir", RUN_DIR,
+         "--output-dir", "artifacts/runtime/reproduction_primary"])
 """
         ),
         markdown(
@@ -339,10 +355,8 @@ Checkpoints are intentionally omitted from this compact archive because they are
         code(
             """
 import shutil
-export_root = Path("artifacts")
-if (export_root / "results").exists():
-    archive = shutil.make_archive("NSL23_primary_results", "zip", root_dir=export_root,
-                                  base_dir="results")
+if RESULTS_DIR.exists():
+    archive = shutil.make_archive("NSL23_primary_results", "zip", root_dir=RESULTS_DIR)
     print("Created", archive)
 """
         ),

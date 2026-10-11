@@ -1,0 +1,713 @@
+{
+  "status": "pass",
+  "retraining": false,
+  "checkpoints": 60,
+  "predictions_checked": 3600,
+  "runs": [
+    {
+      "matrix": "primary",
+      "fold": "heldout_s1",
+      "model": "cnn_bilstm",
+      "seed": 17,
+      "predictions_checked": 3,
+      "scope": "representative RGB clips",
+      "parameters_trainable": 736305
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s1",
+      "model": "cnn_bilstm",
+      "seed": 42,
+      "predictions_checked": 3,
+      "scope": "representative RGB clips",
+      "parameters_trainable": 736305
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s1",
+      "model": "cnn_bilstm",
+      "seed": 73,
+      "predictions_checked": 3,
+      "scope": "representative RGB clips",
+      "parameters_trainable": 736305
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s1",
+      "model": "cnn_transformer",
+      "seed": 17,
+      "predictions_checked": 3,
+      "scope": "representative RGB clips",
+      "parameters_trainable": 1399345
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s1",
+      "model": "cnn_transformer",
+      "seed": 42,
+      "predictions_checked": 3,
+      "scope": "representative RGB clips",
+      "parameters_trainable": 1399345
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s1",
+      "model": "cnn_transformer",
+      "seed": 73,
+      "predictions_checked": 3,
+      "scope": "representative RGB clips",
+      "parameters_trainable": 1399345
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s1",
+      "model": "landmark_bilstm",
+      "seed": 17,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 73137
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s1",
+      "model": "landmark_bilstm",
+      "seed": 42,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 73137
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s1",
+      "model": "landmark_bilstm",
+      "seed": 73,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 73137
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s1",
+      "model": "landmark_mlp",
+      "seed": 17,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 301617
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s1",
+      "model": "landmark_mlp",
+      "seed": 42,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 301617
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s1",
+      "model": "landmark_mlp",
+      "seed": 73,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 301617
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s1",
+      "model": "single_frame_cnn",
+      "seed": 17,
+      "predictions_checked": 3,
+      "scope": "representative RGB clips",
+      "parameters_trainable": 62769
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s1",
+      "model": "single_frame_cnn",
+      "seed": 42,
+      "predictions_checked": 3,
+      "scope": "representative RGB clips",
+      "parameters_trainable": 62769
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s1",
+      "model": "single_frame_cnn",
+      "seed": 73,
+      "predictions_checked": 3,
+      "scope": "representative RGB clips",
+      "parameters_trainable": 62769
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s2",
+      "model": "cnn_bilstm",
+      "seed": 17,
+      "predictions_checked": 3,
+      "scope": "representative RGB clips",
+      "parameters_trainable": 736305
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s2",
+      "model": "cnn_bilstm",
+      "seed": 42,
+      "predictions_checked": 3,
+      "scope": "representative RGB clips",
+      "parameters_trainable": 736305
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s2",
+      "model": "cnn_bilstm",
+      "seed": 73,
+      "predictions_checked": 3,
+      "scope": "representative RGB clips",
+      "parameters_trainable": 736305
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s2",
+      "model": "cnn_transformer",
+      "seed": 17,
+      "predictions_checked": 3,
+      "scope": "representative RGB clips",
+      "parameters_trainable": 1399345
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s2",
+      "model": "cnn_transformer",
+      "seed": 42,
+      "predictions_checked": 3,
+      "scope": "representative RGB clips",
+      "parameters_trainable": 1399345
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s2",
+      "model": "cnn_transformer",
+      "seed": 73,
+      "predictions_checked": 3,
+      "scope": "representative RGB clips",
+      "parameters_trainable": 1399345
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s2",
+      "model": "landmark_bilstm",
+      "seed": 17,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 73137
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s2",
+      "model": "landmark_bilstm",
+      "seed": 42,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 73137
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s2",
+      "model": "landmark_bilstm",
+      "seed": 73,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 73137
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s2",
+      "model": "landmark_mlp",
+      "seed": 17,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 301617
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s2",
+      "model": "landmark_mlp",
+      "seed": 42,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 301617
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s2",
+      "model": "landmark_mlp",
+      "seed": 73,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 301617
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s2",
+      "model": "single_frame_cnn",
+      "seed": 17,
+      "predictions_checked": 3,
+      "scope": "representative RGB clips",
+      "parameters_trainable": 62769
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s2",
+      "model": "single_frame_cnn",
+      "seed": 42,
+      "predictions_checked": 3,
+      "scope": "representative RGB clips",
+      "parameters_trainable": 62769
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s2",
+      "model": "single_frame_cnn",
+      "seed": 73,
+      "predictions_checked": 3,
+      "scope": "representative RGB clips",
+      "parameters_trainable": 62769
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s1",
+      "model": "crop_cnn",
+      "seed": 17,
+      "predictions_checked": 3,
+      "scope": "representative RGB clips",
+      "parameters_trainable": 62769
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s1",
+      "model": "crop_cnn",
+      "seed": 42,
+      "predictions_checked": 3,
+      "scope": "representative RGB clips",
+      "parameters_trainable": 62769
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s1",
+      "model": "crop_cnn",
+      "seed": 73,
+      "predictions_checked": 3,
+      "scope": "representative RGB clips",
+      "parameters_trainable": 62769
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s1",
+      "model": "landmark_bilstm",
+      "seed": 17,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 83377
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s1",
+      "model": "landmark_bilstm",
+      "seed": 42,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 83377
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s1",
+      "model": "landmark_bilstm",
+      "seed": 73,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 83377
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s1",
+      "model": "landmark_mlp",
+      "seed": 17,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 383537
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s1",
+      "model": "landmark_mlp",
+      "seed": 42,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 383537
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s1",
+      "model": "landmark_mlp",
+      "seed": 73,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 383537
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s1",
+      "model": "proto_bilstm",
+      "seed": 17,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 83377
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s1",
+      "model": "proto_bilstm",
+      "seed": 42,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 83377
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s1",
+      "model": "proto_bilstm",
+      "seed": 73,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 83377
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s1",
+      "model": "proto_bilstm_xyz",
+      "seed": 17,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 73137
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s1",
+      "model": "proto_bilstm_xyz",
+      "seed": 42,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 73137
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s1",
+      "model": "proto_bilstm_xyz",
+      "seed": 73,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 73137
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s2",
+      "model": "crop_cnn",
+      "seed": 17,
+      "predictions_checked": 3,
+      "scope": "representative RGB clips",
+      "parameters_trainable": 62769
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s2",
+      "model": "crop_cnn",
+      "seed": 42,
+      "predictions_checked": 3,
+      "scope": "representative RGB clips",
+      "parameters_trainable": 62769
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s2",
+      "model": "crop_cnn",
+      "seed": 73,
+      "predictions_checked": 3,
+      "scope": "representative RGB clips",
+      "parameters_trainable": 62769
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s2",
+      "model": "landmark_bilstm",
+      "seed": 17,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 83377
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s2",
+      "model": "landmark_bilstm",
+      "seed": 42,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 83377
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s2",
+      "model": "landmark_bilstm",
+      "seed": 73,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 83377
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s2",
+      "model": "landmark_mlp",
+      "seed": 17,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 383537
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s2",
+      "model": "landmark_mlp",
+      "seed": 42,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 383537
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s2",
+      "model": "landmark_mlp",
+      "seed": 73,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 383537
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s2",
+      "model": "proto_bilstm",
+      "seed": 17,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 83377
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s2",
+      "model": "proto_bilstm",
+      "seed": 42,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 83377
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s2",
+      "model": "proto_bilstm",
+      "seed": 73,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 83377
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s2",
+      "model": "proto_bilstm_xyz",
+      "seed": 17,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 73137
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s2",
+      "model": "proto_bilstm_xyz",
+      "seed": 42,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 73137
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s2",
+      "model": "proto_bilstm_xyz",
+      "seed": 73,
+      "predictions_checked": 98,
+      "scope": "all evaluation clips",
+      "parameters_trainable": 73137
+    }
+  ],
+  "closed_enrollment_queries": 1764,
+  "closed_enrollment_runs": [
+    {
+      "matrix": "primary",
+      "fold": "heldout_s1",
+      "model": "landmark_bilstm",
+      "seed": 17,
+      "queries_checked": 98,
+      "accuracy": 0.8061224489795918,
+      "macro_f1": 0.773469387755102
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s1",
+      "model": "landmark_bilstm",
+      "seed": 42,
+      "queries_checked": 98,
+      "accuracy": 0.7653061224489796,
+      "macro_f1": 0.7489795918367348
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s1",
+      "model": "landmark_bilstm",
+      "seed": 73,
+      "queries_checked": 98,
+      "accuracy": 0.7346938775510204,
+      "macro_f1": 0.6904761904761904
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s2",
+      "model": "landmark_bilstm",
+      "seed": 17,
+      "queries_checked": 98,
+      "accuracy": 0.7755102040816326,
+      "macro_f1": 0.7517978620019434
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s2",
+      "model": "landmark_bilstm",
+      "seed": 42,
+      "queries_checked": 98,
+      "accuracy": 0.7959183673469388,
+      "macro_f1": 0.7646258503401361
+    },
+    {
+      "matrix": "primary",
+      "fold": "heldout_s2",
+      "model": "landmark_bilstm",
+      "seed": 73,
+      "queries_checked": 98,
+      "accuracy": 0.6938775510204082,
+      "macro_f1": 0.6496598639455782
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s1",
+      "model": "landmark_bilstm",
+      "seed": 17,
+      "queries_checked": 98,
+      "accuracy": 0.7857142857142857,
+      "macro_f1": 0.7408163265306121
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s1",
+      "model": "landmark_bilstm",
+      "seed": 42,
+      "queries_checked": 98,
+      "accuracy": 0.7755102040816326,
+      "macro_f1": 0.7340136054421769
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s1",
+      "model": "landmark_bilstm",
+      "seed": 73,
+      "queries_checked": 98,
+      "accuracy": 0.7857142857142857,
+      "macro_f1": 0.7530612244897958
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s1",
+      "model": "proto_bilstm",
+      "seed": 17,
+      "queries_checked": 98,
+      "accuracy": 0.8061224489795918,
+      "macro_f1": 0.7775510204081632
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s1",
+      "model": "proto_bilstm",
+      "seed": 42,
+      "queries_checked": 98,
+      "accuracy": 0.7346938775510204,
+      "macro_f1": 0.6666666666666666
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s1",
+      "model": "proto_bilstm",
+      "seed": 73,
+      "queries_checked": 98,
+      "accuracy": 0.7244897959183674,
+      "macro_f1": 0.6741496598639456
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s2",
+      "model": "landmark_bilstm",
+      "seed": 17,
+      "queries_checked": 98,
+      "accuracy": 0.7755102040816326,
+      "macro_f1": 0.7346938775510204
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s2",
+      "model": "landmark_bilstm",
+      "seed": 42,
+      "queries_checked": 98,
+      "accuracy": 0.7346938775510204,
+      "macro_f1": 0.6973760932944606
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s2",
+      "model": "landmark_bilstm",
+      "seed": 73,
+      "queries_checked": 98,
+      "accuracy": 0.8367346938775511,
+      "macro_f1": 0.7973760932944606
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s2",
+      "model": "proto_bilstm",
+      "seed": 17,
+      "queries_checked": 98,
+      "accuracy": 0.6836734693877551,
+      "macro_f1": 0.6326530612244898
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s2",
+      "model": "proto_bilstm",
+      "seed": 42,
+      "queries_checked": 98,
+      "accuracy": 0.6938775510204082,
+      "macro_f1": 0.6625850340136055
+    },
+    {
+      "matrix": "improvements",
+      "fold": "heldout_s2",
+      "model": "proto_bilstm",
+      "seed": 73,
+      "queries_checked": 98,
+      "accuracy": 0.7346938775510204,
+      "macro_f1": 0.6926141885325559
+    }
+  ]
+}

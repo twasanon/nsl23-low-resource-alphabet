@@ -29,6 +29,11 @@ def main() -> None:
         "https://zenodo.org/records/10478554",
         "scripts/verify_primary_protocol.py",
         "scripts/run_primary_experiments.py",
+        "scripts/run_landmark_experiments.py",
+        "scripts/extract_landmarks.py",
+        "frozen 30-run primary analysis",
+        "exploratory",
+        "REPRODUCTION_RUN_DIR",
         "scripts/summarize_primary_results.py",
         "scripts/generate_publication_figures.py",
         "scripts/run_runtime_benchmarks.py",
@@ -41,7 +46,7 @@ def main() -> None:
     missing = [value for value in required if value not in content]
     if missing:
         raise AssertionError(f"Notebook is missing required content: {missing}")
-    forbidden = ("<YOUR", "93.5%", "github.com/")
+    forbidden = ("<YOUR", "93.5%", "github.com/", "18-run", "all 18 runs", "== 18")
     present = [value for value in forbidden if value.lower() in content.lower()]
     if present:
         raise AssertionError(f"Notebook contains prohibited placeholder/claim content: {present}")

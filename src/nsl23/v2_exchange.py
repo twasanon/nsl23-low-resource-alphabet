@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from datetime import datetime
 from pathlib import Path
 
@@ -132,7 +133,9 @@ def _valid_pass2(row: dict[str, str], labels: set[str], reviewer: str | None) ->
             start_f = int(row["pass2_start_frame"])
             end_f = int(row["pass2_end_frame"])
             duration = float(row["duration_seconds"] or 0)
-            if start_t < 0 or end_t <= start_t or end_f <= start_f:
+            if not (math.isfinite(start_t) and math.isfinite(end_t) and 0 <= start_t < end_t and 0 <= start_f < end_f):
+                raise ValueError
+            if not math.isfinite(duration) or duration <= 0:
                 raise ValueError
             if duration and end_t > duration + 0.05:
                 errors.append("pass2_bounds_outside_tape")

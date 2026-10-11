@@ -63,6 +63,8 @@ def main() -> None:
     parser.add_argument("--classes", type=Path, default=Path("configs/nsl23_classes.json"))
     parser.add_argument("--config", type=Path, default=Path("configs/experiment_local_m4.json"))
     parser.add_argument("--output-dir", type=Path, default=Path("artifacts/results"))
+    parser.add_argument("--allow-missing-checkpoints", action="store_true",
+                        help="Audit exported predictions/history without weights, as in the compact bundle.")
     args = parser.parse_args()
 
     labels = load_labels(args.classes)
@@ -95,8 +97,9 @@ def main() -> None:
             raise ValueError(f"Run does not use the frozen final-epoch policy: {run_path}")
         if int(metrics["bootstrap_replicates"]) != bootstrap_replicates:
             raise ValueError(f"Run does not use {bootstrap_replicates} bootstrap replicates: {run_path}")
-        if not Path(metrics["checkpoint"]).is_file():
-            raise FileNotFoundError(metrics["checkpoint"])
+        checkpoint = run_path / "best_checkpoint.pt"
+        if not checkpoint.is_file() and not args.allow_missing_checkpoints:
+            raise FileNotFoundError(checkpoint)
         export_metrics = dict(metrics)
         export_metrics["checkpoint"] = str(run_path / "best_checkpoint.pt")
         metric_rows.append(export_metrics)

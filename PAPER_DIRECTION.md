@@ -1,6 +1,6 @@
 # NSL23 paper direction
 
-**Present status (23 August 2026):** Version 1 is frozen. Version 2 is the scientific direction. **Do not train Version 2.** The repository contains 691 motion proposals, zero completed review passes, zero verified segments, and no frozen V2 sample manifests. The 21-tape review set is 22.13 minutes of source video (3.47 GiB), and the outside-review export/import path is implemented and tested.
+**Present status (11 October 2026):** Version 1 experiment outputs are frozen; its manuscript has been corrected after the final scan. Version 2 is the scientific direction. **Do not train Version 2.** The repository contains 691 motion proposals, zero completed review passes, zero verified segments, and no frozen V2 sample manifests. The 21-tape review set is 22.13 minutes of source video (3.47 GiB), and the outside-review export/import path is implemented and tested. See [`docs/FINAL_SCAN_2026-10-11.md`](docs/FINAL_SCAN_2026-10-11.md) for the new findings and verification limits.
 
 The protocol and executable gates are now aligned. Human annotation is the immediate gate, but it must be performed by people who can identify the NSL alphabet. See [`annotations/v2/ANNOTATION_GUIDE.md`](annotations/v2/ANNOTATION_GUIDE.md). For recruitment, workload, decision definitions, exact tapes, and safe file transfer, use [`annotations/v2/REVIEWER_HANDOFF.md`](annotations/v2/REVIEWER_HANDOFF.md).
 

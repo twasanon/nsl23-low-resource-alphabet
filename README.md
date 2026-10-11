@@ -4,7 +4,7 @@ Paper:
 
 > Low-Resource Nepali Sign Language Alphabet Recognition on NSL23: An Exploratory Cross-Signer Study of RGB and Hand-Landmark Models
 
-[Read the PDF](manuscript/nsl23_low_resource.pdf) · [Open the Colab notebook](https://colab.research.google.com/github/twasanon/nsl23-low-resource-alphabet/blob/main/NSL23_Low_Resource_Colab.ipynb)
+[Read the PDF](manuscript/nsl23_low_resource.pdf) · [Reproduction notebook](NSL23_CNN_Transformer_Reproducibility.ipynb)
 
 This repository is a secondary analysis of the public **NSL23** alphabet videos (Sunuwar, Borah, and Kharga, 2024). The recordings are not ours. Download them from [Zenodo record 10478554](https://zenodo.org/records/10478554) (DOI [10.5281/zenodo.10478554](https://doi.org/10.5281/zenodo.10478554), CC BY 4.0). Git does not contain the zips, extracted `.MOV` files, or the RGB frame cache.
 
@@ -26,7 +26,7 @@ On 375 original isolated clips, with signers S1 and S2 held out in turn (196 poo
 | xyz Proto-BiLSTM | 55.8% ± 1.8% | 53.4% ± 2.8% |
 | **xyz+angle Proto-BiLSTM** | **59.4% ± 3.3%** | **57.4% ± 3.6%** |
 
-Chance for 49 classes is 2.0%. The prototypical encoder’s consonant accuracy is 61.8% ± 5.7% (the xyz softmax BiLSTM was 10.0% ± 3.9% on consonants). Closed 1-shot enrollment on the test signer’s other lighting is 76.2%–78.2% for the softmax BiLSTMs; that is a tutor protocol, not the unseen-signer exam. On the same prototypical encoder, top-3 is 85.5% ± 6.0% and a 5-way 1-shot protocol is 90.6% ± 2.5% (chance 20%). Those are different exams.
+Chance for 49 classes is 2.0%. The prototypical encoder’s consonant accuracy is 61.8% ± 5.7% (the xyz softmax BiLSTM was 10.0% ± 3.9% on consonants). Closed 1-shot enrollment on the test signer’s other lighting is 76.2%–78.2% for the softmax BiLSTMs; that is a tutor protocol, not the unseen-signer exam. On the same prototypical encoder, top-3 is 85.5% ± 6.0% and a five-class restriction using full training-class mean prototypes is 90.6% ± 2.5% (chance 20%). The latter is not 1-shot. Those are different exams.
 
 A CPU webcam loop (`scripts/webcam_demo.py`) with the prototypical encoder processed a held-out NSL23 stream at **39.6 FPS** on an Apple M4; earlier xyz-softmax streams were **33–42 FPS**. That is a speed measurement, not a 49-class streaming accuracy.
 
@@ -64,7 +64,7 @@ RGB frame caches are local-only (`data/frame_cache_primary/`, ~0.9 GB) and need 
 export PYTHONPATH=src
 python scripts/run_landmark_experiments.py          # skips completed runs
 python scripts/run_improvement_experiments.py       # angles + crop CNN
-python scripts/train_protonet.py --samples data/manifests/folds/heldout_s1_cached.csv --output-dir artifacts/runs/improvements/heldout_s1/proto_bilstm/seed_17 --seed 17
+python scripts/train_protonet.py --samples data/manifests/folds/heldout_s1_cached.csv --output-dir artifacts/runs/reproduction/heldout_s1/proto_bilstm/seed_17 --seed 17
 python scripts/evaluate_enrollment.py --checkpoint ... --manifest ... --output ...
 python scripts/summarize_primary_results.py
 python scripts/generate_publication_figures.py
@@ -86,7 +86,8 @@ cd manuscript && tectonic -X compile nsl23_low_resource.tex
 - `manuscript/nsl23_low_resource.tex` — paper
 - `PROTOCOL.md` — frozen sample, folds, and landmark addendum
 - `CLAIM_LEDGER.md` — what the text is allowed to say
-- `NSL23_Low_Resource_Colab.ipynb` — tables + landmark replay
+- `NSL23_CNN_Transformer_Reproducibility.ipynb` — current 30-run primary reproduction workflow
+- `NSL23_Low_Resource_Colab.ipynb` — older tables + landmark replay (historical)
 - `src/nsl23/` — dataset, models, training
 - `artifacts/results/` — primary and follow-on summaries derived from 60 runs
 - `artifacts/runs/primary/` — checkpoints and per-run predictions

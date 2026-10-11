@@ -73,6 +73,21 @@ class V2AnnotationTests(unittest.TestCase):
     def test_all_complete_test_candidates_stay_test(self) -> None:
         self.assertEqual(assign_testers(["S6", "S5", "S14", "S4"]), ["S5", "S14", "S4", "S6"])
 
+    def test_nonfinite_review_bounds_and_metadata_are_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / "video.mov"
+            source.write_bytes(b"video")
+            for value in ("nan", "inf", "-inf"):
+                with self.subTest(value=value):
+                    row = self.valid_row(source)
+                    row["pass2_end_time_s"] = value
+                    self.assertIn("pass2_accepted_without_valid_bounds", validate_review_completion(row))
+                    row = self.valid_row(source)
+                    row["fps"] = value
+                    self.assertIn("bad_fps", validate_verified_row(row, {"KA"}, {"A"}, 2.0))
+            row = self.valid_row(source)
+            self.assertIn("bad_duration", validate_verified_row(row, {"KA"}, {"A"}, float("nan")))
+
     def test_verified_row_requires_real_hash_and_named_passes(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             source = Path(directory) / "video.mov"

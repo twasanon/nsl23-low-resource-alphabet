@@ -850,7 +850,11 @@ def main() -> None:
     parser.add_argument("--author", required=True)
     parser.add_argument("--affiliation", required=True)
     parser.add_argument("--email", required=True)
+    parser.add_argument("--allow-historical-template", action="store_true", help="Explicitly build the obsolete RGB-only draft; never a submission-ready paper.")
     args = parser.parse_args()
+
+    if "Historical RGB-only journal template" in args.source.read_text(encoding="utf-8") and not args.allow_historical_template:
+        raise SystemExit("This is an obsolete RGB-only template. Use the current LaTeX paper; journal conversion must be updated after V2. Historical builds require --allow-historical-template.")
 
     tokens = json.loads(args.style_tokens.read_text(encoding="utf-8"))
     data = load_results(args.results_dir, args.runtime)

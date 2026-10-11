@@ -107,8 +107,8 @@ def study_flow(audit_dir: Path, output_dir: Path) -> None:
     box(ax, 0.73, 0.68, 0.23, 0.17, f"Primary set\n{manifest['primary_usable_isolated_clips']} original clips\n49 classes · 7 signers", "#009E73", fontsize=9.5)
     arrow(ax, (0.27, 0.765), (0.38, 0.765))
     arrow(ax, (0.62, 0.765), (0.73, 0.765))
-    ax.text(0.325, 0.84, "exclude 23 aggregate\n(no timestamps)", ha="center", va="bottom", fontsize=8, color="#555555")
-    ax.text(0.675, 0.84, "exclude 232 isolated\ncropped/preprocessed files", ha="center", va="bottom", fontsize=8, color="#555555")
+    ax.text(0.325, 0.91, "exclude 23 aggregate\n(no timestamps)", ha="center", va="bottom", fontsize=8, color="#555555")
+    ax.text(0.675, 0.91, "exclude 232 isolated\ncropped/preprocessed files", ha="center", va="bottom", fontsize=8, color="#555555")
 
     box(ax, 0.08, 0.30, 0.34, 0.18, "Fold 1\ntrain: 277 clips (6 signers)\ntest: S1, 98 clips", "#E69F00")
     box(ax, 0.58, 0.30, 0.34, 0.18, "Fold 2\ntrain: 277 clips (6 signers)\ntest: S2, 98 clips", "#CC79A7")

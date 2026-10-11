@@ -558,7 +558,7 @@ def add_section_header_footer(section) -> None:
     first_footer = section.first_page_footer
     ffp = first_footer.paragraphs[0]
     ffp.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    rr = ffp.add_run("Prepared from the audited repository state · 23 August 2026")
+    rr = ffp.add_run("Updated after the final repository scan · 11 October 2026")
     set_run_font(rr, size=8.5, color=MUTED)
 
 
@@ -633,7 +633,7 @@ def add_cover(doc: Document) -> None:
     p2.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p2.paragraph_format.space_after = Pt(18)
     r2 = p2.add_run(
-        "Version 1 is reproducible and submission-ready as an exploratory study.\n"
+        "Version 1 has audited results and remains an exploratory study.\n"
         "Version 2 is protocol-ready but must not be trained until independent human review is complete."
     )
     set_run_font(r2, size=11, color=INK, bold=True)
@@ -863,7 +863,8 @@ def add_protocol_section(doc: Document, bullet_id: int, decimal_id: int) -> None
         "protocol, configuration, manifest, loader, model, training, and launcher files. The snapshot did "
         "not store a Git revision, so the audit searched history and found one exact tree: commit "
         "0eb1ff20337b584a5a7e4b06d5e4d5a350915fc7. All 15 inputs match it byte-for-byte. The human-readable "
-        "tag v1-protocol-freeze is a convenience pointer; the dated snapshot remains the chronology record."
+        "tag v1-protocol-freeze is a convenience pointer; the dated snapshot remains the chronology record. "
+        "A one-epoch smoke test had already accessed S1 before the snapshot. The later tag is not preregistration."
     )
     for item in (
         "Historical-tree verification answers: ‘Can we recover the exact inputs used?’",
@@ -897,7 +898,7 @@ def add_representation_section(doc: Document, bullet_id: int) -> None:
         [
             ("Full RGB", "3 × 224 × 224 pixels; MobileNetV2 produces 1,280 features", "Keeps appearance, but background and clothing can dominate"),
             ("Wrist-relative xyz", "21 landmarks × 3 coordinates + one detection flag = 64 values", "Compact hand geometry; loses texture and depends on detector quality"),
-            ("xyz + joint angles", "63 coordinates + 20 angles + flag = 84 values", "Adds flexion/abduction geometry with rotation/scale robustness"),
+            ("xyz + joint angles", "63 coordinates + 20 angles + flag = 84 values", "Adds finger geometry; only the angle component has rigid-transform invariance"),
             ("Hand crop RGB", "Square MediaPipe-guided crop resized to 224 × 224", "Makes the hand larger, but frozen ImageNet features remain mismatched"),
         ],
         [2050, 3550, 3760],
@@ -914,14 +915,14 @@ def add_representation_section(doc: Document, bullet_id: int) -> None:
     )
     add_equation(
         doc,
-        "pᵢ = lᵢ − l₀     ·     s = ‖p₉(x,y)‖₂     ·     p̃ᵢ = pᵢ / max(s, 10⁻⁶)",
-        "lᵢ is the detector coordinate; p̃ᵢ is the normalized coordinate used by the model."
+        "pᵢ = lᵢ − l₀     ·     s = ‖p₉(x,y)‖₂     ·     p̃ᵢ = pᵢ / s*",
+        "The code uses s* = s when s ≥ 10⁻⁶, and s* = 1 otherwise. This avoids division by a nearly zero distance."
     )
     add_body(
         doc,
         "The 63 normalized coordinates are concatenated with a detection flag. If MediaPipe misses a frame, "
         "that frame becomes zeros and the flag is 0. In the 6,000 cached primary frames, detection succeeded "
-        "on 5,868 (97.8%), and no clip had zero detected frames."
+        "on 5,868 (97.8%), and no clip had zero detected frames. These are availability counts, not a measurement of landmark accuracy."
     )
 
     add_heading(doc, "Joint angles", 2)
@@ -941,7 +942,9 @@ def add_representation_section(doc: Document, bullet_id: int) -> None:
         "Why angles help",
         "Two people can place their hands in different locations and orientations while bending the same "
         "finger joints. Angles explicitly encode that bending pattern. They are not magic: detector errors "
-        "and visually similar classes still matter.",
+        "and visually similar classes still matter. Angles are unchanged by applying the same rigid rotation "
+        "and uniform scale to valid points, but image-derived landmarks need not transform that way when "
+        "the camera viewpoint changes. The concatenated xyz component still retains hand orientation.",
         fill=PALE_GREEN,
         title_color=GREEN,
     )
@@ -1003,8 +1006,8 @@ def add_models_section(doc: Document, bullet_id: int) -> None:
         doc,
         "The Transformer projects each frame feature to 256 values, adds a learned time position, and uses "
         "four attention heads in two layers. Each attention head measures which time points should influence "
-        "one another. With only 277 training clips per fold, the larger head can memorize signer-specific "
-        "appearance without learning a portable hand representation."
+        "one another. With only 277 training clips per fold, a large head can fit the training sample "
+        "without transferring well to another signer. The scores do not identify which visual cues it learned."
     )
 
     add_heading(doc, "Prototypical encoder: learn a map where class means matter", 2)
@@ -1022,7 +1025,7 @@ def add_models_section(doc: Document, bullet_id: int) -> None:
     )
     for item in (
         "Every episode visits all 49 classes, so class imbalance is handled by the episode structure.",
-        "Five support and two query examples are sampled with replacement when a training class has fewer than seven clips.",
+        "When a class has fewer than seven clips, the five support and two query draws use replacement. A training clip can appear on both sides of an episode; the counts are draws, not distinct recordings.",
         "The benefit is not ‘one-shot magic’; the primary 59.4% evaluation still uses training-set prototypes and an unseen test signer.",
     ):
         add_list_item(doc, item, bullet_id)
@@ -1040,7 +1043,7 @@ def add_training_section(doc: Document, bullet_id: int) -> None:
     add_equation(
         doc,
         "wᶜ ∝ 1/nᶜ, normalized so mean(wᶜ)=1     ·     L = −Σᶜ wᶜ yᶜ log(ŷᶜ)",
-        "nᶜ is the training count for class c."
+        "nᶜ is the training count for class c. This is one example's loss; the batch mean divides summed losses by the sum of target-class weights."
     )
     add_table(
         doc,
@@ -1048,6 +1051,8 @@ def add_training_section(doc: Document, bullet_id: int) -> None:
         [
             ("Optimizer", "AdamW", "AdamW"),
             ("Learning rate / weight decay", "3×10⁻⁴ / 10⁻⁴", "3×10⁻⁴ / 10⁻⁴"),
+            ("Learning-rate schedule", "Cosine decay", "Constant"),
+            ("Landmark feature jitter", "Gaussian SD 0.02; flag unchanged", "None"),
             ("Epochs", "30", "40"),
             ("Batch structure", "Batch size 8", "40 all-class episodes per epoch"),
             ("Seeds", "17, 42, 73", "17, 42, 73"),
@@ -1073,7 +1078,9 @@ def add_training_section(doc: Document, bullet_id: int) -> None:
         doc,
         "Why no retraining was needed for the audit",
         "The audit recomputed paper values from 196 per-seed predictions, checked checkpoint and metrics "
-        "inventories, verified frozen inputs, and regenerated figures/tables. Retraining would answer a "
+        "inventories, verified frozen inputs, and regenerated figures/tables. The October scan also loaded "
+        "all 60 checkpoints, replayed all landmark evaluation clips and representative RGB clips, and "
+        "recomputed the separate closed-enrollment results. Retraining would answer a "
         "different question about cross-hardware repeatability and would take hours.",
         fill=PALE_BLUE,
         title_color=DARK_BLUE,
@@ -1173,16 +1180,16 @@ def add_metrics_section(doc: Document, bullet_id: int) -> None:
 
 
 def add_results_section(doc: Document, bullet_id: int) -> None:
-    add_heading(doc, "8. Results: what improved, and why", 1)
+    add_heading(doc, "8. Results: what improved, and what we can infer", 1)
     add_heading(doc, "The frozen five-model primary matrix", 2)
     add_table(
         doc,
         ["Model", "Accuracy", "Macro-F1", "Interpretation"],
         [
-            ("Single-frame CNN", "5.8% ± 0.8%", "3.5% ± 0.2%", "Frozen full-frame RGB is near the bottom of the useful range"),
+            ("Single-frame CNN", "5.8% ± 0.8%", "3.5% ± 0.2%", "Most evaluation clips are classified incorrectly"),
             ("CNN–BiLSTM", "7.0% ± 2.1%", "4.2% ± 2.1%", "Adding temporal capacity barely helps cross-signer transfer"),
-            ("CNN–Transformer", "6.3% ± 0.8%", "4.4% ± 1.3%", "More attention capacity does not solve representation mismatch"),
-            ("Landmark MLP", "18.0% ± 2.1%", "11.1% ± 1.8%", "Removing appearance/background is a large gain"),
+            ("CNN–Transformer", "6.3% ± 0.8%", "4.4% ± 1.3%", "The observed gain over the single-frame model is small"),
+            ("Landmark MLP", "18.0% ± 2.1%", "11.1% ± 1.8%", "Landmark features outperform the frozen RGB baselines"),
             ("Landmark BiLSTM", "24.8% ± 4.0%", "16.8% ± 3.8%", "Compact temporal hand geometry is the best frozen control"),
         ],
         [2200, 1660, 1660, 3840],
@@ -1202,9 +1209,9 @@ def add_results_section(doc: Document, bullet_id: int) -> None:
     add_body(
         doc,
         "The CNN–BiLSTM and CNN–Transformer reach mean training accuracy 1.00 by the final epoch, while test "
-        "accuracy remains around 6–7%. This is a classic generalization gap: the heads have enough capacity "
-        "to memorize the six training people and their recording appearance, but the frozen visual features "
-        "do not organize an unseen signer’s hand shapes in the same way."
+        "accuracy remains around 6–7%. This is a generalization gap: fitting the training clips did not "
+        "produce reliable classification on these two unseen signers. Background, hand resolution, and "
+        "feature mismatch are possible explanations, but the experiment does not isolate their effects."
     )
     add_figure(
         doc,
@@ -1212,7 +1219,6 @@ def add_results_section(doc: Document, bullet_id: int) -> None:
         "Figure 4. Mean training trajectories. Perfect training fit for the RGB temporal heads does not become unseen-signer accuracy.",
         "Training loss, accuracy, and macro-F1 curves for the primary models, highlighting RGB temporal heads reaching perfect training accuracy while evaluation performance remains low.",
         width=6.25,
-        page_break_before=True,
     )
 
     add_heading(doc, "Lighting and sign type reveal different problems", 2)
@@ -1257,8 +1263,9 @@ def add_results_section(doc: Document, bullet_id: int) -> None:
     add_body(
         doc,
         "The important scientific pattern is not just a taller final bar. Angles lift consonants from 10.0% "
-        "to 28.7% under cross entropy. Prototypical training then changes the class geometry enough to reach "
-        "61.8% consonant accuracy. Vowel accuracy falls from the softmax model’s 66.0% to 52.6%, so the final "
+        "to 28.7% under cross entropy. The xyz+angle prototypical model reaches "
+        "61.8% consonant accuracy, although its loss, episode sampling, and epoch count all differ from the "
+        "softmax model. Vowel accuracy falls from 66.0% to 52.6%, so the final "
         "gain is a more balanced alphabet representation rather than simply becoming an even stronger vowel classifier."
     )
     add_callout(
@@ -1334,7 +1341,7 @@ def add_confusion_section(doc: Document, bullet_id: int) -> None:
         doc,
         "figure_12_protocol_ladder.png",
         "Figure 9. One encoder under different grading conventions. Higher bars partly reflect easier exams, not a newly trained model.",
-        "Protocol ladder comparing 49-way unseen top-1, top-3, top-5, 36-way consonants, and 5-way one-shot exams against their different chance baselines.",
+        "Comparison of 49-way scores, 36-way consonants, a five-class restriction using full training means, and same-signer one-shot enrollment.",
         width=6.25,
         page_break_before=True,
     )
@@ -1343,13 +1350,13 @@ def add_confusion_section(doc: Document, bullet_id: int) -> None:
         "49-way unseen top-3: 85.5% ± 6.0%; chance 6.1%.",
         "49-way unseen top-5: 91.3% ± 4.0%; chance 10.2%.",
         "36-way unseen consonants: 65.7% ± 3.6%; chance 2.8%.",
-        "5-way 1-shot with unseen-signer training prototypes: 90.6% ± 2.5%; chance 20.0%.",
+        "5-way restriction with full training-class means: 90.6% ± 2.5%; chance 20.0%. Each mean uses all training clips of that class, so this is not one-shot.",
     ):
         add_list_item(doc, item, bullet_id)
     add_callout(
         doc,
         "Reporting rule",
-        "Never shorten ‘90.6% on 5-way 1-shot episodes’ to ‘90.6% NSL23 alphabet accuracy.’ That changes "
+        "Never shorten ‘90.6% with five candidate classes’ to ‘90.6% NSL23 alphabet accuracy.’ That changes "
         "both the number of competing classes and the support information available to the model.",
         fill=PALE_RED,
         title_color=RED,
@@ -1414,7 +1421,7 @@ def add_claims_section(doc: Document, bullet_id: int) -> None:
         [
             ("‘59.4% accuracy for new NSL users’", "Only two complete signers were repeatedly used during development."),
             ("‘91.3% alphabet recognition’", "That is top-5, not top-1; the model gets five guesses."),
-            ("‘90.6% 49-way recognition’", "That is a 5-way few-shot exam with 20% chance."),
+            ("‘90.6% 49-way recognition’", "That is a five-class restriction with full training means and 20% chance."),
             ("‘Real-time system is 39.6% accurate’", "39.6 is FPS, not accuracy."),
             ("‘State of the art in NSL’", "Other NSL studies use different classes, files, people, and splits."),
             ("‘Works in rural Nepal’", "The study lacks an in-country deployment cohort and field conditions."),
@@ -1577,7 +1584,7 @@ def add_v2_section(doc: Document, bullet_id: int, decimal_id: int) -> None:
         "Agreement and adjudication: save the hash-bound pre-adjudication report, then resolve completed disagreements.",
         "Coverage and freeze: validate hashes, durations, overlap, reviewer identities, and per-signer 49-class coverage; freeze the protocol and manifests.",
         "Stage 2 diagnostic: run the existing xyz+angle prototypical image model on S1/S2 development data only.",
-        "Stage 3 selection: if S3 is complete, run exactly three preregistered geometry trials with development leave-one-signer-out mean top-1. If S3 is incomplete, skip the search and carry the Stage 2 specification.",
+        "Stage 3 selection: if S3 is complete, run exactly three preregistered geometry trials, selecting mean per-signer macro-recall across development LOSO folds and seeds. If S3 is incomplete, skip the search and carry the Stage 2 specification.",
         "Final retrain: train seeds 17/42/73 once on every permitted non-test sample, including validation data; tester rows are rejected by code.",
         "Stage 4 evaluation: run the three frozen checkpoints on the sealed test cohort once, with no adaptation or selection.",
         "Manuscript: report the equal-weight per-signer macro-recall endpoint, each tester separately, agreement, coverage, and every failure gate.",
@@ -1645,8 +1652,8 @@ def add_repro_section(doc: Document, bullet_id: int) -> None:
         doc,
         "The strict verifier checks the 630-row manifest, 375 primary clips, fold sizes, test identities, "
         "class coverage, source existence, RGB caches, and the historical freeze. The numerical audit reads "
-        "stored predictions and verifies the central manuscript tables. The claim validator links primitive "
-        "outputs to compiled PDF text."
+        "stored predictions and verifies the central manuscript tables. The claim validator checks several "
+        "primary artifacts and that a compiled PDF exists; PDF text and page layout are checked separately."
     )
 
     add_heading(doc, "The files a future collaborator should read first", 2)
@@ -1656,7 +1663,7 @@ def add_repro_section(doc: Document, bullet_id: int) -> None:
         [
             ("PAPER_DIRECTION.md", "Live dashboard: status, locks, next action, and stop conditions"),
             ("manuscript/nsl23_low_resource.pdf", "Current Version 1 exploratory paper"),
-            ("docs/FULL_AUDIT_2026-08-23.md", "Independent repository, numerical, chronology, and readiness audit"),
+            ("docs/FINAL_SCAN_2026-10-11.md", "Latest corrections, checkpoint replay, source checks, and verification limits"),
             ("README_REPRODUCIBILITY.md", "Environment, artifacts, rerun boundary, and bundle instructions"),
             ("annotations/v2/REVIEWER_HANDOFF.md", "Recruitment text, exact tapes, workload, definitions, and safe transfer"),
             ("annotations/v2/ANNOTATION_GUIDE.md", "Operational annotation and freeze procedure"),
@@ -1776,7 +1783,7 @@ def add_glossary(doc: Document) -> None:
     add_callout(
         doc,
         "Representation",
-        "Full-frame RGB mostly failed across people. Wrist-relative landmarks removed visual nuisance; joint angles described finger geometry.",
+        "Full-frame RGB scored poorly on these two signers. Wrist-relative landmarks removed direct background pixels; joint angles added finger geometry.",
         fill=PALE_BLUE,
         title_color=DARK_BLUE,
     )
@@ -1805,7 +1812,7 @@ def add_glossary(doc: Document) -> None:
     add_heading(doc, "Source trail", 2)
     add_body(
         doc,
-        "This guide was generated from the audited repository state on 23 August 2026. Numerical anchors trace "
+        "This guide was updated after the repository scan on 11 October 2026. Numerical anchors trace "
         "to artifacts/results, artifacts/audit/full_paper_audit.json, and the manuscript. Operational Version 2 "
         "details trace to PAPER_DIRECTION.md, VERSION2.md, configs/v2_protocol.json, and annotations/v2. For "
         "formal citations to NSL23, MediaPipe, MobileNetV2, LSTM, Transformer, prototypical networks, metrics, "

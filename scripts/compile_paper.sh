@@ -8,6 +8,7 @@ if [[ ! -x "$PAPER_PYTHON" ]]; then
 fi
 "$PAPER_PYTHON" scripts/write_latex_tables.py
 "$PAPER_PYTHON" scripts/generate_publication_figures.py
+"$PAPER_PYTHON" scripts/generate_improvement_figures.py
 cp artifacts/figures/figure_1_study_flow.pdf manuscript/figures/
 cp artifacts/figures/figure_2_architectures.pdf manuscript/figures/
 cp artifacts/figures/figure_3_primary_performance.pdf manuscript/figures/
@@ -15,4 +16,8 @@ cp artifacts/figures/figure_4_training_curves.pdf manuscript/figures/
 cp artifacts/figures/figure_5_lighting_performance.pdf manuscript/figures/
 cp artifacts/figures/figure_6_landmark_bilstm_confusion.pdf manuscript/figures/
 cp artifacts/figures/figure_7_landmark_bilstm_per_class_recall.pdf manuscript/figures/
+cp artifacts/figures/figure_9_zero_shot_improvements.pdf manuscript/figures/
+cp artifacts/figures/figure_10_enrollment.pdf manuscript/figures/
+cp artifacts/figures/figure_11_proto_bilstm_confusion.pdf manuscript/figures/
+cp artifacts/figures/figure_12_protocol_ladder.pdf manuscript/figures/
 (cd manuscript && tectonic -X compile nsl23_low_resource.tex)

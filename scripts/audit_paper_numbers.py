@@ -39,7 +39,33 @@ def macro_f1(rows: list[dict[str, str]], classes: int = 49) -> float:
     return statistics.mean(values)
 
 
+def validate_prediction_rows(
+    rows: list[dict[str, str]], expected_rows: list[dict[str, str]], labels: list[str]
+) -> None:
+    """Check saved predictions against source identities and recompute correctness."""
+    expected = {row["sample_id"]: row for row in expected_rows}
+    ids = [row["sample_id"] for row in rows]
+    if len(set(ids)) != len(ids) or set(ids) != set(expected):
+        raise AssertionError("Prediction sample IDs differ from the evaluation manifest")
+    for row in rows:
+        source = expected[row["sample_id"]]
+        truth, predicted = int(row["true_index"]), int(row["predicted_index"])
+        if not (0 <= truth < len(labels) and 0 <= predicted < len(labels)):
+            raise AssertionError("Prediction class index is outside the ontology")
+        if labels[truth] != source["canonical_label"] or row["true_label"] != labels[truth]:
+            raise AssertionError("Prediction truth label differs from the evaluation manifest")
+        if row["predicted_label"] != labels[predicted]:
+            raise AssertionError("Predicted label and index disagree")
+        if int(row["correct"]) != int(truth == predicted):
+            raise AssertionError("Saved correctness flag differs from class indices")
+        for field in ("signer", "sign_type", "lighting"):
+            if row.get(field, "") != source.get(field, ""):
+                raise AssertionError(f"Prediction metadata differs for {field}")
+
+
 def aggregate_run_metrics(run_dir: Path, model_key: str) -> dict[str, dict[str, object]]:
+    ontology = json.loads((ROOT / "configs/nsl23_classes.json").read_text(encoding="utf-8"))
+    labels = ontology["consonants"] + ontology["vowels"]
     grouped: dict[str, dict[int, list[tuple[dict, Path]]]] = defaultdict(lambda: defaultdict(list))
     for path in sorted(run_dir.glob("*/*/seed_*/metrics.json")):
         payload = json.loads(path.read_text(encoding="utf-8"))
@@ -58,10 +84,21 @@ def aggregate_run_metrics(run_dir: Path, model_key: str) -> dict[str, dict[str, 
         pooled_f1 = []
         for seed in SEEDS:
             predictions: list[dict[str, str]] = []
-            for _, directory in seed_runs[seed]:
-                predictions.extend(read_csv(directory / "test_predictions.csv"))
+            for payload, directory in seed_runs[seed]:
+                fold = directory.parent.parent.name
+                expected_rows = [
+                    row for row in read_csv(ROOT / f"data/manifests/folds/{fold}_cached.csv")
+                    if row["split"] == "test"
+                ]
+                rows = read_csv(directory / "test_predictions.csv")
+                validate_prediction_rows(rows, expected_rows, labels)
+                close(statistics.mean(int(row["correct"]) for row in rows), float(payload["test_accuracy"]))
+                close(macro_f1(rows), float(payload["test_macro_f1"]))
+                predictions.extend(rows)
             if len(predictions) != 196:
                 raise AssertionError(f"{model}/seed_{seed}: expected 196 pooled predictions")
+            if len({row["sample_id"] for row in predictions}) != 196:
+                raise AssertionError(f"{model}/seed_{seed}: duplicate pooled prediction IDs")
             accuracy.append(statistics.mean(float(row["correct"]) for row in predictions))
             pooled_f1.append(macro_f1(predictions))
         report[model] = {
@@ -165,6 +202,17 @@ def verify_secondary() -> dict[str, object]:
     close(float(protocols["chance"]["consonant_36way"]), 1 / 36)
     close(float(protocols["chance"]["five_way_unseen"]), 1 / 5)
     close(float(protocols["chance"]["five_way_same_signer"]), 1 / 5)
+    for key in ("top1", "top3", "top5", "consonant_36way", "five_way_unseen", "five_way_same_signer"):
+        by_seed = defaultdict(list)
+        for run in protocols["runs"]:
+            by_seed[int(run["seed"])].append(float(run[key]))
+        if set(by_seed) != set(SEEDS) or any(len(values) != 2 for values in by_seed.values()):
+            raise AssertionError(f"Alternative protocol {key} has an incomplete run matrix")
+        pooled = [statistics.mean(by_seed[seed]) for seed in SEEDS]
+        close(statistics.mean(pooled), float(protocols[key]["mean"]))
+        close(statistics.stdev(pooled), float(protocols[key]["sd"]))
+        for computed, stored in zip(pooled, protocols[key]["seeds"], strict=True):
+            close(computed, float(stored))
     return {
         "fusion_proto": fusion_proto,
         "fusion_rawangle": fusion_angle,

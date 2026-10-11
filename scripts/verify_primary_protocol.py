@@ -15,6 +15,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 from nsl23.freeze import load_snapshot, verify_snapshot
 from nsl23.paths import resolve_repo_path
+from nsl23.manifest import probe_video
 
 
 def read_csv(path: Path) -> list[dict[str, str]]:
@@ -42,6 +43,8 @@ def main() -> None:
     parser.add_argument("--classes", type=Path, default=Path("configs/nsl23_classes.json"))
     parser.add_argument("--archive-audit", type=Path, default=Path("artifacts/audit/archive_checksums.json"))
     parser.add_argument("--verify-archive-hashes", action="store_true")
+    parser.add_argument("--verify-source-decode", action="store_true",
+                        help="Freshly decode the first frame of every retained source video.")
     parser.add_argument(
         "--verify-v1-freeze",
         action="store_true",
@@ -65,6 +68,13 @@ def main() -> None:
     assert sum(truthy(row["is_cropped"]) for row in manifest) == 234
     assert sum(truthy(row["usable_as_isolated_clip"]) for row in manifest) == 375
     assert all(resolve_repo_path(row["source_path"], root).exists() for row in manifest)
+    source_first_frame_decodes = None
+    if args.verify_source_decode:
+        for row in manifest:
+            source = resolve_repo_path(row["source_path"], root)
+            if not probe_video(source)["decode_ok"]:
+                raise AssertionError(f"Source first-frame decode failed: {source}")
+        source_first_frame_decodes = len(manifest)
 
     cache_paths: set[str] = set()
     fold_report = {}
@@ -112,7 +122,8 @@ def main() -> None:
     report = {
         "status": "pass",
         "videos": 630,
-        "decoded": 630,
+        "manifest_decode_ok": 630,
+        "source_first_frame_decodes": source_first_frame_decodes,
         "primary_original_isolated": 375,
         "aggregate_excluded": 23,
         "cropped_or_preprocessed": 234,

@@ -131,6 +131,11 @@ def main() -> None:
     parser.add_argument("--v2-model-spec", type=Path, default=None)
     args = parser.parse_args()
 
+    for filename in ("best_checkpoint.pt", "metrics.json", "training_history.csv", "training_receipt.json"):
+        existing = args.output_dir / filename
+        if existing.exists():
+            raise SystemExit(f"Run artifact already exists: {existing}. Choose a fresh --output-dir.")
+
     labels = load_labels(args.classes)
     rows = read_rows(args.samples)
     train_rows = [row for row in rows if row["split"] == "train"]
@@ -249,9 +254,6 @@ def main() -> None:
         raise SystemExit("train_eval requires a nonempty test split")
     if run_mode == "train_only" and test_rows:
         raise SystemExit("train_only refuses a manifest containing test rows")
-    if is_v2 and stage == "final_retrain" and (args.output_dir / "best_checkpoint.pt").exists():
-        raise SystemExit(f"Final checkpoint already exists: {args.output_dir / 'best_checkpoint.pt'}")
-
     seed_everything(args.seed)
     device = select_device(args.device)
     train_x, train_y, _ = load_split(

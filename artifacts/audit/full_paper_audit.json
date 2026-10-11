@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at_utc": "2026-08-23T21:09:55.933084+00:00",
+  "generated_at_utc": "2026-10-11T07:20:09.922608+00:00",
   "status": "pass",
   "scope": "Primitive-level numerical, dataset, V2 gate, and citation consistency audit; no retraining.",
   "primary": {

@@ -5,6 +5,7 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import math
 import os
 import re
 import shutil
@@ -220,7 +221,7 @@ def validate_review_completion(row: dict[str, str]) -> list[str]:
             try:
                 start = float(row[f"pass{pass_n}_start_time_s"])
                 end = float(row[f"pass{pass_n}_end_time_s"])
-                if start < 0 or end <= start:
+                if not (math.isfinite(start) and math.isfinite(end) and 0 <= start < end):
                     raise ValueError
             except (KeyError, TypeError, ValueError):
                 errors.append(f"pass{pass_n}_accepted_without_valid_bounds")
@@ -412,8 +413,10 @@ def validate_verified_row(
     except (TypeError, ValueError, KeyError):
         errors.append("non_numeric_bounds")
         return errors
-    if not (end_t > start_t and end_f > start_f and start_t >= 0 and start_f >= 0):
+    if not (math.isfinite(start_t) and math.isfinite(end_t) and end_t > start_t and end_f > start_f and start_t >= 0 and start_f >= 0):
         errors.append("bounds_not_positive")
+    if not math.isfinite(duration) or duration <= 0:
+        errors.append("bad_duration")
     if duration > 0 and (end_t > duration + 0.05 or start_t > duration):
         errors.append("bounds_outside_duration")
     recorded_hash = (row.get("source_video_hash") or "").strip().lower()
@@ -433,9 +436,9 @@ def validate_verified_row(
     else:
         try:
             fps = float(row["fps"])
-            tolerance = max(0.05, 1.5 / fps)
-            if fps <= 0:
+            if not math.isfinite(fps) or fps <= 0:
                 raise ValueError
+            tolerance = max(0.05, 1.5 / fps)
             if abs(start_f / fps - start_t) > tolerance or abs(end_f / fps - end_t) > tolerance:
                 errors.append("frame_time_mismatch")
         except (TypeError, ValueError, ZeroDivisionError):
